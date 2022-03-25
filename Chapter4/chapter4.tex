@@ -1,0 +1,497 @@
+\chapter[Fundamento teórico]{Fundamento teórico}{Fundamento teórico}\label{Fundamento}
+
+\noindent
+\rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
+Hola\\
+\noindent
+\rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
+\clearpage
+
+\section{Fundamento teórico}
+
+Los datos obtenidos de observaciones del precio del bitcoin son recolectados de forma secuencial y de forma cronológica a lo largo del tiempo. Como ejemplo de lo anterior se puede observar diariamente el precio de apertura y cierre de este activo modelando así lo que comúnmente conocemos como serie de tiempo. En este apartado se hará una revisión breve de los modelos de predicción más utilizados en la literatura como también de análisis multivariante y análisis topológico de datos ya que son fundamentales para el estudio de series temporales, modelar los altibajos del precio y clasificar tendencias.
+
+\section{Medidas de error}
+
+\subsection{RMSE}
+\subsection{MSE}
+\subsection{MAE}
+\subsection{Theils's U}
+
+\section{Modelos estadísticos}
+
+Hola
+\subsection{Naive}
+
+Para el método de predicción Naive, simplemente hacemos que el valor predicho sea igual a la última observación, esto es,
+
+\[ \hat{y}_{T+h \mid T}=y_{T} \]
+
+Aquí, la notación $\hat{y}_{T+h \mid T}$ es una manera corta de estimar $y_{T+h \mid T}$ basado en el los datos $y_{1}, \ldots, y_{T}$. Este método funciona bastante bien para series de tiempo económicas y financieras \cite{hyndmanForecastingPrinciplesPractice}.
+Se asume que las observaciones más recientes son las más importantes y que las observaciones previas no proveen de información para el futuro.
+
+\subsection{SES}
+El método simple exponential smothing (SES) es apropiado para la predicción de datos sin una tendencia clara o sin un patrón estacional \cite{hyndmanForecastingPrinciplesPractice}. Su concepto principal es dar mayor peso a las observaciones más recientes que a las del pasado lejano. Las predicciones se realizan mediante medias ponderadas, donde los pesos disminuyen de forma exponencial a medida que las observaciones son más antiguas.
+
+\begin{equation}
+	\hat{y}_{T+1 \mid T}=\alpha y_{T}+\alpha(1-\alpha) y_{T-1}+\alpha(1-\alpha)^{2} y_{T-2}+\cdots
+	\label{eq:1}
+\end{equation}
+
+donde $0 \leq \alpha \leq 1$ es el parámetro de suavizado. La forma de media ponderada es la siguiente:
+
+\[\hat{y}_{T+1 \mid T}=\sum_{j=0}^{T-1} \alpha(1-\alpha)^{j} y_{T-j}+(1-\alpha)^{T} \ell_{0}\]
+
+dónde $\ell_{0}$ es el primer valor ajustado al tiempo $t=1$, el cual tenemos que estimar y se obtiene dependiendo del tipo de error a maximizar. El valor $(1-\alpha)^{T} \ell_{0}$ tiende a $0$ si $T$ es muy grande, así que esta forma es similar a la \autoref{eq:1}. 
+
+Una representación alternativa es la forma en componentes que está dada por:
+
+\begin{equation*}
+	\begin{array}{lcl} 
+		\textrm{Ecuación de predicción} \hspace{1cm} \hat{y}_{t+h \mid t}=\ell_{t}\\
+		\textrm{Ecuación de nivel}\hspace{1cm} \ell_{t}=\alpha y_{t}+(1-\alpha) \ell_{t-1},
+	\end{array} 
+\end{equation*}
+
+donde $\ell_{t}$ es el nivel o valor de suavizado de la serie al tiempo $t$.  
+
+\subsection{Holt}
+
+Holt extendió el método SES para permitir la predicción de datos con una tendencia. Este método involucra una ecuación de predicción y dos de suavizado (una para el nivel y otra para la tendencia).
+
+\begin{equation*}
+	\begin{array}{lcl} 
+		 \text {Ecuación de predicción} & \hat{y}_{t+h \mid t}=\ell_{t}+h b_{t} \\
+		\text { Ecuación de nivel } & \ell_{t}=\alpha y_{t}+(1-\alpha)\left(\ell_{t-1}+b_{t-1}\right) \\
+		\text { Ecuación de tendencia } & b_{t} =\beta^{*}\left(\ell_{t}-\ell_{t-1}\right)+\left(1-\beta^{*}\right) b_{t-1},
+	\end{array} 
+\end{equation*}
+
+donde $\ell_{t}$ denota un estimador de nivel de la serie al tiempo $t$,  $b_{t}$ denota un estimador de la tendencia (pendiente) de la serie al tiempo $t$, $\alpha$ es el parámetro de suavizado para el nivel, $0 \leq \alpha \leq 1$ y $\beta^*$ es el parámetro de suavizado para la tendencia., $0 \leq \beta^* \leq 1$.
+
+Como en el método SES, $\ell_{t}$ es una media ponderada de las observaciones $y_t$, en este caso $b_t$, la ecuación de tendencia es también una media ponderada sobre $\ell_{t}-\ell_{t-1}$ y $b_t$ el estimado previo de la tendencia. 
+
+El método de Holt muestra una tendencia constante indefinida hacia el futuro tendiendo a sobre pronosticar para horizontes grandes de predicción. Dada la observación anterior Gardner y McKenzie introdujeron un parámetro de amortización que hace plana la tendencia después de un tiempo en el futuro. Se ha probado que los métodos que incluyen una tendencia amortiguada han sido más exitosos y más populares cuando las predicciones son automatizadas \cite{hyndmanForecastingPrinciplesPractice}. 
+
+El método de Holt amortizado tiene la siguiente forma
+
+\begin{equation*}
+	\begin{array}{cl} 
+	\hat{y}_{t+h \mid t} =\ell_{t}+\left(\phi+\phi^{2}+\cdots+\phi^{h}\right) b_{t} \\
+	\ell_{t} =\alpha y_{t}+(1-\alpha)\left(\ell_{t-1}+\phi b_{t-1}\right) \\
+	b_{t}=\beta^{*}\left(\ell_{t}-\ell_{t-1}\right)+\left(1-\beta^{*}\right) \phi b_{t-1} .
+	\end{array} 
+\end{equation*}
+
+donde $\alpha$ y $\beta$ son como el método Holt y $\phi$ es el parámetro de amortización $0 \leq \phi \leq 1$.
+Notemos que la ecuación de predicción converge a $\ell_{T}+\phi b_{T} /(1-\phi)$ conforme $h \rightarrow \infty$. Esto significa que las predicciones a corto plazo tienen tendencia mientras que las predicciones a largo plazo son constantes.
+
+\subsection{ETS}
+
+explicar que se uso ETS con todos los parametros en automatico para ver la mejor predicción que mejora la verosimilitud.
+
+\subsection{ARIMA}
+
+\subsubsection{Modelos autorregresivos}
+
+Un modelo autorregresivo es aquel en el que predecimos la variable de interés usando una combinación lineal de valores pasados de la variable. El termino autorregresión indica que es una regresión de la variable contra sí misma \cite{hyndmanForecastingPrinciplesPractice}.
+
+Por tanto, un modelo autorregresivo de orden $p$ puede ser escrito como 
+
+\[ y_{t}=c+\phi_{1} y_{t-1}+\phi_{2} y_{t-2}+\cdots+\phi_{p} y_{t-p}+\varepsilon_{t} \]
+
+donde $\varepsilon_{t}$ es ruido blanco y $y_{t-p}$ son valores retardados de $y_t$ como predictores. Esto es comúnmente conocido como \textbf{AR($p$)}.
+
+\subsubsection{Modelo de medias móviles}
+
+Un modelo de medias móviles usa errores de predicción pasados en una regresión, a diferencia de un modelo autorregresivo que usa valores retardados del valor a predecir \cite{hyndmanForecastingPrinciplesPractice}. Esto se puede expresar como
+
+\[ y_{t}=c+\varepsilon_{t}+\theta_{1} \varepsilon_{t-1}+\theta_{2} \varepsilon_{t-2}+\cdots+\theta_{q} \varepsilon_{t-q} \]
+
+donde $\varepsilon_{t}$ es ruido blanco. Esto es comúnmente conocido como \textbf{MA($q$)}, un modelo de medias móviles de orden $q$.
+
+\subsubsection{Modelos ARIMA}
+
+ARIMA es el acrónimo para modelo autorregresivo integrado de promedio móvil (del inglés AutoRegressive Integrated Moving Average), que es un modelo que combina la diferenciación con autorregresión y medias móviles \cite{hyndmanForecastingPrinciplesPractice}. En este caso la parte integrada del modelo hace referencia al converso de la diferenciación. 
+
+El modelo puede ser escrito 
+
+\[ y_{t}^{\prime}=c+\phi_{1} y_{t-1}^{\prime}+\cdots+\phi_{p} y_{t-p}^{\prime}+\theta_{1} \varepsilon_{t-1}+\cdots+\theta_{q} \varepsilon_{t-q}+\varepsilon_{t}, \]
+
+donde $y_{t}^{\prime}$ es la serie diferenciada y los predictores de la parte izquierda de la ecuación son son valores retardados de $y_t$ y $\varepsilon_t$. Llamamos a esto un modelo \textbf{ARIMA($p,d,q$)} donde
+
+\begin{itemize}
+\item $p$ = orden de la parte autorregresiva.
+\item $d$ = grado de la primer diferenciación involucrada.
+\item $q$ = orden de la parte de medias móviles.
+\end{itemize}
+
+El operador $B$ (backward shift) es una notación usada para trabajar con series de tiempo retardadas
+
+\[ B y_{t}=y_{t-1}. \]
+
+Si aplicamos dos veces $B$ a $y_t$ entonces desplaza los datos hacia atrás dos períodos: 
+
+\[B\left(B y_{t}\right)=B^{2} y_{t}=y_{t-2}.\]
+
+En general este operador es particularmente útil ya que puede ser tratado usando reglas algebraicas ordinarias. También tiene la propiedad de que una diferencia de $d$-ésimo orden puede ser escrita como
+
+\[
+(1-B)^{d} y_{t}.
+\]
+
+Usando el operador $B$ podemos escribir la ecuación del modelo ARIMA de la siguiente forma
+
+\begin{equation*}
+	\begin{array}{ccc}
+		\left(1-\phi_{1} B-\cdots-\phi_{p} B^{p}\right) & (1-B)^{d} y_{t}=c+\left(1+\theta_{1} B+\cdots+\theta_{q} B^{q}\right) \varepsilon_{t}\\
+		\hspace{0.5cm}\uparrow & \hspace{-5cm}\uparrow & \hspace{-7cm}\uparrow \\
+		\operatorname{AR}(p) & \hspace{-5cm}d\hspace{0.1cm}\text{diferencias} & \hspace{-7cm}\operatorname{MA}(q)
+	\end{array}
+\end{equation*}
+\section{Transformaciones matemáticas}
+Ajustar los datos en algunos casos puede mejorar la predicción de los mismos ya que permiten disminuir la variabilidad o simplificar los patrones o tendencias de los registros históricos. En este estudio se aplicaron trasformaciones matemáticas para generar series de tiempo que refuerzan la tendencia o hacerla estacionaria.
+
+
+\subsection{Transformación $log$}
+
+Si denotamos las observaciones originales como $y_{1}, \ldots, y_{T}$ y las observaciones transformadas como $w_{1}, \ldots, w_{T}$, entonces $w_{t}=\log \left(y_{t}\right)$. Los logaritmos son útiles dado que son interpretables. Por ejemplo, si $log$ base 10 es usada entonces un incremento de 1 en la escala logarítmica significa una multiplicación de 10 en la escala original.  
+Otra propiedad útil es que restringe la predicción a permanecer positiva en la escala original. 
+
+\subsection{Transformación Box-Cox}
+La familia de transformaciones Box-Cox que dependen del parámetro $\lambda$ se define como sigue
+
+\[
+w_{t}= \begin{cases}\log \left(y_{t}\right) & \text { if } \lambda=0 \\ \left(y_{t}^{\lambda}-1\right) / \lambda & \text { otro caso }\end{cases}
+\]
+
+Esta transformación abarca la transformación logarítmica y de potencias, si $\lambda = 0$ entonces el logaritmo natural es usado si no se usa una trasformación de potencias con un escalamiento.
+
+La ventaja de esta transformación es que tomando un buen valor de $\lambda$ podemos estabilizar la varianza en toda la serie de tiempo, haciendo el modelo de predicción más simple \cite{hyndmanForecastingPrinciplesPractice}. 
+
+\subsection{Transformación $diff$}
+
+La diferencia en series es el cambio entre observaciones consecutivas en la serie original y puede ser escrita de la siguiente manera
+
+\[
+y_{t}^{\prime}=y_{t}-y_{t-1}
+\]
+
+Una de las ventajas de esta transformación es que puede ayudar a estabilizar la media de una serie de tiempo al eliminar los cambios de nivel de la misma y, por tanto, eliminar (o reducir) la tendencia y la estacionalidad \cite{hyndmanForecastingPrinciplesPractice}.
+
+\subsection{Transformación $diff(log)$}
+
+La transformación $diff(log)$ calcula cambios relativos, esto es, la diferencia fraccional entre dos números que, multiplicado por cien es la diferencia porcentual entre los mismos. Estos cambios son simétricos y útiles para explorar las relaciones con datos continuos y de valor positivo \cite{coleStatisticsNotesPercentage2017}.
+
+\[
+y_{t}^{\prime}=\log{y_{t}}-\log{y_{t-1}}
+\]
+
+En finanzas esta transformación puede ser usada para analizar el cambio porcentual de la tendencia.
+
+
+\section{Modelos de machine learning}
+Hola
+\subsection{RTS}
+El modelo de regresión sobre series de tiempo (RTS) es una variación de los modelos de regresión lineal que permite agregar variables para la tendencia y temporada \cite{TslmFitLinear}. 
+
+La forma general de un modelo de regresión lineal multiple es la siguiente:
+
+\[
+y_{t}=\beta_{0}+\beta_{1} x_{1, t}+\beta_{2} x_{2, t}+\cdots+\beta_{k} x_{k, t}+\varepsilon_{t}
+\]
+
+donde $y$ es la variable a predecir y $x_{1}, \ldots, x_{k}$ son las $k$ variables predictoras.
+Los coeficientes $\beta_{1}, \ldots, \beta_{k}$ miden el efecto de cada predictor después de tener en cuenta los efectos de todos los demás predictores del modelo.
+
+Las suposiciones implícitas que se hacen al aplicar un modelo de regresión lineal son las siguientes:
+
+\begin{itemize}
+\item La relación entre la variable de pronóstico y las variables predictoras satisfacen una ecuación lineal.
+\item Los errores tienen media cero.
+\item Los errores no están autocorrelacionados.
+\item Los errores no están correlacionados con las variables predictoras.
+\end{itemize}
+
+Otra suposición importante es que cada predictor no sea una variable aleatoria, tienen que ser datos reproducibles. En datos financieros o económicos no es posible controlar sus valores, por tanto suponemos que no son una variable aleatoria.
+
+La variable tendencia del modelo RTS puede ser modelada usando $x_{1, t}=t$ como predictor.
+
+\[
+y_{t}=\beta_{0}+\beta_{1} t+\varepsilon_{t}
+\]
+
+donde $t=1,...,T$. Por otra parte la temporada se modela agregando variables ficticias para codificar categorías. Cada categoría corresponde a una ventana de tiempo. Estas variables ficticias miden el efecto de la categoría relativa a la categoría omitida \cite{hyndmanForecastingPrinciplesPractice}. 
+
+\subsection{SVM}
+
+Support vector machines (SVM) es un algoritmo de machine learning supervisado que se basa en separar los puntos de los datos usando hiperplanos tal que la distancia de separación es máxima. Los vectores de soporte son los puntos más cercanos al hiperplano para calcular su posición \cite{mudassirTimeseriesForecastingBitcoin2020}.
+Para el cálculo de los SVM la función objetivo \ref{svm} debe ser minimizada sujeto a la condición \ref{svm_restric}.
+
+\begin{equation}
+	\|\mathbf{w}\|^{2}+C \sum_{i=1}^{n} \zeta_{i}
+	\label{svm}
+\end{equation}
+
+En la \autoref{svm} la variable de holgura es $\zeta_{i}$, la penalización es $C$ y $\mathbf{w}$ es la normal al hiperplano.
+
+\begin{equation}
+	y_{i}\left(\mathbf{w} \cdot \phi\left(x_{i}\right)+b \right) \geq 1-\zeta_{i}, \quad \text { con } \zeta_{i} \geq 0.
+	\label{svm_restric}
+\end{equation}
+
+En la restricción \ref{svm_restric} $x_i$ y $y_i$ son puntos en los datos y $\phi(x_i)$ son los datos transformados. 
+
+\textbf{Kernel? En Mudassir}
+
+Análogamente existe una versión de regresión del algoritmo SVM que consiste en resolver el siguiente problema\\
+
+\textbf{Minimizar} $\frac{1}{2}\|w\|^{2}$\\
+
+\textbf{Sujeto a} $\left|y_{i}-\left\langle w, x_{i}\right\rangle-b\right| \leq \varepsilon$\\
+
+donde $x_i$ es una muestra de entrenamiento con valor objetivo $y_i$. Aquí $\left\langle w, x_{i}\right\rangle+b$ es la predicción y $\epsilon$ es un parámetro libre que sirve como umbral. Todas las predicciones tienen que estar dentro de un rango $\epsilon$ de predicciones verdaderas. 
+
+\subsection{Random Forest}
+El algoritmo de bosque aleatorio o random forest combina la salida de múltiples arboles de decisión tal que cada árbol depende de los valores de un vector aleatorio probado independientemente y con la misma distribución para cada uno de estos y así alcanzar un solo resultado. Es usado para problemas de regresión y clasificación \cite{WhatRandomForest2021}.
+
+\subsubsection{Árboles de decisión}
+Un árbol de decisión divide una pregunta inicial en subpreguntas para llegar a una decisión final. Observaciones que se ajusten a un criterio seguirán una rama "SÍ", y aquellas que no, seguirán un camino distinto.
+
+Entonces un árbol de decisión busca encontrar la mejor partición de un subconjunto de los datos y estos generalmente son entrenados con el algoritmo Classification and Regression Tree (CART).
+Las métricas usadas para evaluar la calidad de las particiones son Gini impurity, information gain, o MSE.   
+
+\subsubsection{Métodos de conjunto (Ensamble methods)}
+
+Los métodos de conjunto son técnicas que buscan mejorar la precisión de resultados en modelos combinando múltiples modelos en vez de usar uno solo. Los modelos de conjunto más populares son: bagging, boosting y staking.
+En el método bagging se selecciona una muestra aleatoria de datos en un conjunto de entrenamiento con remplazo, significando esto que los datos se pueden elegir más de una vez. Después de generar varias muestras de los datos estos se entrenan de forma independiente ya sea regresión o clasificación. El promedio o mayoría de de esas predicciones nos levan a una mejor precisión.   
+
+\subsubsection{Algoritmo random forest}
+
+El algoritmo random forest es una exención del método baggin ya que utiliza tanto el baggig como la selección aleatoria de características para crear un bosque no correlacionado de arboles de decisión.
+La aleatoriedad de características, también conocida como bagging de características o ''el método del subespacio aleatorio'' es la diferencia clave entre los bosques aleatorios y los arboles de decisión ya que mientras los arboles de decisión consideran todas las posibles divisiones de características, los bosques aleatorios solo seleccionan un subconjunto de ellas.
+
+
+\subsection{LSTM}
+
+Long Short-term memory (LSTM) constituye un caso especial de una red neuronal convolucional, la cual fue propuesta para modelar dependencias a corto y largo plazo. Este modelo de deep learnig es especialmente útil para modelado y predicción de datos de series de tiempo \cite{mudassirTimeseriesForecastingBitcoin2020}.
+Una unidad LSTM consiste en una memoria de celda que almacena información y es actualizada por tres puertas principales: la puerta de entrada, la puerta de olvido y la puerta de salida \cite{chenBitcoinPricePrediction2020}.
+En cada paso $t$ la puerta de entrada $i_t$ determina que información es agregada a la celda de estado $S_t$ (memoria), la puerta de olvido $f_t$ determina que información es desechada de la celda de estado mediante la decisión de una función de transformación en la capa de la puerta de olvido, mientras que la puerta de salida $o_t$ determina qué información del estado de la celda se utilizará como salida \cite{livierisEnsembleDeepLearning2020}.
+En en bloque LSTM, $C_{t-1}$ es la memoria o celda de estado del bloque anterior, $h_{t-1}$ es la salida del bloque anterior, $X_t$ es el vector de entrada, $C_t$  es la memoria o celda de estado del bloque presente y  $h_{t}$ es la salida del bloque actual.
+Las puertas y celdas de estado LSTM están dadas por las ecuaciones \ref{LSTM1} a \ref{LSTM2}.
+
+\begin{equation}
+	f_{t}=\sigma_{g}\left(W_{f} x_{t}+U_{f} h_{t-1}+b_{f}\right)
+	\label{LSTM1}
+\end{equation}
+
+donde $f_t$ es el vector de activación de la puerta de olvido, $W$ y $U$ son matrices ponderadas, $b$ es el vector de sesgo y $\sigma_{g}$ es la función sigmoide. 
+
+\begin{equation}
+	i_{t}=\sigma_{g}\left(W_{i} x_{t}+U_{i} h_{t-1}+b_{i}\right)
+\end{equation}
+
+donde $i_t$ es el vector de activación de la puerta de entrada o activación.
+
+\begin{equation}
+	o_{t}=\sigma_{g}\left(W_{o} x_{t}+U_{o} h_{t-1}+b_{o}\right)
+\end{equation}
+
+donde $o_t$ es el vector de activación de la puerta de salida.
+
+\begin{equation}
+	\tilde{c}_{t}=\sigma_{h}\left(W_{c} x_{t}+U_{c} h_{t-1}+b_{c}\right)
+\end{equation}
+
+donde el vector de activación de la celda de entrada está dada por $c_t$ y $\sigma_{h}$ es la función tangente hiperbólica.
+
+\begin{equation}
+	c_{t}=f_{t} \otimes c_{t-1}+i_{t} \otimes \tilde{c}_{t}
+\end{equation}
+
+donde $c_t$ es el estado de la celda o vector memoria.
+
+\begin{equation}
+	h_{t}=o_{t} \otimes \sigma_{h}\left(c_{t}\right)
+	\label{LSTM2}
+\end{equation}
+
+donde $h_t$ es el vector de salida del bloque LSTM o el vector de estado oculto. 
+
+
+\subsection{CNN}
+VER LIEBERIS ET AL, EN ESTADO DEL ARTE CLASIFICACION Y NOTAS IOS
+
+
+\subsection{K-Means}
+
+El algoritmo K-means es un algoritmo de partición con la meta de asignar a cada punto de dato un único agrupamiento. Divide un conjunto de $n$ muestras $X$ dentro de $k$ agrupamientos disjuntos $c_i$, $i=1,...,k$, cada uno descrito por la media $\mu_i$ de las muestras en el agrupamiento. Las medias son comúnmente llamados centroides del agrupamiento. El algoritmo K-means asume que todos los $k$ grupos tienen la misma varianza \cite{igualIntroductionDataScience2017}.
+
+El agrupamiento K-means resuelve el siguiente problema de minimización. 
+
+\begin{equation}
+	\arg \min _{c} \sum_{j=1}^{k} \sum_{x \in c_{j}} d\left(x, \mu_{j}\right)=\arg \min _{c} \sum_{j=1}^{k} \sum_{x \in c_{j}}\left\|x-\mu_{j}\right\|_{2}^{2}
+\end{equation}
+
+donde $c_i$ es el conjunto de puntos que pertenecen al agrupamiento $i$ y $\mu_i$ es el centro de la clase $c_i$. La función objetivo del agrupamiento K-means usa el cuadrado de la distancia Euclidiana $d\left(x, \mu_{j}\right)=\left\|x-\mu_{j}\right\|^{2}$ que también es conocida como inercia.
+%Pág. 121 de libro de Zotero zotero://select/library/items/I2TMXUMY
+
+\section{Análisis de regresión}
+La regresión esta relacionada a como hacemos predicciones de cantidades del mundo real, las predicciones hacen referencia a preguntas que tienen una estructura en común: se preguntan por una respuesta que puede ser expresada como una combinación de una o más variables (independientes) que también son llamadas covariables o predictores. El papel de la predicción es construir un modelo para predecir la respuesta de las variables y que puede ser útil en diferentes tareas, (1) analizar el comportamiento de los datos, (2) predecir los valores de los datos y (3) encontrar variables importantes para el modelo \cite{igualIntroductionDataScience2017}.
+%zotero://select/library/items/I2TMXUMY
+\subsection{Mínimos cuadrados ordinarios}
+
+Mínimos cuadrados ordinarios es un método estadístico para estimar parámetros desconocidos en un modelo de regresión lineal \cite{juarez4toColoquioDepartamento}. Entonces sea $x$ una variable independiente y sea $y(x)$ una función desconocida de $x$ la cual queremos aproximar. Suponiendo que tenemos $m$ observaciones
+
+\[
+\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \ldots,\left(x_{m}, y_{m}\right)
+\]
+
+donde $y_i \sim y(x_i)$, $i=1,...,m$, la idea es modelar $y(x)$ por medio de una combinación de $n$ funciones base $\phi_1(x),\phi_2(x),...\phi_n(x)$. En el caso lineal suponemos que la función se ajusta a los datos en una combinación lineal de la forma 
+
+\[
+y(x)=c_{1} \phi_{1}(x)+c_{2} \phi_{2}(x)+\ldots+c_{n} \phi_{n}(x)
+\]
+
+Entonces, los datos deben satisfacer de manera aproximada
+
+\[
+y_{i}=c_{1} \phi_{1}\left(x_{i}\right)+c_{2} \phi_{2}\left(x_{i}\right)+\ldots+c_{n} \phi_{n}\left(x_{i}\right), \quad i=1,2, \ldots, m
+\]
+
+La ecuación anterior puede expresarse de forma matricial como sigue
+
+\[
+\left[\begin{array}{cccc}
+	\phi_{1}\left(x_{1}\right) & \phi_{2}\left(x_{1}\right) & \ldots & \phi_{n}\left(x_{1}\right) \\
+	\phi_{1}\left(x_{2}\right) & \phi_{2}\left(x_{2}\right) & \ldots & \phi_{n}\left(x_{2}\right) \\
+	\vdots & & \ddots & \vdots \\
+	\phi_{1}\left(x_{m}\right) & \phi_{2}\left(x_{m}\right) & \ldots & \phi_{n}\left(x_{m}\right)
+\end{array}\right]\left[\begin{array}{c}
+	c_{1} \\
+	c_{2} \\
+	\vdots \\
+	c_{n}
+\end{array}\right]=\left[\begin{array}{c}
+	y_{1} \\
+	y_{2} \\
+	\vdots \\
+	y_{m}
+\end{array}\right]
+\]
+
+El enfoque de mínimos cuadrados consiste en buscar aquel vector de coeficientes $c$ que minimice el residual $r=y-Ac$. Entonces, el problema consiste en resolver 
+
+\[
+\min _{c \in \mathbb{R}^{n}}\|A c-y\|^{2}
+\]
+
+Es decir, para encontrar el ajuste de mínimos cuadrados debemos encontrar el vector de coeficientes $c=(c_1,...,c_n)^T$ que minimiza la suma de los cuadrados:
+
+\[
+\min _{c \in \mathbb{R}^{n}} \sum_{i=1}^{m}\left(c_{1} \phi_{1}\left(x_{i}\right)+c_{2} \phi_{2}\left(x_{i}\right)+\cdots+c_{n} \phi_{n}\left(x_{i}\right)-y_{i}\right)^{2}.
+\]
+
+%zotero://select/library/items/I2TMXUMY
+%zotero://select/library/items/PQ8TC77F
+\section{Análisis de componentes principales}
+
+La idea principal del análisis de componentes principales (PCA) es reducir la dimensionalidad de un conjunto de datos con variables que están interrelacionados entre sí, mientras retienen la mayor variación posible. Esto se logra transformándolas a un nuevo conjunto de variables, los componentes principales (PCs), las cuales no están relacionadas y están ordenadas de tal forma que las primeras tienen la mayor variación presente de todas las variables originales \cite{jolliffePrincipalComponentAnalysis2002}.
+
+Supongamos que $x$ es un vector de $p$ variables aleatorias y que la varianza de las $p$ variables aleatorias y la estructura de la covarianza o correlación entre las $p$ variables es de interés. El primer paso del PCA es buscar una función lineal $\boldsymbol{\alpha}_1^\prime \boldsymbol{x}$ de los elementos de $\boldsymbol{x}$ que tenga máxima varianza, donde $\boldsymbol{\alpha}_{1}$ es un vector de $p$ constantes $\alpha_{11},\alpha_{12},...,\alpha_{1p}$ y $\prime$ denota la traspuesta, así que
+
+\[
+\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{x}=\alpha_{11} x_{1}+\alpha_{12} x_{2}+\cdots+\alpha_{1 p} x_{p}=\sum_{j=1}^{p} \alpha_{1 j} x_{j}
+\] 
+
+Consideremos de momento que el vector de variables aleatorias $\boldsymbol{x}$ tiene una matriz de covarianza conocida $\boldsymbol{\Sigma}$, esta es la matriz cuya $(i,j)$-ésimos elementos es la covarianza conocida entre el $i$-ésimo y $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i \neq j$ y la varianza del $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i = j$. Resulta que para $k=1,2,..,p$ el $k$-ésimo PC está dado por $z_k = \boldsymbol{\alpha_k^\prime} \boldsymbol{x}$ donde $\boldsymbol{\alpha_k}$ es un eigenvector de $\boldsymbol{\Sigma}$ correspondiente al $k$-ésimo eigenvalor más grande $\lambda_k$. Aún más, si $\boldsymbol{\alpha_k^\prime}$ es escogido de tal forma que tiene longitud unidad $(\boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1)$, entonces la $var(z_k)=\lambda_k$, donde $var(z_k)$ denota la varianza de $z_k$.
+
+Para derivar la forma de los PC, consideremos primero $\boldsymbol{\alpha_k^\prime}$ donde $\boldsymbol{\alpha_k}$ maximiza $var(\boldsymbol{\alpha_k^\prime})= \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}$. Entonces el problema a resolver es el siguiente:\\
+
+\textbf{Maximizar} $\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}$\\
+
+\textbf{Sujeto a} $\boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1$\\
+
+Usando la técnica de los multiplicadores de Lagrange obtenemos que el eigenvalor $\lambda$ de $\boldsymbol{\Sigma}$ con $\boldsymbol{\alpha}_{1}$ su correspondiente eigenvector. Para decidir cual de los $p$ eigenvectores da $\boldsymbol{\alpha}_{1}^{\prime}\boldsymbol{x}$ con máxima varianza, notemos que la cantidad a ser maximizada es la siguiente
+
+\[
+\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}=\boldsymbol{\alpha}_{1}^{\prime} \lambda \boldsymbol{\alpha}_{1}=\lambda \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\alpha}_{1}=\lambda,
+\]
+
+así $\lambda$ debe ser tan grande como sea posible. Por tanto, $\boldsymbol{\alpha}_{1}$ es el eigenvector correspondiente al eigenvalor más grande de $\boldsymbol{\Sigma}$ y $\operatorname{var}\left(\boldsymbol{\alpha}_{1}^{\prime} \mathbf{x}\right)=\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}=\lambda_{1}$, es el eigenvalor más grande.
+En general el $k$-ésimo PC de $\boldsymbol{x}$ es $ \boldsymbol{\alpha_k^\prime} \boldsymbol{x}$ y $var(\boldsymbol{\alpha_k^\prime}\boldsymbol{x})=\lambda_k$ donde $\lambda_k$ es el $k$-ésimo eigenvalor más grande de $\boldsymbol{\Sigma}$, y $\boldsymbol{\alpha_k}$ es el correspondiente eigenvector.
+
+Los vectores de los coeficientes $\boldsymbol{\alpha}_{3}, \boldsymbol{\alpha}_{4}, \ldots, \boldsymbol{\alpha}_{p}$, son los eigenvectores de $\boldsymbol{\Sigma}$ correspondiente a $\lambda_{1},\lambda_{2},...,\lambda_{p}$.
+
+\[
+\operatorname{var}\left[\boldsymbol{\alpha}_{k}^{\prime} \mathbf{x}\right]=\lambda_{k} \quad \text { para } k=1,2, \ldots, p
+\]
+
+La derivación de los coeficientes PC y varianzas como eigenvectores y eigenvalores de una matriz de covarianza es estándar. 
+
+\section{Agrupamiento jerárquico}
+El agrupamiento jerárquico es un método de análisis de grupos puntuales el cual busca construir una jerarquía de grupos.
+Hay dos estrategías para el agrupamiento jerárquico:
+\begin{itemize}
+	\item Aglomerativas: Este es un acercamiento ascendente: cada observación comienza en su propio grupo, y los pares de grupos son mezclados mientras uno sube en la jerarquía.
+	\item Divisivas: Este es un acercamiento descendente: todas las observaciones comienzan en un grupo, y se realizan divisiones mientras uno baja en la jerarquía.
+\end{itemize}
+
+Los resultados de un agrupamiento jerárquico son usualmente presentados en un dendrograma. 
+
+En orden de decidir qué grupos deberían ser combinados, o cuando un grupo debería ser dividido, una medida de disimilitud entre conjuntos de observaciones es requerida y un criterio de enlace el cual especifica la disimilitud de conjuntos como una función de las distancias dos a dos entre observaciones en los conjuntos.
+
+Algunas métricas usualmente usadas para el agrupamiento jerárquico son las mostradas en la \autoref{metrics_dendrograma}.
+
+\begin{table}[h!]
+	\begin{tabular}{|l|l|}
+		\hline \multicolumn{1}{|c|}{ Nombres } & \multicolumn{1}{|c|}{ Fórmula } \\
+		\hline Distancia euclidiana & $\|a-b\|_{2}=\sqrt{\sum_{i}\left(a_{i}-b_{i}\right)^{2}}$ \\
+		\hline Distancia euclidiana al cuadrado & $\|a-b\|_{2}^{2}=\sum_{i}\left(a_{i}-b_{i}\right)^{2}$ \\
+		\hline Distancia Manhattan & $\|a-b\|_{1}=\sum_{i}\left|a_{i}-b_{i}\right|$ \\
+		\hline distancia máxima & $\|a-b\|_{\infty}=\max _{i}\left|a_{i}-b_{i}\right|$ \\
+		\hline Distancia de Mahalanobis & $\sqrt{(a-b)^{\top} S^{-1}(a-b)}$ donde $S$ es la matriz de covarianza \\
+		\hline Similitud coseno & $\frac{a \cdot b}{\|a\| b \|}$ \\
+		\hline
+	\end{tabular}
+	\label{metrics_dendrograma}
+\end{table}
+
+%$$
+%\begin{array}{|l|l|}
+%	\hline \multicolumn{1}{|c|}{\text { Names }} & \multicolumn{1}{|c|}{\text { Formula }} \\
+%	\hline \text { Distancia euclidiana } & \|a-b\|_{2}=\sqrt{\sum_{i}\left(a_{i}-b_{i}\right)^{2}} \\
+%	\hline \text { Distancia euclidiana al cuadrado } & \|a-b\|_{2}^{2}=\sum_{i}\left(a_{i}-b_{i}\right)^{2} \\
+%	\hline \text { Distancia Manhattan } & \|a-b\|_{1}=\sum_{i}\left|a_{i}-b_{i}\right| \\
+%	\hline \text { distancia máxima } & \|a-b\|_{\infty}=\max _{i}\left|a_{i}-b_{i}\right| \\
+%	\hline \text { Distancia de Mahalanobis } & \sqrt{(a-b)^{\top} S^{-1}(a-b)} \text { donde } S \text { es la matriz de covarianza } \\
+%	\hline \text { Similitud coseno } & \frac{a \cdot b}{\|a\| b \|} \\
+%	\hline
+%\end{array}
+%$$
+
+El criterio de enlace determina la distancia entre conjuntos de observaciones como una función de las distancias entre observaciones dos a dos. Algunos criterios de enlace entre dos conjuntos de observaciones A y B frecuentemente usados son las mostradas en \autoref{crit_enlance}
+
+\begin{table}
+	\begin{tabular}{|l|l|}
+		\hline \multicolumn{1}{|c|}{ Nombres } & Fórmula \\
+		\hline Agrupamiento de máximo o completo enlace & $\max \{d(a, b): a \in A, b \in B\} .$ \\
+		\hline Agrupamiento de mínimo o simple enlace & $\min \{d(a, b): a \in A, b \in B\} .$ \\
+		\hline Agrupamiento de enlace media o promedio, o UPGMA & $\frac{1}{|A||B|} \sum_{a \in A} \sum_{b \in B} d(a, b) .$ \\
+		\hline Agrupamiento de mínima energía & $\frac{2}{n m} \sum_{i, j=1}^{n, m}\left\|a_{i}-b_{j}\right\|_{2}-\frac{1}{n^{2}} \sum_{i, j=1}^{n}\left\|a_{i}-a_{j}\right\|_{2}-\frac{1}{m^{2}} \sum_{i, j=1}^{m}\left\|b_{i}-b_{j}\right\|_{2}$
+	\end{tabular}
+	\label{crit_enlance}
+\end{table}
+
+donde $d$ es la métrica escogida. Otros criterios de enlace incluyen pueden ser: la suma de todas las varianzas del intragrupo, el decrecimiento en la varianza para los grupos que están siendo mezclados (criterio de Ward) o la probabilidad de que grupos candidatos se produzcan desde la misma función de distribución (V-enlace).
+
+\section{Análisis topológico de datos}
+\lipsum[1]
+\subsection{Teorema de Takens}
+\lipsum[1]
+\subsection{Diagrama de persistencia}
+\lipsum[1]
+\subsection{Panorama de persistencia}
+\lipsum[1]
+\subsection{Normas topológicas}
+\lipsum[1]

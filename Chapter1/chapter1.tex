@@ -1,0 +1,85 @@
+\chapter[Introducción]{Introducción}{Introducción}\label{Intro}
+%\vspace{2cm}
+\noindent
+\rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
+
+El mercado de las criptomonedas se ha disparado en los últimos años y a comparación  de las monedas tradicionales las mayores innovaciones de los activos criptográficos son establecer un nuevo sistema de pago con sistemas criptográficos sofisticados, transacciones de persona a persona, con un sistema descentralizado y que asegura la privacidad del usuario.\\
+El Bitcoin destaca exitosamente en todos los puntos anteriores consolidándose como la criptodivisa líder del mercado.
+Debido a su naturaleza altamente volátil se necesitan buenas predicciones en las que basar las decisiones de inversión. En los mercados financieros tradicionales puede interesar la aplicación de estrategias comerciales automatizadas que ayudan a obtener un rendimiento razonable de los fondos invertidos.\\
+
+\noindent
+\rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
+\clearpage
+
+\section{Introducción}
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=0.5\textwidth]{example-image-a}
+%	\caption{Test Figure}
+%	\label{fig1: intro}
+%\end{figure}
+Bitcoin es la primera implementación de un concepto conocido como moneda criptográfica, la cual fue descrita por primera vez en 1998 por Wei Dai. La especificación inicial del protocolo Bitcoin y la prueba del concepto la publicó Satoshi Nakamoto en el 2009 \cite{nakamotoBitcoinPeertoPeerElectronic} la cual abandonó a finales de 2010 sin revelar nada de su persona, desde entonces la comunidad ha crecido de forma exponencial.
+
+En noviembre de 2020 el bitcoin alcanzó máximos históricos \cite{BitcoinUSDBTCUSD} consolidándose así como una moneda legitima que desde finales de 2019 se ha disparado más del $175\%$, incluso gigantes de pago como Paypal y Square permiten la compra y venta de bitcoins. Países como Estados Unidos, Japón y El Salvador actualmente permiten transacciones con esta moneda, destacando este último por ser el primer país en legalizar el bitcoin como moneda legal a partir del 7 de septiembre de 2021. En contraste países como La República Dominicana o China no cuentan con el respaldo de sus bancos centrales, inclusive prohibiendo éste último la compra y venta de esta criptomoneda.
+
+La tecnología Bitcoin es popular ya que permite evitar pasar por un intermediario para validar una transacción, genera valor al realizar las validaciones, y este valor se transforma en un elemento de intercambio. Como se ha visto en los últimos años el bitcoin puede recuperar su valor después de caídas significativas, incluso cuando la incertidumbre es alta en el mercado como durante la pandemia de la COVID-19 \cite{mudassirTimeseriesForecastingBitcoin2020}, esto es importante ya que consolida a esta moneda como un activo de inversión fiable.
+%Pero, ¿cómo funciona esta moneda?%
+
+%El funcionamiento de esta moneda es como sigue, se define una moneda electrónica como una cadena de firmas digitales donde cada propietario al transferir una monto a otra persona, éste firma digitalmente un \textit{hash} de la transacción previa y la clave pública del siguiente propietario, añadiendo ambos al final de la moneda [4]. Este conjunto de transacciones es público y propagada a todos los usuarios en la red, esto también es conocido como blockchain o cadena de bloques, donde cada bloque es una transacción con los hashes correspondientes, eliminando así la centralización y la confianza en un solo punto.%
+
+Se define una moneda electrónica como una cadena de firmas digitales donde cada propietario, al transferir una monto a otra persona, firma digitalmente un \textit{hash} de la transacción previa y la clave pública del siguiente propietario, añadiendo ambos al final de la moneda \cite{nakamotoBitcoinPeertoPeerElectronic}. Este conjunto de transacciones es público y propagado a todos los usuarios en la red. Esto también es conocido como blockchain o cadena de bloques, donde cada bloque contiene una transacción con los hashes correspondientes, eliminando así la centralización y la confianza en un solo punto.
+
+%Aquí un hash es una función matemática que genera una cadena de caracteres $M$ que resume un mensaje $U$ a través de una función computable (Ver apéndice A).%
+%Entonces, ¿cómo podemos asegurar que alguien no puede inventarse una transacción?%
+
+Se puede asegurar que alguien no puede agregar una transacción maliciosa en la blockchain ya que se utiliza una prueba de trabajo o proof of work. Para llevar a cabo esta prueba primero se tiene que convertir un bloque de la cadena de bloques en un hash y ser verificado, esto es, comprobar que el hash cumpla con un número de ceros requeridos en un orden especifico o dicho de otra forma resolver un problema criptográfico que requiere poder computacional. Al agregarse otro bloque el atacante tiene que asegurarse que este esté conectado a su bloque malicioso por lo que tiene que competir contra el poder computacional de los demás usuarios de la red y así indefinidamente, lo que resulta inviable. La red blockchain selecciona la cadena de bloques más larga, esto quiere decir que selecciona la cadena de bloques que resuelve los problemas criptográficos más rápido, siendo la más confiable por ser la soportada por la comunidad.
+
+Por todo lo anterior y debido a su naturaleza altamente volátil, se necesitan buenas predicciones en las que basar las decisiones de inversión. En los mercados financieros tradicionales puede interesar la aplicación de estrategias comerciales automatizadas que ayudan a obtener un rendimiento razonable de los fondos invertidos. Los métodos tradicionales (Naive, SES, Holt, ETS y ARIMA) dependen en gran medida de una hipótesis que requiere datos con estacionalidad, tendencia y ruido para que sean eficaces. Al no cumplirse estas características los mecanismos de inteligencia artificial entran en acción, considerando especialmente la naturaleza volátil y temporal de los datos como los del bitcoin \cite{tandonBitcoinPriceForecasting2019}.
+
+\section{Motivación}
+En la literatura disponible se muestran resultados limitados sobre aplicaciones y desarrollo de métodos con el uso de aprendizaje automático y trasfondo matemático para la toma de decisiones de inversión en criptomonedas \cite{felizardoComparativeStudyBitcoin2019,tandonBitcoinPriceForecasting2019,phaladisailoedMachineLearningModels2018}. Este campo tiene dos oportunidades de desarrollo potencial: la primera aplicando los métodos existentes en la creación de parámetros de comparación y su capacidad para caracterizar el entorno real, la segunda buscar alternativas de modelación para fines de predicción.
+Esta propuesta de investigación permitirá contribuir al cuerpo de conocimiento de la ciencia de datos con nuevos métodos para la caracterización de oportunidades de inversión financiera. Se espera que al final de la investigación se proponga al menos un método eficiente y robusto para facilitar a consultores de inversiones, analistas de riesgos e incluso inversionistas no calificados en la mejora de toma de decisiones para crecer sus inversiones a mediano y largo plazo.
+
+\section{Planteamiento del problema}
+Actualmente los métodos y herramientas para realizar modelación y caracterización de tendencias de comportamiento financiero están limitados al uso de técnicas simples en la mayoría de los casos prácticos \cite{zbikowskiApplicationMachineLearning2016}. El problema a resolver es encontrar un modelo de predicción para el precio del bitcoin en dólares usando las métricas de la blockchain que más influyen en su comportamiento utilizando reducción de dimensionalidad y análisis topológico de datos, como también, proponer un modelo que ayude a la toma de decisiones de inversión.
+
+\section{Objetivo}
+\subsection{Objetivo general}
+Proponer un modelo de aprendizaje maquina para predecir el precio del bitcoin usando métricas financieras y de la blockchain, averiguar si estas influyen en su volatilidad y %cómo también%
+plantear una metodología para la clasificación de estos precios para toma de decisiones de inversión a mediano y largo plazo.
+
+\subsection{Objetivos específicos}
+Los objetivos de la investigación son:
+\begin{itemize}
+	\item Identificar si hay métricas que influyen en la variabilidad del precio del bitcoin y si es el caso determinar las de mayor peso usando análisis de regresión, análisis de componentes principales y agrupamiento jerárquico.
+	\item Aplicar modelos estadísticos y de aprendizaje maquina sobre datos transformados para predecir el precio del bitcoin.
+	\item Seleccionar el mejor modelo con base al índice de error RMSE y el índice de eficiencia Theil's U.
+	\item Describir el panorama persistente de los datos usando análisis topológico de datos.
+	\item Caracterizar diferentes herramientas de inteligencia artificial que permitan mejorar la toma de decisiones en un mercado financiero.
+	\item Clasificar la decisión de inversión a mediano y largo plazo en comprar, vender y riesgo.
+\end{itemize}
+
+\section{Contribuciones}
+Se espera que la contribución de esta investigación sea un modelo que minimice el error mínimo cuadrático en las predicciones y que estas sean fiables conforme al índice Theil's U, esto se reflejará en que los pronósticos realizados no diferirán mucho con respecto al precio original.
+Por otro lado se pretende aportar una metodología que ayude a clasificar el precio predicho para toma de decisiones de inversión
+a mediano y largo plazo a diferencia de los modelos para trading actuales.
+\vspace{-0.5cm}
+\section{Alcances y limitaciones}
+La investigación del estado de arte se limita a las publicaciones de herramientas y algoritmos que se han publicado recientemente. La comparación sera exclusiva entre los métodos de predicción y clasificación seleccionados en la investigación (Naive, SES, Holt, ETS, ARIMA, RTS, SVM, RF, LSTM y CNN). Se usan datos experimentales (series de tiempo del precio del bitcoin) para estimar la eficiencia y robustez de los métodos, los resultados tienen validez en el mismo contexto de los datos experimentales y las limitaciones de los métodos.
+\vspace{-0.5cm}
+\section{Contenido general}
+A continuación se mostrará de manera breve y concreta lo que el lector encontrará en cada capitulo.
+
+\begin{enumerate}
+	\item \textbf{Introducción}: Presentación breve sobre orígenes del bitcoin, objetivos, justificación y contribuciones de la investigación.
+	
+	\item \textbf{Estado del arte}: Aquí se encuentra la revisión sistemática de la literatura en la cual se presentan las preguntas de investigación, palabras clave y selección de estudios primarios.
+	
+	\item \textbf{Metodología propuesta}: Se explica tomando como punto de partida un diagrama de flujo que muestra todo el proceso de la tesis y luego se explica a detalle el uso de cada método y herramienta usada.
+	
+	\item \textbf{Resultados en Bitcoin}: Este capitulo describe los resultados obtenidos siguiendo la metodología propuesta.
+	
+	\item \textbf{Conclusiones y trabajo futuro}: Conclusiones generales.
+\end{enumerate}
+
+

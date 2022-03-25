@@ -1,0 +1,104 @@
+\chapter[Estado del arte]{Estado del arte}{Estado del arte}\label{Intro}
+\renewcommand{\tablename}{Tabla}
+
+\noindent
+\rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
+
+Los modelos de inteligencia artificial ya sean de aprendizaje maquina o aprendizaje profundo han mostrado ser los mejores para predecir el precio volátil de algunas criptomonedas, entre ellas el bitcoin. Esto se debe a que los datos del precio no cumplen con los supuestos de estacionalidad, tendencia y ruido de algunos modelos estadísticos requieren.\\
+Otros estudios muestran la importancia de agregar métricas tecnológicas como la de la blockchain como variables explicativas para mejorar la predicción utilizando métodos basados en correlación o análisis de sensibilidad.\\
+Se encuentra también que los modelos de clasificación más comunes para inversión en criptomonedas están basados en el trading, donde la clasificación toma en cuenta las alzas o bajas del precio con respecto al actual en intervalos pequeños de tiempo, y con una exactitud un poco mayor al del tiro de una moneda.\\
+
+\noindent
+\rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
+\clearpage
+
+\section{Metodología} 
+
+Para el seguimiento del estado del arte se utilizó la revisión sistemática de la literatura (SLR) expuesta en el \autoref{appen3} donde se detalla cada paso de la misma. Esta metodología consiste en interpretar y sintetizar de forma adecuada la información obtenida de un tema de investigación. Se deben cumplir tres fases principales en una SLR: (1) Planificación de revisión, (2) Realización de la revisión, (3) Reporte de resultados. Los resultados para cada apartado de la investigación realizada se muestran a continuación utilizando los estudios principales obtenidos en la SLR de forma cronológica.
+
+\section{Predicción del precio}
+
+En un artículo publicado en marzo del 2018 McNally et al. \cite{mcnallyPredictingPriceBitcoin2018} compararon modelos que utilizan redes neuronales recurrentes (RNN), modelos long-short term memory (LSTM) y ARIMA para realizar una clasificación binaria que determine las subidas y bajadas del precio con respecto al valor anterior. Para la clasificación se evaluó el rendimiento de la regresión utilizada para predicción con el indicador de error RMSE.
+En este trabajo se mostró que el modelo LSTM genera una mejor exactitud para la clasificación, sin embargo, basados en el RMSE el mejor modelo fue RNN con datos que van desde el 19 de agosto de 2013 a 19 de julio de 2016. 
+
+%con un RMSE tan bajo cómo 6.87\% 
+
+En julio de 2018 Phaladisailoed et al. \cite{phaladisailoedMachineLearningModels2018} publicaron un articulo utilizando datos de Bitstamp que abarcan desde el 1 de enero de 2012 hasta 8 de enero de 2018 en intervalos de un minuto para realizar trading con Bitcoin. Se utilizaron todas características financieras del formato OHLC y se alcanzó un mejor rendimiento con el modelo GRU (Gated Recurrent Unit) entre LSMT, Theil-Sen Regression y Huber Regression. 
+
+%con un error cuadrático medio (MSE) de 0.00002 y un $R^2$ de 99.2\%.
+
+Por otro lado en el artículo publicado en marzo de 2019 Tandon et al. \cite{tandonBitcoinPriceForecasting2019}, utilizando datos de CoinMarket sobre modelos como RNN, LSTM, regresión lineal y random forest (RF) con 10-fold cross validation, se mostró que RNN con LSTM supera a random forest y regresión lineal usando como predictores el precio de cierre y volumen del mismo con datos desde 2013 a 2019.
+
+%alcanzando un error medio absoluto (MAE) de 0.0043 con 10-fold cross validation usando RNN con LSTM, superando a random forest y regresión lineal usando como predictores el precio de cierre y volumen del mismo con datos desde 2013 a 2019.
+
+En un estudio comparativo de octubre de 2019 realizado por Felizardo et al. \cite{felizardoComparativeStudyBitcoin2019} nos muestran los resultados de modelos como ARIMA, RF, SVM, LSTM y Wavenets concluyendo que el modelo SVM es el mejor a un día de predicción y a una ventana de cinco a diez días SVM y ARIMA son superiores a los demás modelos con datos de 2012 hasta inicios del 2017.
+
+%Concluyó que el modelo SVM es el mejor a un día de predicción con un MAE de  11.41 y un MSE de 376.615, a cinco y diez días. SVM y ARIMA son superiores con entre 22.494 y 36-26 de MAE y un rango de 1076.32 a 2188.53 de MSE respectivamente con datos de 2012 hasta inicios del 2017.
+
+
+En julio de 2020 Mudassir et al. \cite{mudassirTimeseriesForecastingBitcoin2020} obtienen resultados utilizando características de la blockchain, para ello se redujo la dimensionalidad de los datos filtrando las características con análisis de componentes principales y random forest, del análisis se seleccionaron aquellas características con mayor importancia, resultando que la arquitectura LSTM fue la mejor entre los modelos ANN, SVM y SANN.
+
+%En predicción la arquitectura LSTM fue la mejor con un MAE de 22.05, RMSE de 36.12 y MAPE de 3.83 con un horizonte de 7 días.
+
+De los estudios disponibles se concluye que no hay una metodología establecida para la predicción del precio del bitcoin, ya sea por las fechas de los datos de entrenamiento, los indices de comparación o los horizontes de predicción, esto puede deberse a que el Bitcoin es una tecnología en desarrollo y que los distintos modelos requieren de supuestos estadísticos distintos. 
+Por otra parte, de los modelos utilizados más populares, el LSTM es que el que más destaca ya que fue el mejor en dos de cinco artículos primarios.
+
+
+%De los estudios disponibles se concluye que no hay medidas de comparación estándar para la predicción, esto es debido a los diferentes modelos usados y que para su comparación todos deben tener un indice de comparación definido.
+%Por otra parte, de los modelos utilizados más populares, el LSTM es que el que más destaca alcanzando como mínimo un error medio absoluto de 0.0043 con validación cruzada en el trabajo de Tandon et al. \cite{tandonBitcoinPriceForecasting2019} de 2019.
+
+\section{Análisis de métricas} 
+
+En abril de 2018 tenemos un articulo de Saad et al. \cite{saadCharacterizingBlockchainbasedCryptocurrencies2018} sobre la caracterización de la blockchain donde se trata de identificar las métricas que explican los altos precios alcanzados. Usando la correlación de Pearson entre criptomonedas y características de la blockchain se encontró que el número de carteras, hashrate y UTXO determinan el número de nuevos usuarios, mineros y el balance que pueden gastar todos estos. 
+
+%Usando regresión lineal sobre estas características se encontró que con datos de abril de 2016 a septiembre de 2017 se obtuvo un RMSE sobre el precio de 0.0113 y un MAE de 0.0060 haciendo predicción sobre los cuatro meses próximos.
+
+En septiembre de 2019 Ji et al.  \cite{jiComparativeStudyBitcoin2019} encontraron que usando la correlación de Spearman con veintinueve características de la blockchain dieciocho de ellas fueron seleccionadas incluyendo el precio. De la selección se excluyeron aquellas características que tuviesen un coeficiente de Spearman menor a 0.75 y mayores a 0.95, esto debido a que las características con un coeficiente cercano a uno eran propiedades que dependían explícitamente del precio como la capitalización del mercado. De las características seleccionadas las que obtuvieron un mayor coeficiente fueron difficulty, est-trans-vol-usd, hash-rate, my-wallets, trade-vol y trans-fees-usd.
+
+En julio de 2020 Mudassir et al. \cite{mudassirTimeseriesForecastingBitcoin2020} obtienen características de la blockchain filtrando estas con análisis de componentes principales y random forest, seleccionando aquellas con mayor importancia. En el estudio no se muestran las características obtenidas por el PCA pero este logra capturar un 95\% de la varianza de los datos, sin embargo, el rendimiento en los modelos de regresión con estas características fue menor de lo esperado.
+Se utilizó random forest como método principal de selección de características donde la importancia de las mismas dependía de la ventana de tiempo utilizada para el análisis. Las características más importantes que se mantuvieron a lo largo de las distintas ventanas de tiempo fueron las siguientes: median\_transaction\_fee30trxUSD, size90trx, price3wmaUSD, difficulty30rsi, mining\_profitability y transactionvalueUSD. 
+
+%Con estas métricas de la blockchain la predicción con la arquitectura LSTM fue la mejor con un MAE de 22.05, RMSE de 36.12 y MAPE de 3.83 con un horizonte de 7 días.
+
+En enero de 2021 Chen et al. \cite{chenMachineLearningModel2021} partiendo de predictores económicos y tecnológicos, y seleccionando aquellas con un factor de importancia utilizando random forest y ANNs se encontró que entre los modelos propuestos (ARIMA, SVR, ANFIS y LSTM) LSTM fue el mejor usando como datos de entrada los predictores obtenidos con el análisis de factor de importancia. Se encontró también que los predictores tecnológicos de alto impacto cambian constantemente con respecto al tiempo. En adición se muestra que la tarifa promedio por transacción es un fuerte predictor con alta importancia. Se concluye que las características que se mantienen en el tiempo (del 1 de enero de 2011 a 31 de julio de 2018) con alto impacto son la capitalización del mercado y la tarifa promedio por transacción.
+
+%El modelo LSTM alcanzó como mínimo un RMSE promedio de 12.0632, un MAPE de 2.2793, y un MAE de 8.7512 usando estos predictores en cuatro ventanas de tiempo diferentes.
+
+Con esto, el estudio concluyó que la información obtenida de determinantes económicos y tecnológicos son más importantes que únicamente la tasa de cambio de la moneda (precio en USD) aun en periodos largos de tiempo como los usados en el estudio (1 de julio de 2015 a 31 de julio de 2018). 
+
+El panorama del estado del arte en lo que respecta al análisis de métricas de la blockchain para mejorar la predicción del precio parece no muy concluyente. En la mayoría de los estudios primarios se realiza un análisis de correlación, ya sea usando correlación de Pearson o de Spearman, estas nos indican el grado de relación lineal que hay entre las variables. Chen y Mudassir et al. \cite{chenMachineLearningModel2021, mudassirTimeseriesForecastingBitcoin2020} utilizan el método de análisis de sensibilidad para medir la importancia de los factores económicos y tecnológicos usando random forest y artificial neural networks. Los resultados generales de los estudios no nos muestran características en común concluyentes. Eliminando las variables como la capitalización del mercado que son dependientes directamente del precio tenemos que la tarifa promedio por transacción, el hashrate, y el número de carteras son algunas características en común en al menos dos de los estudios.
+
+
+
+\section{Clasificación del precio para inversión}
+ 
+ 
+En febrero de 2020 Chen et al. \cite{chenBitcoinPricePrediction2020} usando clasificación binaria, características de la blockchain y financieras clasificaron los precios del bitcoin con modelos estadísticos como regresión lineal y análisis lineal de discriminante en intervalos de 5 minutos alcanzando una exactitud del 53\%. Por otro lado métodos de machine learning como random forest, XGBosst, discriminante cuadrático, SVM, y LSTM alcanzaron en promedio una exactitud del 62.2\%.
+La clasificación considero las subidas y bajadas del precio con respecto al actual y las características de la blockchain para predicción fueron seleccionadas usando Boruta. 
+
+%%\begin{itemize}
+%%	\item Block size
+%%	\item Hash rate
+%%	\item Mining difficulty
+%%	\item Time between blocks
+%%	\item Trades per minute
+%%	\item Number of transaction
+%%	\item Confirmed transactions per day
+%%	\item Mempool transaction count
+%%	\item Market capitalization
+%%	\item Estimated transaction value
+%%	\item Total transaction value
+%%	\item Mempool size
+%%\end{itemize}
+
+En mayo de 2020 Pintelas et al. \cite{pintelasInvestigatingProblemCryptocurrency2020} mostraron que la combinación de algoritmos de deep learning (LSTM, Bi-directional LSTM, Convolutional Layers) con estrategias de ensamble (everaging, baggin, stacking) se pueden complementar mostrando buena auto-correlación en los residuos.  En Bitcoin se alcanzó una exactiud de 54.62\% con el modelo CNN-BiLSTM y ensamble Bagging. La clasificación tomó en cuenta la dirección del precio con respecto al actual.
+
+En julio de 2020 Mudassir et al. \cite{mudassirTimeseriesForecastingBitcoin2020} obtuvieron resultados utilizando características de la blockchain, filtrando estas con análisis de componentes principales o random forest y seleccionando aquellas con mayor importancia. En la clasificación se alcanzó un promedio por arriba de un 65\% de exactitud para el día siguiente. Para 7 y 9 días se obtuvo de un 62\% a 64\% de exatitud con los modelos propuestos ANN,SVM,SANN y LSTM. 
+
+En Septiembre de 2020 Jaquart et al. \cite{jaquartShorttermBitcoinMarket2021} realizaron clasificación con datos de movimiento a corto plazo (1-60 minutos). El conjunto de características usadas incluyen características técnicas (retorno del bitcoin), de la blockchain (número de bitcoins, transacciones), de sentimiento (Sentimiento de Twitter y Sentimiento de Twitter ponderado por la fuerza de la emoción), y características base del activo (S\&P500, VIX returns, Gold returns, MSCI World returns). Se usaron los modelos GRU, LSTM, FNN (Feedforward neural networks), regresión logística, gradiend boosting clasifier y random forest. Se concluyó que aparentemente incrementar el intervalo de tiempo trading aumentaba la exactitud del mismo. Se obtuvo el mejor resultado con LSTM a 60 minutos de predicción (56\%) con datos de 4 de marzo de 2019 a 10 diciembre de 2019.
+
+En enero de 2021 Ibrahim et al. \cite{ibrahimPredictingMarketMovement2021} realizaron clasificación del precio haciendo predicción hacia arriba o hacia abajo en intervalos de tiempo de 5 minutos. Se comparan modelos como ARIMA, Prophet (Facebook), RF, RF lagged-Auto-regression y multi-layer perceptron. El estudio concluyó que MLP alcanzó la mejor exacitud con 54\%.
+
+En febrero de 2021 Akyildirim et al. \cite{akyildirimPredictionCryptocurrencyReturns2021} realizaron clasificación de precios del bitcoin para trading de un día, 15, 30, 60 min. utilizando el criterio -1 si OPEN$<$CLOSE y 1 si OPEN$>$CLOSE refiriéndose a el precio de apertura y cierre en un periodo de tiempo abarca desde 10 agosto de 2017 a 23 junio de 2018. Se alcanzó una exactitud de 55-65\% en promedio resultando ser SVM el mejor modelo entre regresión logística, ANN y random forest como modelos candidatos.
+
+En general podemos observar que los métodos de clasificación se basan en el trading y la dirección del precio, esto es, se utilizan datos de movimiento a corto plazo para realizar una predicción de compra o venta. Los resultados obtenidos en el estado del arte  tienen una exactitud un poco mayor al del tiro de una moneda, sin embargo la metodología propuesta por Mudassir \cite{mudassirTimeseriesForecastingBitcoin2020} alcanza una exactitud máxima de 64\% con ventana de tiempo de 7 a 9 días, haciendo notar que tal vez el trading no sea la mejor estrategia de inversión, sino las inversiones a mediano y largo plazo.
