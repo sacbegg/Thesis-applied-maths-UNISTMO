@@ -486,14 +486,93 @@ El criterio de enlace determina la distancia entre conjuntos de observaciones co
 donde $d$ es la métrica escogida. Otros criterios de enlace incluyen pueden ser: la suma de todas las varianzas del intragrupo, el decrecimiento en la varianza para los grupos que están siendo mezclados (criterio de Ward) o la probabilidad de que grupos candidatos se produzcan desde la misma función de distribución (V-enlace).
 
 \section{Análisis topológico de datos}
-Hola 
 
+El análisis topológico de datos es una herramienta matemática para estudiar la estructura y forma de los datos, esta involucra elementos de topología algebraica, cómputo, y probabilidad y estadística. 
+La entrada de este método es un conjunto de datos de nube de puntos, al cual, una forma geométrica representada por un complejo simplicial es asociada. La información topológica de esa forma es extraída en términos de homología de grupos. La salida del método es una diagrama de persistencia o panorama de persistencia, el cual representa un resumen de todas las características topológicas mostradas por los datos clasificados por un parámetro escalar. Los panoramas de persistencia son elementos de cierto espacio de Banach de funciones lineales a trozos, por tanto tienen normas asociadas \cite{gideaTopologicalRecognitionCritical2020}.
+
+El foco en criptomonedas es motivado por las propiedades de sus correspondientes series de tiempo, ya sea la falta de estacionalidad, que tengan memoria a largo plazo, o alta volatilidad. Tales características hacen a las criptomonedas un caso ideal de aplicación de TDA, el cual es libre de suposiciones estadísticas \cite{gideaTopologicalRecognitionCritical2020}.
 
 \subsection{Teorema de Takens}
 
-\subsection{Diagrama de persistencia}
+La incrustación de coordenadas con retardo de tiempo es un procedimiento estándar para reconstruir el espacio fase de un sistema dinámico no lineal de una serie de tiempo. Entonces, dado un sistema dinámico discreto definido por un diffeomorfismo $f:M \to M$ en una variedad $M$ $D$-dimensional, la evolución del estado $p\in M$ es dado por su órbita $\{f^{\prime}(p):t\in \mathbb{Z}\}$. Para un observable $\phi:M \to \mathbb{R}$ del sistema, uno define un conjunto reconstruido $\mathcal{A}^d$ consistiendo de vectores $d$-dimensionales de la forma  
+
+\[
+\left(\phi(p), \phi(f(p)), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right)
+\]
+
+los cuales son obtenidos de evaluaciones sucesivas de $\phi$ a lo largo de segmentos de órbita
+
+\[
+\left\{p, f(p), \ldots, f^{d-2}(p), f^{d-1}(p)\right\}.
+\]
+
+Asume que $f,\phi$ son $C^r$-diferenciable con $r\geq 2$. El teorema clásico de Takens dice que, si $d\geq 2D$ entonces para conjuntos genéricos ($C^1$-abierto y denso) de $f$ y $\phi$, el mapeo $\Phi$ dado por
+
+\[
+p \in M \stackrel{\Phi}{\mapsto}\left(\phi(p), \phi(f(p)), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right) \in \mathbb{R}^{d}
+\]
+
+es un inscrustamiento. Además el mapeo $f$ sobre $M$ es topológicamente conjugado con el mapeo left-shift $\sigma$ sobre el conjunto reconstruido $\mathcal{A}^d$, el cual es definido por
+
+\[
+\left(\phi(p), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right) \stackrel{\sigma}{\mapsto}\left(\phi(f(p)), \ldots, \phi\left(f^{d-1}(p)\right), \phi\left(f^{d}(p)\right)\right)
+\]
+
+donde la conjugación topológica significa que $\Phi$ hace coincidir órbitas de $f$ con órbitas de $\sigma$, es decir $\sigma \circ \Phi = \Phi \circ f$.
+   
+\subsection{Complejo simplicial}
+
+La entrada del método es una nube de puntos, es decir, una colección finita de puntos de datos incrustados en algun espacio Euclidiano. Consideremos una nube de puntos ${Z^t} \subseteq  \mathbb{R}^{d}$, para simplificar la notación fijemos tal nube de puntos y denotemosla por $Z=\{z_0,z_1,...,z_{w-1}\}$. Asociamos $Z$ a un espacio topológico como sigue. Se introduce un parámetro escalar $\epsilon > 0$ y definimos lo que llamaremos como complejo simplicial Vietoris-Rips $R(Z,\epsilon)$ como sigue
+
+Para cada $k=0,1,...,$ un $k$-simplex de vertices $\{ z_{i_0},z_{i_1},...,z_{i_k} \}$ es parte de $R(Z,\epsilon)$ si y sólo si la distancia mutua entre cualquier par de vertices es menor que $\epsilon$, esto es
+
+\[
+d\left(z_{i_{j}}, z_{i_{l}}\right)<\varepsilon, \forall z_{i_{j}}, z_{i_{l}} \in\left\{z_{i_{0}}, \ldots, z_{i_{k}}\right\}
+\]
+
+En otras palabras, un $k$-simplex es incluido en $R(Z,\epsilon)$ siempre que los vertices de ese simplex sean indistinguibles uno del otro en el nivel $\epsilon$ del parametro de escala.
+
+\subsection{Filtración de Rips y nacimiento y muerte de características topológicas}
+
+Los complejos simpliciales de Rips $R(Z,\epsilon)$ forman una filtración, esto es, $R(Z,\epsilon) \subseteq R(Z,\epsilon^{\prime})$ siempre que $\epsilon < \epsilon^{\prime} $. Para cada tal complejo podemos calcular su homología $n$-dimensional $H_n(R(Z,\epsilon))$ con coeficientes en algún campo. Los generadores del grupo de homología $0$-dimensional $H_0(R(Z,\epsilon))$ corresponden a los componentes conectados de $R(Z,\epsilon)$, los generadores del grupo de homología $1$-dimensional $H_1(R(Z,\epsilon))$ corresponden a los "agujeros" de $R(Z,\epsilon)$, los generadores del grupo de homología $2$-dimensional $H_2(R(Z,\epsilon))$ corresponden a los "vacíos" de $R(Z,\epsilon)$, etc.
+
+Cada mapeo de inclusión $R(Z,\epsilon) \xhookrightarrow{} R(Z,\epsilon^{\prime})$ para $\epsilon < \epsilon^{\prime}$, en la filtración del complejo simplicial de Rips, induce un grupo canonico de homeomorfismo $F_n^{\epsilon,\epsilon^{\prime}}:H_n(R(Z,\epsilon)) \to H_n(R(Z,\epsilon^{\prime}))$ entre los correspondientes grupos de homología. La imagen Im$F_n^{\epsilon,\epsilon^{\prime}}(H_n(R(Z,\epsilon))) \subseteq  H_n(R(Z,\epsilon^{\prime})) $ consiste de generadores de homología que están presentes en el parámetro $\epsilon$ y permanecen presentes en $\epsilon^{\prime}$ y se denominan grupos de homología persistente. Para cada clase de homología $\alpha$ no cero $n$-dimensional existe un par de valores $\epsilon_1 < \epsilon_2$ tal que:
+
+\begin{itemize}
+	\item $\alpha \in H_n(R(Z,\epsilon_1))$ pero no es la imagen de cualquier $H_n(R(Z,\epsilon_1-\delta))$ bajo es correspondiente homeomorfismo para $\delta > 0$.
+	\item La imagen de $\alpha$ en $H_n(R(Z,\epsilon))$ es no cero para todo $\epsilon_1 < \epsilon < \epsilon_2$, pero la imagen de $\alpha$ en $H_n(R(Z,\epsilon_2))$ es cero.
+\end{itemize}
+
+En este caso, decimos que la clase $\alpha$ es "nacimiento'' en el valor del parámetro $b_\alpha = \epsilon_1$, y "muerte'' en el valor del parámetro $d_\alpha = \epsilon_2$; la pareja $(b_\alpha,d_\alpha)$ representa los indices de  nacimiento y muerte de $\alpha$. La multiplicidad $\mu_\alpha(b_\alpha,d_\alpha)$ del punto $(b_\alpha,d_\alpha)$ es igual al número de clases $\alpha$ que nacen en $b_\alpha$ y mueren en $d_\alpha$.
+
 
 \subsection{Panorama de persistencia}
-\lipsum[1]
+
 \subsection{Normas topológicas}
-\lipsum[1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
