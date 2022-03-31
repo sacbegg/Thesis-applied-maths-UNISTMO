@@ -12,15 +12,68 @@ Hola\\
 Los datos obtenidos de observaciones del precio del bitcoin son recolectados de forma secuencial y de forma cronológica a lo largo del tiempo. Como ejemplo de lo anterior se puede observar diariamente el precio de apertura y cierre de este activo modelando así lo que comúnmente conocemos como serie de tiempo. En este apartado se hará una revisión breve de los modelos de predicción más utilizados en la literatura como también de análisis multivariante y análisis topológico de datos ya que son fundamentales para el estudio de series temporales, modelar los altibajos del precio y clasificar tendencias.
 
 \section{Medidas de error}
+Podemos definir al error del pronostico como la diferencia entre el valor real y el valor pronosticado de un periodo correspondiente. Unas de las medidas de error más populares son las siguientes.
 
 \subsection{RMSE}
+
+Root mean square error (RMSE) o raíz del error cuadrático medio representa la raíz cuadrada del segundo momento muestral de las diferencias entre valores predichos y los valores observados. Esta medida agrega las magnitudes del error en predicciones de varios puntos de datos dentro de una sola medida de predicción.
+Es una medida de exactitud, para comparar errores de predicción de diferentes modelos para un conjunto de datos particular y no entre conjunto de datos ya que depende de la escala.
+
+El RMSE es siempre no negativo, y un valor de cero podría indicar un ajuste perfecto de los datos. En general, un RMSE menor es mejor que uno alto.
+
+\[
+\operatorname{RMSE}=\sqrt{\frac{\sum_{t=1}^{T}\left(\hat{y}_{t}-y_{t}\right)^{2}}{T}}
+\] 
+
+Para valores predichos $\hat{y}_t$ para tiempos $t$ de una regresión sobre una variable dependiente $y_t$ con variables observadas $T$ veces, el RMSE es calculado $T$ veces como la raíz cuadrada de las medias de los cuadrados de las desviaciones
+
 \subsection{MSE}
+
+Mean Square error (MSE) o error cuadrático medio mide la media de los cuadrados de los errores, esto es, el promedio cuadrado de las diferencias entre los valores estimados y los valores reales. MSE es una función de riesgo correspondiente al valor esperado de la perdida cuadrática.
+
+Es una medida de la calidad del estimador y es derivado del cuadrado de la distancia Euclidiana, es siempre un valor positivo que decrementa conforme el error se aproxima a cero.
+
+Si un vector de $n$ predicciones es generado de una muestra de $n$ puntos de datos sobre todas las variables, y $Y$ es el vector de variables observadas de la variable a ser predicha, con $\hat{Y}$ siendo los valores predichos, entonces el MSE muestral del predictor es calculado como sigue 
+
+\[
+\mathrm{MSE}=\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\hat{Y}_{i}\right)^{2}
+\]
+
+En otras palabras, el MSE es la media de los cuadrados de los errores. 
+
 \subsection{MAE}
-\subsection{Theils's U}
+Mean absolute error (MAE) o error medio absoluto es una medida de error entre observaciones emparejadas de un mismo fenómeno. Ejemplos de Y contra X incluyen la comparación de valores predichos contra observados o una técnica de medida contra otra técnica de medida. MAE se calcula como sigue
+
+\[
+\mathrm{MAE}=\frac{\sum_{i=1}^{n}\left|y_{i}-x_{i}\right|}{n}=\frac{\sum_{i=1}^{n}\left|e_{i}\right|}{n}
+\] 
+
+Esto es por tanto una media aritmética de errores absolutos $\left|e_{i}\right| = \left|y_{i}-x_{i}\right|$, donde $y_i$ es la predicción y $x_i$ el valor verdadero.
+
+\subsection{Theil's U}
+
+El estadístico U de Theil es una medida de exactitud relativa que compara los resultados predichos con los resultados de predecir con datos históricos mínimos. Eleva al cuadrado las predicciones para dar más peso a errores grandes y exagerados, el cual puede ayudar a eliminar métodos con errores grandes \cite{OracleCrystalBall}.
+
+La formula para calcular el estadístico U de Theil es la siguiente
+
+\[
+U=\sqrt{\frac{\sum_{t=1}^{n-1}\left(\frac{\hat{Y}_{t+1}-Y_{t+1}}{Y_{t}}\right)^{2}}{\sum_{t=1}^{n-1}\left(\frac{Y_{t+1}-Y_{t}}{Y_{t}}\right)^{2}}}
+\]
+
+donde $Y_t$ es el valor actual de un punto para un periodo de tiempo $t$, $n$ es el numero de puntos de datos y $\hat{Y_t}$ es el valor predicho.
+
+El estadístico se interpreta de la siguiente forma
+
+\begin{itemize}
+	\item Menor que 1 : La técnica de predicción es mejor que adivinar
+	\item  Igual a 1: La técnica de predicción es igual que adivinar
+	\item Mayor que 1: La técnica de predicción es peor que adivinar.
+\end{itemize}
 
 \section{Modelos estadísticos}
 
-Hola
+Los modelos estadísticos utilizan ecuaciones matemáticas para codificar información extraída de los datos. En algunas ocasiones las técnicas de modelado estadístico pueden proporcionar modelos adecuados de forma rápida e incluso pueden ofrecer mejores resultados que algunas técnicas más flexibles de aprendizaje maquina, es posible usar algunos modelos estadísticos como modelos predictivos de línea base para juzgar el rendimiento de técnicas más avanzadas \cite{IBMDocs2021}. 
+
 \subsection{Naive}
 
 Para el método de predicción Naive, simplemente hacemos que el valor predicho sea igual a la última observación, esto es,
@@ -88,7 +141,11 @@ Notemos que la ecuación de predicción converge a $\ell_{T}+\phi b_{T} /(1-\phi
 
 \subsection{ETS}
 
-explicar que se uso ETS con todos los parametros en automatico para ver la mejor predicción que mejora la verosimilitud.
+Los modelos ETS son una familia de modelos para series de tiempo con un modelo de espacio de estado subyacente que consiste en un término de error (E), un componente de tendencia (T), y un componente estacional (S) \cite{ETSModelsStatsmodels}.
+
+La predicción con esta familia de modelos implementa todas las combinaciones de error aditivo y multiplicativo; tendencia aditiva, multiplicativa y posiblemente amortiguado; estacionalidad aditivo multiplicativo, tratado de optimizar la verosimilitud.
+
+%explicar que se uso ETS con todos los parametros en automatico para ver la mejor predicción que mejora la verosimilitud.
 
 \subsection{ARIMA}
 
@@ -191,7 +248,10 @@ En finanzas esta transformación puede ser usada para analizar el cambio porcent
 
 
 \section{Modelos de machine learning}
-Hola
+
+Un modelo de machine learning es una expresión de un algoritmo que analiza gran cantidad de datos para encontrar patrones o realizar predicciones. Los modelos de ML son los motores matemáticos de la IA.
+Un modelo de machine learning es una representación matemática de los objetos y sus relaciones entre sí. Los objetos pueden ser cualquier cosa, ya sea un "me gusta" en una publicación de redes sociales hasta moléculas en un experimento de laboratorio \cite{parsonsQueEsModelo2021}.
+
 \subsection{RTS}
 El modelo de regresión sobre series de tiempo (RTS) es una variación de los modelos de regresión lineal que permite agregar variables para la tendencia y temporada \cite{TslmFitLinear}. 
 
@@ -441,46 +501,57 @@ Los resultados de un agrupamiento jerárquico son usualmente presentados en un d
 
 En orden de decidir qué grupos deberían ser combinados, o cuando un grupo debería ser dividido, una medida de disimilitud entre conjuntos de observaciones es requerida y un criterio de enlace el cual especifica la disimilitud de conjuntos como una función de las distancias dos a dos entre observaciones en los conjuntos.
 
-Algunas métricas usualmente usadas para el agrupamiento jerárquico son las mostradas en la \autoref{metrics_dendrograma}.
+Algunas métricas usualmente usadas para el agrupamiento jerárquico son las mostradas en la \autoref{tab:metricsDendrograma}.
 
-\begin{table}[h!]
-	\begin{tabular}{|l|l|}
-		\hline \multicolumn{1}{|c|}{ Nombres } & \multicolumn{1}{|c|}{ Fórmula } \\
-		\hline Distancia euclidiana & $\|a-b\|_{2}=\sqrt{\sum_{i}\left(a_{i}-b_{i}\right)^{2}}$ \\
-		\hline Distancia euclidiana al cuadrado & $\|a-b\|_{2}^{2}=\sum_{i}\left(a_{i}-b_{i}\right)^{2}$ \\
-		\hline Distancia Manhattan & $\|a-b\|_{1}=\sum_{i}\left|a_{i}-b_{i}\right|$ \\
-		\hline distancia máxima & $\|a-b\|_{\infty}=\max _{i}\left|a_{i}-b_{i}\right|$ \\
-		\hline Distancia de Mahalanobis & $\sqrt{(a-b)^{\top} S^{-1}(a-b)}$ donde $S$ es la matriz de covarianza \\
-		\hline Similitud coseno & $\frac{a \cdot b}{\|a\| b \|}$ \\
+\begin{table}[h]
+	\centering
+	\begin{tabular}{m{6cm} m{6cm}  }
+		\toprule
+		\textbf{Nombre} & \textbf{Fórmula}\\
+		\midrule
+		 Distancia euclidiana & $\|a-b\|_{2}=\sqrt{\sum_{i}\left(a_{i}-b_{i}\right)^{2}}$\\
+		\hline 
+		Distancia euclidiana al cuadrado & $\|a-b\|_{2}^{2}=\sum_{i}\left(a_{i}-b_{i}\right)^{2}$ \\
+		\hline 
+		Distancia Manhattan & $\|a-b\|_{1}=\sum_{i}\left|a_{i}-b_{i}\right|$ \\
+		\hline 
+		Distancia máxima & $\|a-b\|_{\infty}=\max _{i}\left|a_{i}-b_{i}\right|$ \\
+		\hline 
+		Distancia de Mahalanobis & $\sqrt{(a-b)^{\top} S^{-1}(a-b)}$ donde $S$ es la matriz de covarianza \\
+		\hline 
+		Similitud coseno & $\frac{a \cdot b}{\|a\| b \|}$ \\
+		\bottomrule
 		\hline
 	\end{tabular}
-	\label{metrics_dendrograma}
+	\caption{Distancias usuales entre conjuntos de observaciones.}
+	\label{tab:metricsDendrograma}
 \end{table}
 
-%$$
-%\begin{array}{|l|l|}
-%	\hline \multicolumn{1}{|c|}{\text { Names }} & \multicolumn{1}{|c|}{\text { Formula }} \\
-%	\hline \text { Distancia euclidiana } & \|a-b\|_{2}=\sqrt{\sum_{i}\left(a_{i}-b_{i}\right)^{2}} \\
-%	\hline \text { Distancia euclidiana al cuadrado } & \|a-b\|_{2}^{2}=\sum_{i}\left(a_{i}-b_{i}\right)^{2} \\
-%	\hline \text { Distancia Manhattan } & \|a-b\|_{1}=\sum_{i}\left|a_{i}-b_{i}\right| \\
-%	\hline \text { distancia máxima } & \|a-b\|_{\infty}=\max _{i}\left|a_{i}-b_{i}\right| \\
-%	\hline \text { Distancia de Mahalanobis } & \sqrt{(a-b)^{\top} S^{-1}(a-b)} \text { donde } S \text { es la matriz de covarianza } \\
-%	\hline \text { Similitud coseno } & \frac{a \cdot b}{\|a\| b \|} \\
-%	\hline
-%\end{array}
-%$$
 
-El criterio de enlace determina la distancia entre conjuntos de observaciones como una función de las distancias entre observaciones dos a dos. Algunos criterios de enlace entre dos conjuntos de observaciones A y B frecuentemente usados son las mostradas en \autoref{crit_enlance}
 
-\begin{table}
-	\begin{tabular}{|l|l|}
-		\hline \multicolumn{1}{|c|}{ Nombres } & Fórmula \\
-		\hline Agrupamiento de máximo o completo enlace & $\max \{d(a, b): a \in A, b \in B\} .$ \\
-		\hline Agrupamiento de mínimo o simple enlace & $\min \{d(a, b): a \in A, b \in B\} .$ \\
-		\hline Agrupamiento de enlace media o promedio, o UPGMA & $\frac{1}{|A||B|} \sum_{a \in A} \sum_{b \in B} d(a, b) .$ \\
-		\hline Agrupamiento de mínima energía & $\frac{2}{n m} \sum_{i, j=1}^{n, m}\left\|a_{i}-b_{j}\right\|_{2}-\frac{1}{n^{2}} \sum_{i, j=1}^{n}\left\|a_{i}-a_{j}\right\|_{2}-\frac{1}{m^{2}} \sum_{i, j=1}^{m}\left\|b_{i}-b_{j}\right\|_{2}$
+El criterio de enlace determina la distancia entre conjuntos de observaciones como una función de las distancias entre observaciones dos a dos. Algunos criterios de enlace entre dos conjuntos de observaciones A y B frecuentemente usados son las mostradas en \autoref{tab:critEnlance}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{m{10cm} m{8cm}  }
+		\toprule
+		\textbf{Nombre} & \textbf{Fórmula}\\
+		\midrule
+		Agrupamiento de máximo o completo enlace & $\max \{d(a, b): a \in A, b \in B\} .$ \\
+		\hline
+		Agrupamiento de mínimo o simple enlace & $\min \{d(a, b): a \in A, b \in B\} .$ \\
+		\hline
+		Agrupamiento de enlace media o promedio, o UPGMA & $\frac{1}{|A||B|} \sum_{a \in A} \sum_{b \in B} d(a, b) .$ \\
+		\hline
+		Agrupamiento de mínima energía & \parbox[t]{8cm}{
+			$\frac{2}{n m} \sum_{i, j=1}^{n, m}\left\|a_{i}-b_{j}\right\|_{2}-\frac{1}{n^{2}} \sum_{i, j=1}^{n}\left\|a_{i}-a_{j}\right\|_{2}-
+			\frac{1}{m^{2}} \sum_{i, j=1}^{m}\left\|b_{i}-b_{j}\right\|_{2}$
+		} \\
+		\bottomrule
+		\hline
 	\end{tabular}
-	\label{crit_enlance}
+	\caption{Distancias usuales entre conjuntos de observaciones.}
+	\label{tab:critEnlance}
 \end{table}
 
 donde $d$ es la métrica escogida. Otros criterios de enlace incluyen pueden ser: la suma de todas las varianzas del intragrupo, el decrecimiento en la varianza para los grupos que están siendo mezclados (criterio de Ward) o la probabilidad de que grupos candidatos se produzcan desde la misma función de distribución (V-enlace).
@@ -548,9 +619,41 @@ En este caso, decimos que la clase $\alpha$ es "nacimiento'' en el valor del par
 
 \subsection{Panorama de persistencia}
 
-\subsection{Normas topológicas}
+La información de los generadores de homología $n$-dimensional en todas las escalas pueden ser codificados en un diagrama de persistencia $P_n$, tal diagrama consiste de:
+
+\begin{itemize}
+	\item para cada clase $\alpha$ de homología $n$-dimensional, este asigna un punto $p_\alpha = p_\alpha(b_\alpha,d_\alpha) \in \mathbb{R}^{2}$ junto con su multiplicidad $\mu_\alpha = \mu_\alpha(b_\alpha,d_\alpha)$;
+	\item  en adicción $P_n$ contiene todos los puntos en la diagonal positiva de $\mathbb{R}^{2}$; estos puntos representan todos los generadores de homología triviales que nacen y mueren instantáneamente en cada nivel. Cada punto en la diagonal tiene multiplicidad infinita.
+\end{itemize}
+
+Los ejes en un diagrama de persistencia son el indice de nacimientos en el eje horizontal e indice de muertes en el eje vertical.
+
+El espacio del diagrama de persistencia puede ser incrustrado dentro de un espacio de Banach, cuya normal puede ser usada para derivar una métrica. Una de estas incrustaciones es basada en el \textit{panorama de persistencia}, consistiendo de secuencia de funciones en el espacio de Banach $L^p\left(\mathbb{N}\times  \mathbb{R}\right)$. Para cada punto nacimiento-muerte $(b_\alpha,d_\alpha) \in P_n$ podemos definir una función lineal a trozos
+
+\[
+f_{\left(b_{\alpha}, d_{\alpha}\right)}(x)= \begin{cases}x-b_{\alpha}, & \text { si } x \in\left(b_{\alpha}, \frac{b_{\alpha}+d_{\alpha}}{2}\right] \\ -x+d_{\alpha}, & \text { si } x \in\left(\frac{b_{\alpha}+d_{\alpha}}{2}, d_{\alpha}\right) \\ 0, & \text { si } x \notin\left(b_{\alpha}, d_{\alpha}\right)\end{cases}
+\] 
+
+Para un diagrama de persistencia $P_n$ que consiste de un número finito de puntos fuera de la diagonal, asociamos una secuencia de funciones $\lambda = (\lambda_i)_{i\in \mathbb{N}}$, donde $\lambda_i : \mathbb{R} \to [0,+\infty]$ que está dada por 
+
+\[
+\lambda_{i}(x)=i-\max \left\{f_{\left(b_{\alpha}, d_{\alpha}\right)}(x) \mid\left(b_{\alpha}, d_{\alpha}\right) \in P_{n}\right\}
+\]
+
+donde $i$-max denota el $i$-ésimo valor más grande de la función. Ponemos $\lambda_i (x) = 0$ si el $i$-ésimo valor más grande no existe. Por supuesto $\lambda$ también depende de la dimensión $n$ correspondiente al diagrama de persistencia $P_n$. 
 
 
+\subsection{Norma $C^1$}
+
+Las series de tiempo de las normas $L^1$ de los panoramas de persistencia de series caóticas (como la del atractor de Lorenz) cuando se aproximan a una transición crítica  exhiben oscilaciones de amplitud creciente, por tanto las normas $L^1$ adquieren valores cada vez más altos y/o el valor absoluto de las primeras diferencias de las normas $L^1$ adquieren valores cada vez más altos \cite{gideaTopologicalRecognitionCritical2020}.
+
+Dado una función $f \in C^1(\mathbb{R})$, la $C^1$ norma de $f$ es, por definición $\|f\|_{C^{1}}=\|f\|_{C^{0}}+\left\|f^{\prime}\right\|_{C^{0}}$, donde $\|g\|_{C^0} :=$ sup $\|g\|$. Intuitivamente $\|f\|_{C^{1}}$ es grande siempre que $|f|$ tome valores grandes o $f^{\prime}$ tome valores grandes. Por analogía en el caso de series de tiempo $\{\lambda^t \}$ de panoramas de persistencia, definimos las norma $C^1$ por 
+
+\[
+\left\|\lambda^{t}\right\|_{C^{1}}=\left\|\lambda^{t}\right\|_{1}+\left|\left\|\lambda^{t}\right\|_{1}-\left\|\lambda^{t-1}\right\|_{1}\right|.
+\]
+
+Por tanto $\|\lambda^t\|_{C^1}$ es grande cuando la norma del panorama de persistencia es grande.
 
 
 

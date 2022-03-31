@@ -306,7 +306,7 @@ De las métricas obtenidas utilizando análisis de regresión se seleccionaron a
 Se utilizó como parámetro la cantidad total de métricas obtenidas anteriormente y se utilizó el siguiente criterio para determinar las métricas con mayor influencia en el precio
 \[ F^{\prime} = \{ y \hspace{0.5mm}:\hspace{0.5mm} \lVert y \rVert_2 \geq \lVert x \rVert_2,\hspace{0.5mm} sign(y) = sign(x),\hspace{0.5mm}y \in F\} \]
 
-donde $F$ es el conjunto de características obtenidas en ek análisis de regresión, $x$ es el vector precio, $\lVert \cdot \rVert_2$ es la norma euclidiana usual y $sign$ es la función signo.
+donde $F$ es el conjunto de características obtenidas en el análisis de regresión, $x$ es el vector precio, $\lVert \cdot \rVert_2$ es la norma euclidiana usual y $sign$ es la función signo.
 
 \subparagraph{Dendrograma de correlación:}
 Se utilizó la función heatmap de la librería biokit en Python utilizando todas la características obtenidas en el paso anterior empleando como distancia la correlación entre las métricas y se seleccionaron aquellas que estuvieran en el mismo cluster que el precio o cercanas al mismo.
