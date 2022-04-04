@@ -2,14 +2,18 @@
 
 \noindent
 \rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
+
+
 Hola\\
+
+
 \noindent
 \rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
 \clearpage
 
 \section{Fundamento teórico}
 
-Los datos obtenidos de observaciones del precio del bitcoin son recolectados de forma secuencial y de forma cronológica a lo largo del tiempo. Como ejemplo de lo anterior se puede observar diariamente el precio de apertura y cierre de este activo modelando así lo que comúnmente conocemos como serie de tiempo. En este apartado se hará una revisión breve de los modelos de predicción más utilizados en la literatura como también de análisis multivariante y análisis topológico de datos ya que son fundamentales para el estudio de series temporales, modelar los altibajos del precio y clasificar tendencias.
+Los datos obtenidos de observaciones del precio del bitcoin son recolectados de forma secuencial y cronológica a lo largo del tiempo. Como ejemplo de lo anterior se puede observar diariamente el precio de apertura y cierre de este activo modelando así lo que comúnmente conocemos como serie de tiempo. En este apartado se hará una revisión breve de los modelos de predicción más utilizados en la literatura como también de análisis multivariante y análisis topológico de datos ya que son fundamentales para el estudio de series temporales, modelar los altibajos del precio y clasificar tendencias.
 
 \section{Medidas de error}
 Podemos definir al error del pronostico como la diferencia entre el valor real y el valor pronosticado de un periodo correspondiente. Unas de las medidas de error más populares son las siguientes.
@@ -141,9 +145,9 @@ Notemos que la ecuación de predicción converge a $\ell_{T}+\phi b_{T} /(1-\phi
 
 \subsection{ETS}
 
-Los modelos ETS son una familia de modelos para series de tiempo con un modelo de espacio de estado subyacente que consiste en un término de error (E), un componente de tendencia (T), y un componente estacional (S) \cite{ETSModelsStatsmodels}.
+Los modelos ETS son una familia de modelos para series de tiempo que consisten en un término de error (E), un componente de tendencia (T), y un componente estacional (S) \cite{ETSModelsStatsmodels}.
 
-La predicción con esta familia de modelos implementa todas las combinaciones de error aditivo y multiplicativo; tendencia aditiva, multiplicativa y posiblemente amortiguado; estacionalidad aditivo multiplicativo, tratado de optimizar la verosimilitud.
+La predicción con esta familia de modelos implementa todas las combinaciones de error aditivo y multiplicativo; tendencia aditiva, multiplicativa y posiblemente amortiguado; estacionalidad aditivo multiplicativo, tratado de optimizar la verosimilitud a diferencia del modelo SES o Holt.
 
 %explicar que se uso ETS con todos los parametros en automatico para ver la mejor predicción que mejora la verosimilitud.
 
@@ -302,13 +306,18 @@ En la \autoref{svm} la variable de holgura es $\zeta_{i}$, la penalización es $
 
 En la restricción \ref{svm_restric} $x_i$ y $y_i$ son puntos en los datos y $\phi(x_i)$ son los datos transformados. 
 
-\textbf{Kernel? En Mudassir}
+En datos no lineales generalmente no es posible encontrar un hiperplano de separación lineal, para solucionar este problema usamos el truco del kernel. La idea básica detrás de esto es que cuando el conjunto de datos no es separable en la dimensión actual, entonces agregamos otra dimensión y probar si los datos son separables.
+Estas transformaciones que nos ayudan a agregar niveles de diferencia a los datos son llamadas kernels. Los más populares son los siguientes: kernel polinomial, kernel gaussiano, función base radial (RBF), kernel Laplace RBF, kernel sigmoide, anove RBF, etc.  
 
-Análogamente existe una versión de regresión del algoritmo SVM que consiste en resolver el siguiente problema\\
+Análogamente existe una versión de regresión del algoritmo SVM que consiste en resolver el siguiente problema
 
-\textbf{Minimizar} $\frac{1}{2}\|w\|^{2}$\\
-
-\textbf{Sujeto a} $\left|y_{i}-\left\langle w, x_{i}\right\rangle-b\right| \leq \varepsilon$\\
+\[
+\begin{array}{r@{}r@{}r@{}l}
+	\text{Min} \quad \frac{1}{2}\|w\|^{2} \\[\jot]
+	\text{s.t.}\qquad \left|y_{i}-\left\langle w, x_{i}\right\rangle-b\right| \leq \varepsilon \\
+	
+\end{array}
+\]
 
 donde $x_i$ es una muestra de entrenamiento con valor objetivo $y_i$. Aquí $\left\langle w, x_{i}\right\rangle+b$ es la predicción y $\epsilon$ es un parámetro libre que sirve como umbral. Todas las predicciones tienen que estar dentro de un rango $\epsilon$ de predicciones verdaderas. 
 
@@ -380,8 +389,32 @@ donde $h_t$ es el vector de salida del bloque LSTM o el vector de estado oculto.
 
 
 \subsection{CNN}
-VER LIEBERIS ET AL, EN ESTADO DEL ARTE CLASIFICACION Y NOTAS IOS
+Una red neuronal convolucional o convolutional neural network (CNN) es una red neuronal de aprendizaje profundo diseñada para procesar arreglos estructurados de datos, tales como imágenes. Las redes neuronales convolucionales se han convertido en el estado del arte de varias aplicaciones visuales como clasificación de imágenes \cite{ConvolutionalNeuralNetwork2019}.
 
+Las redes neuronales convolucionales son muy buenas captando patrones de la imagen de entrada, tales como líneas, gradientes, círculos, incluso ojos y caras. A diferencia de los primeros algoritmos de visión por computadora, las redes neuronales convolucionales pueden operar directamente sobre una imagen pura, sin modificar. El poder de estas redes viene de una especia de capa especial llamada la capa de convolución \cite{ConvolutionalNeuralNetwork2019}.
+
+Podemos visualizar una capa de convolución como varias pequeñas plantillas cuadradas llamadas kernels convolucionales, las cuales se deslizan sobre la imagen y buscan por patrones. Donde esa parte de la imagen coincide con el patrón del kernel, el kernel retorna un valor grande positivo, y cuando no coincide retorna cero o un valor muy pequeño.
+
+Para llevar a cabo la convolución, deslizamos el kernel de convolución sobre la imagen. En cada posición, multiplicamos cada elemento del kernel de convolución por el elemento de la imagen que cubre y sumamos los resultados. Supongamos que el kernel es de $3\times3$ y la imagen es de $9\times 9$ entonces la imagen resultante es de $7\times 7$, ya que el kernel solo puede ser deslizado sobre la imagen siete veces.
+
+En práctica, un kernel de convolución contiene pesos y sesgos, similar a la fórmula de regresión lineal. Así, un pixel de entrada es multiplicado por un peso y entonces un sesgo es agregado.
+
+Después de que una imagen pase a través de una capa de convolución, la salida normalmente pasa a través de una función de activación. Funciones de activación comunes incluyen la función sigmoide
+
+\[
+S(x)=\frac{1}{1+e^{-x}}
+\]
+
+y la función ReLu, también conocida como la unidad lineal rectificadora
+
+\[
+f(x)=\max (0, x)
+\]
+ 
+La función de activación tiene el efecto de agregar no linealidad a la red neuronal convolucional. Si la función de activación no estuviera presente, todas las capas de la red neuronal podrían condensarse en una sola matriz de multiplicación. En el kernel anterior, aplicar una función de activación ReLu podría significar un mayor contraste.
+
+Una red neuronal convolucional básica puede ser vista como una serie de capas convolucionales, seguidas de una función de activación, seguidas por una capa pooling (reducción de escalado tomando un conjunto de píxeles y creado uno nuevo con el promedio de los mismos) repetido varias veces.
+ 
 
 \subsection{K-Means}
 
@@ -466,11 +499,14 @@ Supongamos que $x$ es un vector de $p$ variables aleatorias y que la varianza de
 
 Consideremos de momento que el vector de variables aleatorias $\boldsymbol{x}$ tiene una matriz de covarianza conocida $\boldsymbol{\Sigma}$, esta es la matriz cuya $(i,j)$-ésimos elementos es la covarianza conocida entre el $i$-ésimo y $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i \neq j$ y la varianza del $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i = j$. Resulta que para $k=1,2,..,p$ el $k$-ésimo PC está dado por $z_k = \boldsymbol{\alpha_k^\prime} \boldsymbol{x}$ donde $\boldsymbol{\alpha_k}$ es un eigenvector de $\boldsymbol{\Sigma}$ correspondiente al $k$-ésimo eigenvalor más grande $\lambda_k$. Aún más, si $\boldsymbol{\alpha_k^\prime}$ es escogido de tal forma que tiene longitud unidad $(\boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1)$, entonces la $var(z_k)=\lambda_k$, donde $var(z_k)$ denota la varianza de $z_k$.
 
-Para derivar la forma de los PC, consideremos primero $\boldsymbol{\alpha_k^\prime}$ donde $\boldsymbol{\alpha_k}$ maximiza $var(\boldsymbol{\alpha_k^\prime})= \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}$. Entonces el problema a resolver es el siguiente:\\
-
-\textbf{Maximizar} $\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}$\\
-
-\textbf{Sujeto a} $\boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1$\\
+Para derivar la forma de los PC, consideremos primero $\boldsymbol{\alpha_k^\prime}$ donde $\boldsymbol{\alpha_k}$ maximiza $var(\boldsymbol{\alpha_k^\prime})= \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}$. Entonces el problema a resolver es el siguiente:
+\[
+\begin{array}{r@{}r@{}r@{}l}
+	\text{Max} \quad \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1} \\[\jot]
+	\text{s.t.}\qquad \boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1 \\
+	
+\end{array}
+\]
 
 Usando la técnica de los multiplicadores de Lagrange obtenemos que el eigenvalor $\lambda$ de $\boldsymbol{\Sigma}$ con $\boldsymbol{\alpha}_{1}$ su correspondiente eigenvector. Para decidir cual de los $p$ eigenvectores da $\boldsymbol{\alpha}_{1}^{\prime}\boldsymbol{x}$ con máxima varianza, notemos que la cantidad a ser maximizada es la siguiente
 
@@ -493,8 +529,8 @@ La derivación de los coeficientes PC y varianzas como eigenvectores y eigenvalo
 El agrupamiento jerárquico es un método de análisis de grupos puntuales el cual busca construir una jerarquía de grupos.
 Hay dos estrategías para el agrupamiento jerárquico:
 \begin{itemize}
-	\item Aglomerativas: Este es un acercamiento ascendente: cada observación comienza en su propio grupo, y los pares de grupos son mezclados mientras uno sube en la jerarquía.
-	\item Divisivas: Este es un acercamiento descendente: todas las observaciones comienzan en un grupo, y se realizan divisiones mientras uno baja en la jerarquía.
+	\item Aglomerativas: Este es un acercamiento ascendente, cada observación comienza en su propio grupo, y los pares de grupos son mezclados mientras uno sube en la jerarquía.
+	\item Divisivas: Este es un acercamiento descendente, todas las observaciones comienzan en un grupo, y se realizan divisiones mientras uno baja en la jerarquía.
 \end{itemize}
 
 Los resultados de un agrupamiento jerárquico son usualmente presentados en un dendrograma. 
@@ -533,18 +569,19 @@ El criterio de enlace determina la distancia entre conjuntos de observaciones co
 
 \begin{table}[h]
 	\centering
-	\begin{tabular}{m{10cm} m{8cm}  }
+	\begin{tabular}{m{8cm} m{8cm}  }
 		\toprule
 		\textbf{Nombre} & \textbf{Fórmula}\\
 		\midrule
-		Agrupamiento de máximo o completo enlace & $\max \{d(a, b): a \in A, b \in B\} .$ \\
+		Agrupamiento de máximo o completo enlace & $\max \{d(a, b): a \in A, b \in B\}$ \\
 		\hline
-		Agrupamiento de mínimo o simple enlace & $\min \{d(a, b): a \in A, b \in B\} .$ \\
+		Agrupamiento de mínimo o simple enlace & $\min \{d(a, b): a \in A, b \in B\}$ \\
 		\hline
-		Agrupamiento de enlace media o promedio, o UPGMA & $\frac{1}{|A||B|} \sum_{a \in A} \sum_{b \in B} d(a, b) .$ \\
+		Agrupamiento de enlace media o promedio & $\frac{1}{|A||B|} \sum_{a \in A} \sum_{b \in B} d(a, b)$ \\
 		\hline
 		Agrupamiento de mínima energía & \parbox[t]{8cm}{
-			$\frac{2}{n m} \sum_{i, j=1}^{n, m}\left\|a_{i}-b_{j}\right\|_{2}-\frac{1}{n^{2}} \sum_{i, j=1}^{n}\left\|a_{i}-a_{j}\right\|_{2}-
+			$\frac{2}{n m} \sum_{i,j=1}^{n,m}\left\|a_{i}-b_{j}\right\|_{2} -
+			\frac{1}{n^{2}} \sum_{i,j=1}^{n}\left\|a_{i}-a_{j}\right\|_{2}-
 			\frac{1}{m^{2}} \sum_{i, j=1}^{m}\left\|b_{i}-b_{j}\right\|_{2}$
 		} \\
 		\bottomrule
