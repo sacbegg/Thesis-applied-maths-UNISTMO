@@ -75,7 +75,7 @@ El estadístico se interpreta de la siguiente forma
 \end{itemize}
 
 \section{Modelos estadísticos}
-
+\label{modelosestadisticos}
 Los modelos estadísticos utilizan ecuaciones matemáticas para codificar información extraída de los datos. En algunas ocasiones las técnicas de modelado estadístico pueden proporcionar modelos adecuados de forma rápida e incluso pueden ofrecer mejores resultados que algunas técnicas más flexibles de aprendizaje maquina, es posible usar algunos modelos estadísticos como modelos predictivos de línea base para juzgar el rendimiento de técnicas más avanzadas \cite{IBMDocs2021}. 
 
 \subsection{Naive}
@@ -88,7 +88,7 @@ Aquí, la notación $\hat{y}_{T+h \mid T}$ es una manera corta de estimar $y_{T+
 Se asume que las observaciones más recientes son las más importantes y que las observaciones previas no proveen de información para el futuro.
 
 \subsection{SES}
-El método simple exponential smothing (SES) es apropiado para la predicción de datos sin una tendencia clara o sin un patrón estacional \cite{hyndmanForecastingPrinciplesPractice}. Su concepto principal es dar mayor peso a las observaciones más recientes que a las del pasado lejano. Las predicciones se realizan mediante medias ponderadas, donde los pesos disminuyen de forma exponencial a medida que las observaciones son más antiguas.
+El método simple exponential smothing (SES) es apropiado para la predicción de datos sin una tendencia clara o sin un patrón estacional \cite{hyndmanForecastingPrinciplesPractice}. Su concepto principal es dar mayor peso a las observaciones más recientes que a las del pasado lejano, por tanto las predicciones se realizan mediante medias ponderadas, donde los pesos disminuyen de forma exponencial a medida que las observaciones son más antiguas como se observan en la \autoref{eq:1}
 
 \begin{equation}
 	\hat{y}_{T+1 \mid T}=\alpha y_{T}+\alpha(1-\alpha) y_{T-1}+\alpha(1-\alpha)^{2} y_{T-2}+\cdots
@@ -195,7 +195,7 @@ Si aplicamos dos veces $B$ a $y_t$ entonces desplaza los datos hacia atrás dos 
 
 \[B\left(B y_{t}\right)=B^{2} y_{t}=y_{t-2}.\]
 
-En general este operador es particularmente útil ya que puede ser tratado usando reglas algebraicas ordinarias. También tiene la propiedad de que una diferencia de $d$-ésimo orden puede ser escrita como
+En general este operador es particularmente útil ya que puede ser tratado usando reglas algebraicas ordinarias. También tiene la propiedad de que una diferencia de orden $d$ puede ser escrita como
 
 \[
 (1-B)^{d} y_{t}.
@@ -211,12 +211,13 @@ Usando el operador $B$ podemos escribir la ecuación del modelo ARIMA de la sigu
 	\end{array}
 \end{equation*}
 \section{Transformaciones matemáticas}
+\label{transformacionesmatematicas}
 Ajustar los datos en algunos casos puede mejorar la predicción de los mismos ya que permiten disminuir la variabilidad o simplificar los patrones o tendencias de los registros históricos. En este estudio se aplicaron trasformaciones matemáticas para generar series de tiempo que refuerzan la tendencia o hacerla estacionaria.
 
 
-\subsection{Transformación $log$}
+\subsection{Transformación $\log$}
 
-Si denotamos las observaciones originales como $y_{1}, \ldots, y_{T}$ y las observaciones transformadas como $w_{1}, \ldots, w_{T}$, entonces $w_{t}=\log \left(y_{t}\right)$. Los logaritmos son útiles dado que son interpretables. Por ejemplo, si $log$ base 10 es usada entonces un incremento de 1 en la escala logarítmica significa una multiplicación de 10 en la escala original.  
+Si denotamos las observaciones originales como $y_{1}, \ldots, y_{T}$ y las observaciones transformadas como $w_{1}, \ldots, w_{T}$, entonces $w_{t}=\log \left(y_{t}\right)$. Los logaritmos son útiles dado que son interpretables. Por ejemplo, si $\log$ base 10 es usada entonces un incremento de 1 en la escala logarítmica significa una multiplicación de 10 en la escala original.  
 Otra propiedad útil es que restringe la predicción a permanecer positiva en la escala original. 
 
 \subsection{Transformación Box-Cox}
@@ -230,7 +231,7 @@ Esta transformación abarca la transformación logarítmica y de potencias, si $
 
 La ventaja de esta transformación es que tomando un buen valor de $\lambda$ podemos estabilizar la varianza en toda la serie de tiempo, haciendo el modelo de predicción más simple \cite{hyndmanForecastingPrinciplesPractice}. 
 
-\subsection{Transformación $diff$}
+\subsection{Transformación diff}
 
 La diferencia en series es el cambio entre observaciones consecutivas en la serie original y puede ser escrita de la siguiente manera
 
@@ -240,9 +241,9 @@ y_{t}^{\prime}=y_{t}-y_{t-1}
 
 Una de las ventajas de esta transformación es que puede ayudar a estabilizar la media de una serie de tiempo al eliminar los cambios de nivel de la misma y, por tanto, eliminar (o reducir) la tendencia y la estacionalidad \cite{hyndmanForecastingPrinciplesPractice}.
 
-\subsection{Transformación $diff(log)$}
+\subsection{Transformación diff($\log$)}
 
-La transformación $diff(log)$ calcula cambios relativos, esto es, la diferencia fraccional entre dos números que, multiplicado por cien es la diferencia porcentual entre los mismos. Estos cambios son simétricos y útiles para explorar las relaciones con datos continuos y de valor positivo \cite{coleStatisticsNotesPercentage2017}.
+La transformación diff($\log$) calcula cambios relativos, esto es, la diferencia fraccional entre dos números que, multiplicado por cien es la diferencia porcentual entre los mismos. Estos cambios son simétricos y útiles para explorar las relaciones con datos continuos y de valor positivo \cite{coleStatisticsNotesPercentage2017}.
 
 \[
 y_{t}^{\prime}=\log{y_{t}}-\log{y_{t-1}}
@@ -252,7 +253,7 @@ En finanzas esta transformación puede ser usada para analizar el cambio porcent
 
 
 \section{Modelos de machine learning}
-
+\label{modelosmachinelearning}
 Un modelo de machine learning es una expresión de un algoritmo que analiza gran cantidad de datos para encontrar patrones o realizar predicciones. Los modelos de ML son los motores matemáticos de la IA.
 Un modelo de machine learning es una representación matemática de los objetos y sus relaciones entre sí. Los objetos pueden ser cualquier cosa, ya sea un "me gusta" en una publicación de redes sociales hasta moléculas en un experimento de laboratorio \cite{parsonsQueEsModelo2021}.
 
@@ -277,7 +278,7 @@ Las suposiciones implícitas que se hacen al aplicar un modelo de regresión lin
 \item Los errores no están correlacionados con las variables predictoras.
 \end{itemize}
 
-Otra suposición importante es que cada predictor no sea una variable aleatoria, tienen que ser datos reproducibles. En datos financieros o económicos no es posible controlar sus valores, por tanto suponemos que no son una variable aleatoria.
+Otra suposición importante es que cada predictor no sea una variable aleatoria ya que deben ser datos reproducibles. Con datos observacionales (como la mayoría de datos financieros) no es posible controlar el comportamiento de los datos ya que simplemente son observados, por tanto se hace la suposición de que no son una variable aleatoria y pueden ser controlados para hacer regresión sobre ellos \cite{hyndmanForecastingPrinciplesPractice}.
 
 La variable tendencia del modelo RTS puede ser modelada usando $x_{1, t}=t$ como predictor.
 
@@ -325,7 +326,7 @@ donde $x_i$ es una muestra de entrenamiento con valor objetivo $y_i$. Aquí $\le
 El algoritmo de bosque aleatorio o random forest combina la salida de múltiples arboles de decisión tal que cada árbol depende de los valores de un vector aleatorio probado independientemente y con la misma distribución para cada uno de estos y así alcanzar un solo resultado. Es usado para problemas de regresión y clasificación \cite{WhatRandomForest2021}.
 
 \subsubsection{Árboles de decisión}
-Un árbol de decisión divide una pregunta inicial en subpreguntas para llegar a una decisión final. Observaciones que se ajusten a un criterio seguirán una rama "SÍ", y aquellas que no, seguirán un camino distinto.
+Un árbol de decisión divide una pregunta inicial en subpreguntas para llegar a una decisión final. Observaciones que se ajusten a un criterio seguirán una rama "sí", y aquellas que no, seguirán un camino distinto.
 
 Entonces un árbol de decisión busca encontrar la mejor partición de un subconjunto de los datos y estos generalmente son entrenados con el algoritmo Classification and Regression Tree (CART).
 Las métricas usadas para evaluar la calidad de las particiones son Gini impurity, information gain, o MSE.   

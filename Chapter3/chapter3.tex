@@ -13,14 +13,13 @@ La salida de esta metodología es un posible precio en un intervalo de tiempo fu
 \clearpage
 
 \section{Metodología}
-La metodología general del trabajo se muestra en la \autoref{fig4}. Esta se divide en el pre-procesamiento de los datos, la fase de entrenamiento, análisis de métricas, análisis topológico de datos y la fase de validación.
+La metodología general del trabajo se muestra en la \autoref{fig4}. Esta se divide en el pre-procesamiento de los datos, entrenamiento de modelos, análisis de métricas, análisis topológico de datos y validación.
 
 La metodología propuesta se divide en cuatro apartados: La predicción del precio utilizando series de tiempo del bitcoin en dólares, el análisis de las métricas de la blockchain, la clasificación de las alzas y bajas del precio y el análisis topológico de datos.
  
 En la predicción del precio se darán a conocer rendimientos futuros utilizando un conjunto de datos de prueba sobre el cual se realizará la predicción usando modelos estadísticos y de machine learning. Para el análisis de métricas de la blockchain se encontrarán las variables que más influyen en el precio del bitcoin utilizando análisis de regresión, análisis de componentes principales y clustering jerárquico, por otra parte la clasificación para toma de decisiones de inversión a mediano y largo plazo convertirá la serie de tiempo en imágenes y las clasificará en comprar, vender o incertidumbre utilizando redes neuronales convolucionales, por último, el análisis topológico de datos analizará posibles crashes en el precio utilizando la norma topológica C1 y k-means. 
-
+\vspace{-0.59cm}
 \subsection{Datos y pre-procesamiento}
-
 Los datos del precio del bitcoin están disponibles en linea de forma gratuita. Los datos para este estudio fueron recolectados de tres fuentes distintas, Yahoo! Finance \cite{YahooFinanceStock}, Kraken \cite{BitcoinCryptocurrencyExchange} e Investing \cite{InvestingComStock}, para la descarga de estos datos se usó la librería \emph{quandl} en Python para descargarlos de forma automática en formato OHLC (Open-High-Low-Close), este formato consiste en un marco de datos indizados por la fecha y con columnas el precio de apertura, el precio más bajo del día, el más alto y el precio de cierre. El intervalo de los datos es considerado desde el 2 de febrero del 2012 hasta el 11 de octubre de 2021.
 
 Las tres fuentes de datos mostraban diferencias al compararlas, no todas estaban en formato OHLC y habían gaps entre los precios. Para solucionar lo anterior se creó la función \emph{merge\_dfs\_on\_column} en Python, que tiene por entrada una lista de dataframes con columnas en común, una lista con los nombres de exchanges usados asociados a los dataframes y la columna en común sobre la cual se trabajará. Esta función devuelve un dataframe que combina las columnas en común especificadas. Las columnas de dataframe obtenido anteriormente son sumadas y dividas entre el número de columnas, creándose así una única columna con la media.
@@ -29,7 +28,7 @@ Las tres fuentes de datos mostraban diferencias al compararlas, no todas estaban
 \begin{landscape}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[scale=0.7]{Chapter3/Meto-2.pdf}
+		\includegraphics[scale=0.7]{Chapter3/Meto-3.pdf}
 		\caption{Metodología general propuesta}
 		\label{fig4}
 	\end{figure}
@@ -44,21 +43,20 @@ Se eliminaron los valores atípicos multivariados del conjunto de datos de métr
 
 donde $x = (x_1,x_2,x_3,...,x_N)^T$ es una observación, $\mu = (\mu_1,\mu_2,\mu_3,...,\mu_N)^T$ es la media y $\textbf{S}$ es la matriz de covarianza. Se considera un valor atípico si la distancia del dato (la métrica en este caso) encontrada es mayor que dos veces la media de las distancias.
 
-
 Se escalaron los datos de las métricas como del precio al intervalo [0,1] con la formula $(x-min(x))/(max(x)-min(x))$ del método MinMax para un mejor funcionamiento de los algoritmos de machine learning. 	 
 
-\subsection{Fase de entrenamiento}
+\subsection{Entrenamiento de modelos}
 
-Las bases de datos creadas se dividieron en un 80\% para los datos de entrenamiento y en un 20\% para los datos de prueba. Para los datos de predicción el conjunto de entrenamiento contiene 2782 elementos. Para el conjunto de entrenamiento de métricas de la blockchain se utilizó la función \emph{train\_test\_split} de la librería sklearn en Python creando de forma aleatoria 3604 datos con semilla 123. Por último, después de las transformaciones correspondientes el conjunto de entrenamiento para clasificación y toma de decisiones de inversión resulto en 616 imágenes.
+Las bases de datos creadas se dividieron en un 80\% para los datos de entrenamiento y en un 20\% para los datos de prueba. Para los datos de predicción el conjunto de entrenamiento contiene 2782 elementos. Para el conjunto de entrenamiento de métricas de la blockchain se utilizó la función \emph{train\_test\_split} de la librería sklearn en Python conteniendo 3604 datos. Por último, después de las transformaciones correspondientes el conjunto de entrenamiento para clasificación y toma de decisiones de inversión resulto en 616 imágenes.
 
 \subparagraph{Predicción del precio:} Para la extracción de características de los modelos de machine learning se usó el método de correlación \cite{tandonBitcoinPriceForecasting2019}, donde se realizó la estimación del coeficiente de correlación de Pearson para examinar la fuerza y la dirección de la relación lineal entre las variables de la base de datos, en este caso, apertura, precio máximo, mínimo y cierre. Se determinó que todas las características están fuertemente relacionadas entre sí y fueron utilizadas como variables explicativas en los modelos no univariados (SVM, RF, RTS). A las características extraídas se les agregó las métricas de la blockchain que más influyeron en la variabilidad del precio como se detalla en la \autoref{ssec:metrics}.    
 Para las redes LSTM se utilizó únicamente el precio de cierre con retraso de un día para su ajuste.
 
-Antes de aplicar los modelos a los datos de entrenamiento se realizaron distintas transformaciones como BoxCox [\ref{eqn:9}], $\log$ [\ref{eqn:10}], $diff$ [\ref{eqn:11}] y $diff$($\log$) [\ref{eqn:12}]. Para la transformación BoxCox el parámetro $\lambda$ se estimó con la función BoxCox.lambda() de R para encontrar el parámetro que mejor estabiliza la varianza, en el caso del la transformación $\log$ se uso la base natural $e$.
+Antes de aplicar los modelos a los datos de entrenamiento se realizaron distintas transformaciones como BoxCox [\ref{eqn:9}], $\log$ [\ref{eqn:10}], diff [\ref{eqn:11}] y diff($\log$) [\ref{eqn:12}] que se explican en la sección \autoref{transformacionesmatematicas}. Para la transformación BoxCox el parámetro $\lambda$ se estimó con la función BoxCox.lambda() de R para encontrar el parámetro que mejor estabiliza la varianza, en el caso del la transformación $\log$ se uso la base natural $e$.
 
-Se ajustaron los precios del bitcoin usando diferentes modelos estadísticos y de machine learning basados en el método Naive [\ref{eqn:1}], SES [\ref{eqn:2}], Holt [\ref{eqn:3}], ETS \footnotemark , ARIMA [\ref{eqn:4}], RTS [\ref{eqn:5}], SVM [\ref{eqn:6}], RF [\ref{eqn:7}], y LSTM [\ref{eqn:8}].
+Se ajustaron los precios del bitcoin usando diferentes modelos estadísticos y de machine learning basados en los métodos Naive [\ref{eqn:1}], SES [\ref{eqn:2}], Holt [\ref{eqn:3}], ETS \footnotemark , ARIMA [\ref{eqn:4}], RTS [\ref{eqn:5}], SVM [\ref{eqn:6}], RF [\ref{eqn:7}], y LSTM [\ref{eqn:8}] que se explican en la \autoref{modelosestadisticos} y la \autoref{modelosmachinelearning}.
 
-Para el método Naive, SES, Holt, ETS y ARIMA se usaron las funciones estándar de R del paquete \emph{fpp2}, únicamente cambiando la entrada de los datos de entrenamiento por la respectiva transformación, por otro lado, para el método RTS, SVM y RF se realizaron las inferencias sobre las características dichas anteriormente, manteniendo los hiperparámetros por defecto. La configuración usada para el modelos LSTM es la mostrada en la \autoref{tab:Table10}.
+Para los métodos Naive, SES, Holt, ETS y ARIMA se usaron las funciones estándar de R del paquete \emph{fpp2}, únicamente cambiando la entrada de los datos de entrenamiento por la respectiva transformación, por otro lado, para el método RTS, SVM y RF se realizaron las inferencias sobre las características dichas anteriormente, manteniendo los hiperparámetros por defecto. La configuración usada para el modelos LSTM es la mostrada en la \autoref{tab:Table10}.
 
 %Tabla hiperparámetros LSTM
 \begin{table}[!h]
@@ -188,8 +186,8 @@ Para el método Naive, SES, Holt, ETS y ARIMA se usaron las funciones estándar 
 		\begin{align}
 			\label{eqn:6}
 			\begin{split}
-				min \frac{1}{2}\|w\|^{2}+\nu\sum_{i=1}^{m}\xi_{i}\\
-				s.to\hspace{0.1cm} y_{i}(wx_{i}-b)\geq  1-\xi_{i},\hspace{0.1cm} \xi\geq 0
+				\textrm{min} \frac{1}{2}\|w\|^{2}+\nu\sum_{i=1}^{m}\xi_{i}\\
+				\textrm{s.to}\hspace{0.1cm} y_{i}(wx_{i}-b)\geq  1-\xi_{i},\hspace{0.1cm} \xi\geq 0
 			\end{split}
 		\end{align}
 		&
@@ -219,14 +217,14 @@ Para el método Naive, SES, Holt, ETS y ARIMA se usaron las funciones estándar 
 				f_{t} = \delta(W_{f}X+b_{f})\\
 				i_{t} = \delta(W_{i}X+b_{i})\\
 				o_{t} = \delta(W_{o}X+b_{o})\\
-				\tilde{C}_{t} = tanh (W_{c}[h_{t-1},x_{t}]+b_{c})\\
+				\tilde{C}_{t} = \tanh (W_{c}[h_{t-1},x_{t}]+b_{c})\\
 				C_{t} = f_{t} \cdot C_{t-1}+i_{t} \cdot \tilde{C}_{t}\\
-				h_{t} = o_{t}\cdot tanh(C_{t})
+				h_{t} = o_{t}\cdot \tanh(C_{t})
 			\end{split}
 		\end{align}
 		& 
-		$x_{t}$: input al tiempo $t$ \newline
-		$h_{t}$: hiden state al tiempo $t$	\newline
+		$x_{t}$: entrada al tiempo $t$ \newline
+		$h_{t}$: estado oculto al tiempo $t$	\newline
 		$W_{f},W_{i},W_{o},W_{c}$: matrices de peso\newline
 		$b_{f},b_{i},b_{o},b_{c}$: parámetros de entrenamiento\newline
 		$\delta$: función de activación
@@ -240,22 +238,32 @@ Para el método Naive, SES, Holt, ETS y ARIMA se usaron las funciones estándar 
 
 \footnotetext[2]{Generalización del modelo SES que toma en cuenta el error, la tendencia y la estacionalidad.}
 
-\subparagraph{Clasificación para toma de decisiones de inversión:} Después del pre-procesamiento de los datos se aplica una transformación logarítmica al precio de cierre en dólares para estabilizar la varianza. El objetivo de esta transformación es tratar de identificar una tendencia monótona. En este estudio nos referiremos a este ajuste como la característica estadística tradicional (TSF)\cite{pinedo-sanchezVibrationAnalysisBearings2020}.\\
+\subparagraph{Clasificación para toma de decisiones de inversión:} Después del pre-procesamiento de los datos se aplica una transformación logarítmica al precio de cierre en dólares para estabilizar la varianza. El objetivo de esta transformación es tratar de identificar una tendencia monótona. En este estudio nos referimos a este ajuste como la \textbf{característica estadística tradicional} (TSF)\cite{pinedo-sanchezVibrationAnalysisBearings2020}.\\
+
+\[ 
+	\textrm{TSF}(x) = \log(x).
+\]
 La entropía de Shannon es fundamental en la teoría de la información y también es conocida por medir la incertidumbre. La ecuación original es como sigue
 \[ H(x) = -\sum_{i=1}^{n}p(x_i)\log{p(x_i)} \]
-donde $x$ es una variable aleatoria discreta con posibles salidas $x_1,x_2,x_3,...,x_n$. Entonces como en \cite{pinedo-sanchezVibrationAnalysisBearings2020} utilizaremos una modificación de esta ecuación que tiene la siguiente forma
-\[ H(x) = \frac{1}{n} \sum_{i=1}^{n}-TFS(x_i)\log_2{TSF(x_i)} \]
-aquí $n$ es el tamaño de la ventana deslizante. Esta última ecuación nos permite destacar las características obtenidas de la TSF. De este modo podemos elegir el TSF junto con la entropía de Shannon para observar un aumento o disminución bien definidos de los datos a lo largo del tiempo.
+donde $x$ es una variable aleatoria discreta con posibles salidas $x_1,x_2,x_3,...,x_n$. Entonces como en el articulo de Pinedo et al. \cite{pinedo-sanchezVibrationAnalysisBearings2020} se utilizó una modificación de esta ecuación que tiene la siguiente forma
+
+\[ H(x) = \frac{1}{n} \sum_{i=1}^{n}-\textrm{TSF}(x_i)\log_2{\textrm{TSF}(x_i)} \]
+
+aquí $n$ es el tamaño de la ventana deslizante. Esta última ecuación permite destacar las características obtenidas de la TSF. De este modo se puede elegir el TSF junto con la entropía de Shannon para observar un aumento o disminución bien definidos de los datos a lo largo del tiempo.
 
 El siguiente paso es agrupar los datos después de las transformaciones correspondientes para así tener las etiquetas que clasifiquen los precios del bitcoin. Se utilizó el algoritmo k-means para agrupar los datos con características similares. Este algoritmo consiste en minimizar la suma de las distancias euclidianas de cada uno de los puntos con respecto al centroide del cluster. Se utilizó con $k=10$ para una mayor precisión a la hora de escoger los grupos para la toma de decisiones de inversión.
 
-El proceso para convertir los datos a imágenes con datos originales $R$ y $N$ puntos de muestreo se observan en la \autoref{fig5}.  Si las imágenes a generar son de una resolución de $M \times M$, entonces el primer paso es tomar una sub-muestra $L$ de tamaño $M^2$ de los datos originales $R$, esto es, la i-ésima muestra esta dada por $L_i = \{R(i\cdot s+1),R(i\cdot s+2),R(i\cdot s+3),...,R(i\cdot s+M^2)\}$ donde $s\in \mathbb{Z}^+$ es el paso entre muestras y el índice $i = \{1,2,3,...,  \lfloor\frac{N}{s}\rfloor\}$, con $\lfloor \cdot \rfloor$ la función piso. Cada punto de la sub-muestra $L$ llena una matriz de $M\times M$ de izquierda a derecha y de arriba a abajo. Cada punto es normalizado de $0$ a $255$ y representa el valor del píxel en una escala de grises. Para la i-ésima imagen $P(x,y)$ el proceso se define como sigue
+El proceso para convertir los datos a imágenes con datos originales $R$ y $N$ puntos de muestreo se observan en la \autoref{fig: met5}.  Si las imágenes a generar son de una resolución de $M \times M$, entonces el primer paso es tomar una sub-muestra $L$ de tamaño $M^2$ de los datos originales $R$, esto es, la i-ésima muestra esta dada por la expresión 
 
-\[ P_i(x,y) =  round\left(\frac{L_i((x-1)\cdot M+y)-min(L_i)}{max(L_i)-min(L_i)}\cdot 255\right)\]
+\[ L_i = \{R(i\cdot s+1),R(i\cdot s+2),R(i\cdot s+3),...,R(i\cdot s+M^2)\} \]
+
+donde $s\in \mathbb{Z}^+$ es el paso entre muestras y el índice $i = \{1,2,3,...,  \lfloor\frac{N}{s}\rfloor\}$, con $\lfloor \cdot \rfloor$ la función piso. Cada punto de la sub-muestra $L$ llena una matriz de $M\times M$ de izquierda a derecha y de arriba a abajo. Cada punto es normalizado de $0$ a $255$ y representa el valor del píxel en una escala de grises. Para la i-ésima imagen $P(x,y)$ el proceso se define como sigue
+
+\[ P_i(x,y) =  round\left(\frac{L_i\{(x-1)\cdot M+y\}-min(L_i)}{max(L_i)-min(L_i)}\cdot 255\right)\]
 
 Para el propósito de este estudio se ha escogido una resolución de $32\times 32$ píxeles con un paso $s = 32$.    
 
-La configuración de la arquitectura utilizada esta basada en AlexNet y se muestra en la \autoref{tab:Table11}. Esta mostró ser la optima en el estudio del desgaste de baleros con una precisión por arriba del $98.64\%$ \cite{pinedo-sanchezVibrationAnalysisBearings2020}. 
+La configuración de la arquitectura utilizada esta basada en AlexNet y se muestra en la \autoref{tab:Table11}. Esta mostró ser la optima en un estudio del desgaste de baleros con una precisión por arriba del $98.64\%$, mostrando que usar una arquitectura basada en AlexNet sobre imágenes generadas sobre series de tiempo da buenos resultados \cite{pinedo-sanchezVibrationAnalysisBearings2020}. 
 
 %Arquitectura CNN
 \begin{table}[h]
@@ -285,7 +293,7 @@ La configuración de la arquitectura utilizada esta basada en AlexNet y se muest
 \begin{figure}[h!]
 	\includegraphics[width=\textwidth,height=21cm]{Chapter3/3-2.png}
 	\caption{Método para convertir datos a imágenes.}
-	\label{fig5}
+	\label{fig: met5}
 \end{figure}
 
 \subsection{Selección de métricas}
@@ -301,11 +309,11 @@ A los datos de entrenamiento de las métricas se ajustó un modelo de mínimos c
 \subparagraph{Análisis de componentes principales:}
 \label{PCA}
 
-De las métricas obtenidas utilizando análisis de regresión se seleccionaron aquellas que tuvieran la misma dirección y, mayor o igual magnitud que la variable precio, para ello se utilizó la función PCA de la librería \emph{sklearn.decomposition} en Python.
+De las métricas obtenidas utilizando análisis de regresión se seleccionaron aquellas que tuvieran la misma dirección y, mayor o igual magnitud que la variable $precio$, para ello se utilizó la función PCA de la librería \emph{sklearn.decomposition} en Python.
 Se utilizó como parámetro la cantidad total de métricas obtenidas anteriormente y se utilizó el siguiente criterio para determinar las métricas con mayor influencia en el precio
-\[ F^{\prime} = \{ y \hspace{0.5mm}:\hspace{0.5mm} \lVert y \rVert_2 \geq \lVert x \rVert_2,\hspace{0.5mm} sign(y) = sign(x),\hspace{0.5mm}y \in F\} \]
+\[ F^{\prime} = \{ y \hspace{0.5mm}:\hspace{0.5mm} \lVert y \rVert_2 \geq \lVert x \rVert_2,\hspace{0.5mm} \textrm{sign}(y) = \textrm{sign}(x),\hspace{0.5mm}y \in F\} \]
 
-donde $F$ es el conjunto de características obtenidas en el análisis de regresión, $x$ es el vector precio, $\lVert \cdot \rVert_2$ es la norma euclidiana usual y $sign$ es la función signo.
+donde $F$ es el conjunto de características obtenidas en el análisis de regresión, $x$ es el vector de $precio$, $\lVert \cdot \rVert_2$ es la norma euclidiana usual y $sign$ es la función signo.
 
 \subparagraph{Dendrograma de correlación:}
 Se utilizó la función heatmap de la librería biokit en Python utilizando todas la características obtenidas en el paso anterior empleando como distancia la correlación entre las métricas y se seleccionaron aquellas que estuvieran en el mismo cluster que el precio o cercanas al mismo.
@@ -315,17 +323,19 @@ Se siguieron los siguientes pasos para determinar los posibles crashes en el pre
 
 \subparagraph{Incrustar los datos en un espacio de dimensión superior:} La serie de tiempo del precio del bitcoin es incrustada en un espacio de dimensión 4 usando el teorema de Takens.
 \subparagraph{Creación del panorama de persistencia:} Con los datos en un espacio de dimensión superior se calcula la homología persistente de los datos para crear el respectivo panorama de persistencia. Se utiliza la librería $TDA$ de R con la función $ripsDiag()$.
-\subparagraph{Cálculo de norma topológica:} El panorama de persistencia creado en R al ser un elemento vectorial se calcula la norma L1 para después crear la norma C1 respectiva.
+\subparagraph{Cálculo de norma topológica:} A partir del panorama de persistencia creado en R, al ser un elemento vectorial, se calcula la norma L1 y posteriormente la C1 respectiva.
+
 \subparagraph{Creación de clusters:} Se aplica el algoritmo k-means a un dataframe que tiene por columnas el logaritmo del precio del bitcoin y la norma C1 para visualizar los posibles clusters de los datos.
-\subparagraph{Selección de cluster de riesgo:} En base a los siguientes criterios se selecciona el cluster que nos advierte de una posible burbuja. 
+\subparagraph{Selección de cluster de riesgo:} En base a los siguientes criterios se selecciona el cluster que nos advierte de una posible burbuja, que se identifica como una sucesión de rendimientos positivos que pueden ser interrumpidos por rendimientos negativos cuya magnitud no supera algún nivel de tolerancia preestablecido, y una caída posterior como una sucesión de rendimientos negativos que pueden ser interrumpidos por rendimientos positivos cuya magnitud no supera el nivel de tolerancia preestablecido \cite{gideaTopologicalRecognitionCritical2020}. 
 
 \begin{enumerate}
 	\item La mayoría de los elementos del cluster cumplen que $\lVert x_t \rVert_{C1} > 0.5$
 	\item Las fechas en el cluster deben ser consecutivas.
 \end{enumerate}
 
+El riesgo de esto es que si la inversión no es viable, se seguirán sumando personas incrementando el valor del activo hasta hacerlo insostenible, haciendo perder capital al inversor si este compro en el punto álgido de la sucesión de rendimientos positivos.
 
-\subsection{Fase de validación}
+\subsection{Validación del modelo}
 \subparagraph{Predicción del precio:}
 En cada modelo se realizo una predicción sobre el 80\% de los datos, en estas predicciones se consideró el indicador de error RMSE (Root Mean Square Error) y la segunda versión del indice de eficiencia Theil’s U \cite{bliemelTheilForecastAccuracy1973}.
 Hubo un total de 49 modelos tomando en cuenta cada transformación propuesta, de estos, el modelo seleccionado en este estudio es el que tiene menor RMSE e índice Theil’s U más cercano a cero. Con el modelo seleccionado se hace la predicción sobre el conjunto de validación como se muestra en la \autoref{subResultados}.
