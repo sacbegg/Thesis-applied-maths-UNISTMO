@@ -56,7 +56,7 @@ El panorama del estado del arte en lo que respecta al análisis de métricas de 
  
  
 En febrero de 2020 Chen et al. \cite{chenBitcoinPricePrediction2020} usando clasificación binaria, características de la blockchain y financieras, clasificaron los precios del bitcoin con modelos estadísticos como regresión lineal y análisis lineal de discriminante en intervalos de 5 minutos alcanzando una exactitud del 53\%. Por otro lado métodos de machine learning como random forest, XGBosst, discriminante cuadrático, SVM, y LSTM alcanzaron en promedio una exactitud del 62.2\%.
-La clasificación considero las subidas y bajadas del precio con respecto al actual y las características de la blockchain para predicción fueron seleccionadas usando Boruta. 
+La clasificación consideró las subidas y bajadas del precio con respecto al actual y las características de la blockchain para predicción fueron seleccionadas usando Boruta. 
 
 %%\begin{itemize}
 %%	\item Block size
@@ -81,6 +81,6 @@ En Septiembre de 2020 Jaquart et al. \cite{jaquartShorttermBitcoinMarket2021} re
 
 En enero de 2021 Ibrahim et al. \cite{ibrahimPredictingMarketMovement2021} realizaron clasificación del precio haciendo predicción hacia arriba o hacia abajo en intervalos de tiempo de 5 minutos. Se comparan modelos como ARIMA, Prophet (Facebook), RF, RF lagged-Auto-regression y multi-layer perceptron. El estudio concluyó que MLP alcanzó la mejor exacitud con 54\%.
 
-En febrero de 2021 Akyildirim et al. \cite{akyildirimPredictionCryptocurrencyReturns2021} realizaron clasificación de precios del bitcoin para trading de un día, 15, 30, 60 min. utilizando el criterio -1 si OPEN$<$CLOSE y 1 si OPEN$>$CLOSE refiriéndose a el precio de apertura y cierre en un periodo de tiempo abarca desde 10 agosto de 2017 a 23 junio de 2018. Se alcanzó una exactitud de 55-65\% en promedio resultando ser SVM el mejor modelo entre regresión logística, ANN y random forest como modelos candidatos.
+En febrero de 2021 Akyildirim et al. \cite{akyildirimPredictionCryptocurrencyReturns2021} realizaron clasificación de precios del bitcoin para trading de un día, 15, 30, 60 min. utilizando el criterio -1 si OPEN$<$CLOSE y 1 si OPEN$>$CLOSE refiriéndose a el precio de apertura y cierre en un periodo de tiempo que abarca desde 10 agosto de 2017 a 23 junio de 2018. Se alcanzó una exactitud de 55-65\% en promedio resultando ser SVM el mejor modelo entre regresión logística, ANN y random forest como modelos candidatos.
 
 En general podemos observar que los métodos de clasificación se basan en el trading y la dirección del precio, esto es, se utilizan datos de movimiento a corto plazo para realizar una predicción de compra o venta. Los resultados obtenidos en el estado del arte  tienen una exactitud un poco mayor al del tiro de una moneda, sin embargo la metodología propuesta por Mudassir \cite{mudassirTimeseriesForecastingBitcoin2020} alcanza una exactitud máxima de 64\% con ventana de tiempo de 7 a 9 días, haciendo notar que tal vez el trading no sea la mejor estrategia de inversión, sino las inversiones a mediano y largo plazo.

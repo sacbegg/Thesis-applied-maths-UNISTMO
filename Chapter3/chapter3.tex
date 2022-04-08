@@ -17,7 +17,7 @@ La metodología general del trabajo se muestra en la \autoref{fig4}. Esta se div
 
 La metodología propuesta se divide en cuatro apartados: La predicción del precio utilizando series de tiempo del bitcoin en dólares, el análisis de las métricas de la blockchain, la clasificación de las alzas y bajas del precio y el análisis topológico de datos.
  
-En la predicción del precio se darán a conocer rendimientos futuros utilizando un conjunto de datos de prueba sobre el cual se realizará la predicción usando modelos estadísticos y de machine learning. Para el análisis de métricas de la blockchain se encontrarán las variables que más influyen en el precio del bitcoin utilizando análisis de regresión, análisis de componentes principales y clustering jerárquico, por otra parte la clasificación para toma de decisiones de inversión a mediano y largo plazo convertirá la serie de tiempo en imágenes y las clasificará en comprar, vender o incertidumbre utilizando redes neuronales convolucionales, por último, el análisis topológico de datos analizará posibles crashes en el precio utilizando la norma topológica C1 y k-means. 
+En la predicción del precio se darán a conocer rendimientos futuros utilizando un conjunto de datos de prueba sobre el cual se realizará la predicción usando modelos estadísticos y de machine learning. Para el análisis de métricas de la blockchain se encontrarán las variables que más influyen en el precio del bitcoin utilizando análisis de regresión, análisis de componentes principales y clustering jerárquico, por otra parte la clasificación para toma de decisiones de inversión a mediano y largo plazo convertirá la serie de tiempo en imágenes y las clasificará en comprar, vender o incertidumbre utilizando redes neuronales convolucionales, por último, el análisis topológico de datos analizará posibles crashes en el precio utilizando la norma topológica $C^1$ y k-means. 
 \vspace{-0.59cm}
 \subsection{Datos y pre-procesamiento}
 Los datos del precio del bitcoin están disponibles en linea de forma gratuita. Los datos para este estudio fueron recolectados de tres fuentes distintas, Yahoo! Finance \cite{YahooFinanceStock}, Kraken \cite{BitcoinCryptocurrencyExchange} e Investing \cite{InvestingComStock}, para la descarga de estos datos se usó la librería \emph{quandl} en Python para descargarlos de forma automática en formato OHLC (Open-High-Low-Close), este formato consiste en un marco de datos indizados por la fecha y con columnas el precio de apertura, el precio más bajo del día, el más alto y el precio de cierre. El intervalo de los datos es considerado desde el 2 de febrero del 2012 hasta el 11 de octubre de 2021.
@@ -26,7 +26,7 @@ Las tres fuentes de datos mostraban diferencias al compararlas, no todas estaban
 %A las columnas del dataframe obtenido se le calculan la media creándose una única columna.
 %\newpage
 \begin{landscape}
-	\begin{figure}[h]
+	\begin{figure}
 		\centering
 		\includegraphics[scale=0.7]{Chapter3/Meto-3.pdf}
 		\caption{Metodología general propuesta}
@@ -34,7 +34,8 @@ Las tres fuentes de datos mostraban diferencias al compararlas, no todas estaban
 	\end{figure}
 \end{landscape}
 %\clearpage
-Al final se crea un conjunto de datos usando como columnas las medias obtenidas utilizando la función antes especificada. Ya que algunos exchanges no registran los precios con precisión o no trabajan en días festivos o fines de semana, entonces se eliminan estas fechas al dataframe creado con la media de los precios y se inputan los datos faltantes utilizando interpolación splines cúbico en ambas direcciones.\\
+Al final se crea un conjunto de datos usando como columnas las medias obtenidas utilizando la función antes especificada. 
+%Ya que algunos exchanges no registran los precios con precisión o no trabajan en días festivos o fines de semana, entonces se eliminan estas fechas al dataframe creado con la media de los precios y se inputan los datos faltantes utilizando interpolación splines cúbico en ambas direcciones.\\
 Los datos para realizar el análisis de métricas fueron recolectados utilizando la API de la comunidad de Coin Metrics \cite{APIBasics}. Se obtuvo un archivo CSV con un total de 140 métricas como se observa en la \autoref{tab:TableAppen1}. Se consideró un intervalo de los datos desde el 2 de febrero del 2012 hasta el 11 de agosto de 2021 donde se utilizó interpolación de splines de orden tres para igualmente inputar datos faltantes.
 
 Se eliminaron los valores atípicos multivariados del conjunto de datos de métricas utilizando la distancia de  Mahalanovis definida como sigue:
@@ -259,7 +260,7 @@ El proceso para convertir los datos a imágenes con datos originales $R$ y $N$ p
 
 donde $s\in \mathbb{Z}^+$ es el paso entre muestras y el índice $i = \{1,2,3,...,  \lfloor\frac{N}{s}\rfloor\}$, con $\lfloor \cdot \rfloor$ la función piso. Cada punto de la sub-muestra $L$ llena una matriz de $M\times M$ de izquierda a derecha y de arriba a abajo. Cada punto es normalizado de $0$ a $255$ y representa el valor del píxel en una escala de grises. Para la i-ésima imagen $P(x,y)$ el proceso se define como sigue
 
-\[ P_i(x,y) =  round\left(\frac{L_i\{(x-1)\cdot M+y\}-min(L_i)}{max(L_i)-min(L_i)}\cdot 255\right)\]
+\[ P_i(x,y) =  \textrm{round}\left(\frac{L_i\{(x-1)\cdot M+y\}-\min(L_i)}{\max(L_i)-\min(L_i)}\cdot 255\right)\]
 
 Para el propósito de este estudio se ha escogido una resolución de $32\times 32$ píxeles con un paso $s = 32$.    
 
@@ -298,7 +299,7 @@ La configuración de la arquitectura utilizada esta basada en AlexNet y se muest
 
 \subsection{Selección de métricas}
 \label{ssec:metrics}
-Para la selección de métricas que más influyen en el precio del bitcoin primero se seleccionaron aquellas que tuvieran significación estadística usando mínimos cuadrados ordinarios. De las variables seleccionadas se escogieron aquellas que tuvieran la misma dirección y el mismo o mayor peso que la variable precio usando análisis de componentes principales. Al final se corroboró la información usando un dendrograma de correlación para ver la relación entre las variables.
+Para la selección de métricas que más influyen en el precio del bitcoin primero se seleccionaron aquellas que tuvieran significación estadística usando mínimos cuadrados ordinarios. De las variables seleccionadas se escogieron aquellas que tuvieran la misma dirección y el mismo o mayor peso que la variable $precio$ usando análisis de componentes principales. Al final se corroboró la información usando un dendrograma de correlación para ver la relación entre las variables.
 
 \subparagraph{Análisis de regresión:}
 \label{AR}
@@ -313,7 +314,7 @@ De las métricas obtenidas utilizando análisis de regresión se seleccionaron a
 Se utilizó como parámetro la cantidad total de métricas obtenidas anteriormente y se utilizó el siguiente criterio para determinar las métricas con mayor influencia en el precio
 \[ F^{\prime} = \{ y \hspace{0.5mm}:\hspace{0.5mm} \lVert y \rVert_2 \geq \lVert x \rVert_2,\hspace{0.5mm} \textrm{sign}(y) = \textrm{sign}(x),\hspace{0.5mm}y \in F\} \]
 
-donde $F$ es el conjunto de características obtenidas en el análisis de regresión, $x$ es el vector de $precio$, $\lVert \cdot \rVert_2$ es la norma euclidiana usual y $sign$ es la función signo.
+donde $F$ es el conjunto de características obtenidas en el análisis de regresión, $x$ es el vector de $precio$, $\lVert \cdot \rVert_2$ es la norma euclidiana usual y sign es la función signo.
 
 \subparagraph{Dendrograma de correlación:}
 Se utilizó la función heatmap de la librería biokit en Python utilizando todas la características obtenidas en el paso anterior empleando como distancia la correlación entre las métricas y se seleccionaron aquellas que estuvieran en el mismo cluster que el precio o cercanas al mismo.
@@ -323,13 +324,13 @@ Se siguieron los siguientes pasos para determinar los posibles crashes en el pre
 
 \subparagraph{Incrustar los datos en un espacio de dimensión superior:} La serie de tiempo del precio del bitcoin es incrustada en un espacio de dimensión 4 usando el teorema de Takens.
 \subparagraph{Creación del panorama de persistencia:} Con los datos en un espacio de dimensión superior se calcula la homología persistente de los datos para crear el respectivo panorama de persistencia. Se utiliza la librería $TDA$ de R con la función $ripsDiag()$.
-\subparagraph{Cálculo de norma topológica:} A partir del panorama de persistencia creado en R, al ser un elemento vectorial, se calcula la norma L1 y posteriormente la C1 respectiva.
+\subparagraph{Cálculo de norma topológica:} A partir del panorama de persistencia creado en R, al ser un elemento vectorial, se calcula la norma $L^1$ y posteriormente la $C^1$ respectiva.
 
-\subparagraph{Creación de clusters:} Se aplica el algoritmo k-means a un dataframe que tiene por columnas el logaritmo del precio del bitcoin y la norma C1 para visualizar los posibles clusters de los datos.
+\subparagraph{Creación de clusters:} Se aplica el algoritmo k-means a un dataframe que tiene por columnas el logaritmo del precio del bitcoin y la norma $C^1$ para visualizar los posibles clusters de los datos.
 \subparagraph{Selección de cluster de riesgo:} En base a los siguientes criterios se selecciona el cluster que nos advierte de una posible burbuja, que se identifica como una sucesión de rendimientos positivos que pueden ser interrumpidos por rendimientos negativos cuya magnitud no supera algún nivel de tolerancia preestablecido, y una caída posterior como una sucesión de rendimientos negativos que pueden ser interrumpidos por rendimientos positivos cuya magnitud no supera el nivel de tolerancia preestablecido \cite{gideaTopologicalRecognitionCritical2020}. 
 
 \begin{enumerate}
-	\item La mayoría de los elementos del cluster cumplen que $\lVert x_t \rVert_{C1} > 0.5$
+	\item La mayoría de los elementos del cluster cumplen que $\lVert x_t \rVert_{C^1} > 0.5$
 	\item Las fechas en el cluster deben ser consecutivas.
 \end{enumerate}
 
@@ -358,7 +359,7 @@ Hubo un total de 49 modelos tomando en cuenta cada transformación propuesta, de
 \end{table}
 
 \subparagraph{Clasificación del precio:}
-Se crea un dataframe con las imágenes generadas. Una columna contiene los archivos de imagen y la otra las etiquetas de su cluster respectivo. Los clusters son renombrados a comprar, vender o incertidumbre.
+Se crea un dataframe con las imágenes generadas. Una columna contiene los archivos de imagen y la otra las etiquetas de su cluster respectivo. Los clusters son renombrados a comprar, vender o riesgo.
 
 Se crea el conjunto de entrenamiento del dataframe creado, se configura la CNN como en la \autoref{tab:Table11} y se entrena con los datos anteriores.
 
