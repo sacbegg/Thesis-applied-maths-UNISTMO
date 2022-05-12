@@ -1,4 +1,12 @@
 \chapter*{Resumen}
 
-\lipsum
+El bitcoin es una criptomoneda que ha adquirido una gran popularidad y su precio se ha incrementado enormemente, sin embargo, posee una gran volatilidad y se vuelve necesario predecir su comportamiento. En el presente trabajo, a partir de las características de la blockchain descargadas desde el 2 de febrero de 2012 al 14 de abril de 2022 usando la API de coinmetrics se analizaron aquellas que tuvieran un mayor impacto en el precio del bitcoin usando análisis de regresión, PCA y un dendrograma de correlación.
+
+Con las características obtenidas de la blockchain y con datos del precio del bitcoin calculados a partir de la mediana de tres fuentes distintas (Yahoo Finance, Investing y Coingecko) con un intervalo igual al de las métricas de la blockchain se muestran los resultados de aplicar métodos estadísticos como Naive, SES, Holt, ETS, ARIMA y métodos de aprendizaje máquina como RTS, SVM, RF y LSTM, para predecir el precio del bitcoin con el objetivo de realizar una comparación entre métodos con base en el índice de error RMSE y el índice de eficiencia Theil’s U. Los datos del precio son transformados por funciones log, BoxCox, diff y diff(log) como también la escala original y se mostrará una tabla comparativa con los índices de error y exactitud por transformación para elegir el modelo propuesto.
+
+De igual forma se estudia la geometría de los datos usando análisis topológico de datos para deducir que a partir de la norma $C^1$ generada del diagrama de persistencia, se pueden anticipar caídas graves del precio y crear alertas de cracs financieros.
+
+Por último, con ayuda de la característica topológica y el cálculo de la entropía de Shannon del precio del bitcoin se obtienen clusters de inversión para el etiquetado de imágenes, estas últimas elaboradas a partir de la serie de tiempo financiera, que son clasificadas para la toma de decisiones de inversión utilizando CNN. El modelo generado es empleado para dar una recomendación de compra, venta o riesgo y mejorar futuros modelos de inversión a mediano y largo plazo.
+
+Se concluye que hay métricas que influyen en la varianza del precio y que además mejoran los modelos de predicción, por otra parte, el análisis topológico de datos ayuda a detectar exitosamente caídas del precio, asimismo también ayuda a la creación de clusters de inversión junto con la entropía de Shannon para la mejora de toma de decisiones de inversión.
 
