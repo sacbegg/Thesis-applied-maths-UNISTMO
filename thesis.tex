@@ -105,6 +105,8 @@
 %\usepackage[driverfallback=dvipdfm]{hyperref}
 
 \usepackage[pdftex]{hyperref}
+\usepackage[spanish,nameinlink,noabbrev]{cleveref}
+
 \hypersetup{
              bookmarks,
              bookmarksopen=true,
@@ -150,6 +152,8 @@
 \newcommand{\thesistitle}{Propuesta de modelo para pronóstico del precio de Bitcoin y su clasificación para la toma de decisiones de inversión}
 \newcommand{\authorname}{Sacbe García García}
 \newcommand{\supervisorname}{Dr. Álvaro Castañeda Mendoza\\ \vspace{0.2cm}Mtr. Carlos Abraham Carballo Monsivais}
+
+\renewcommand{\listtablename}{Índice de tablas} 
 
 \begin{document}
 
@@ -219,6 +223,12 @@
 
 \tableofcontents
 \cleardoublepage
+\renewcommand\listfigurename{\centering Índice de figuras}
+\listoffigures
+\cleardoublepage
+\renewcommand\listtablename{\centering Índice de tablas}
+\listoftables
+\cleardoublepage
 
 %%%---- End of the Preamble Pages----
 
@@ -235,13 +245,16 @@
 \include{Chapter4/chapter4} 
 \include{Chapter5/chapter5}
 \include{Chapter6/chapter6}
-
+\newpage\addcontentsline{toc}{chapter}{Apéndices}
 \include{HeadTail/publication}
+
 \end{spacing}
+
 
 %\cmt{
 \renewcommand{\chaptername}{Appendix} %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{spacing}{1}
+
 \begin{appendix}
 %%%%%% APPENDIX %%%%%%%
 \include{Appendix/Appen1}

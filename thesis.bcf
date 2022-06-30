@@ -2907,22 +2907,22 @@
     <bcf:citekey order="98">saadCharacterizingBlockchainbasedCryptocurrencies2018</bcf:citekey>
     <bcf:citekey order="99">chenMachineLearningModel2021</bcf:citekey>
     <bcf:citekey order="100">saadCharacterizingBlockchainbasedCryptocurrencies2018</bcf:citekey>
-    <bcf:citekey order="100">chenMachineLearningModel2021</bcf:citekey>
     <bcf:citekey order="101">chenMachineLearningModel2021</bcf:citekey>
-    <bcf:citekey order="102">saadCharacterizingBlockchainbasedCryptocurrencies2018</bcf:citekey>
-    <bcf:citekey order="103">jiBestFeatureSelection2019</bcf:citekey>
-    <bcf:citekey order="104">mcnallyPredictingPriceBitcoin2018</bcf:citekey>
-    <bcf:citekey order="105">ibrahimPredictingMarketMovement2021</bcf:citekey>
-    <bcf:citekey order="105">jaquartShorttermBitcoinMarket2021</bcf:citekey>
-    <bcf:citekey order="105">chenBitcoinPricePrediction2020</bcf:citekey>
-    <bcf:citekey order="105">akyildirimPredictionCryptocurrencyReturns2021</bcf:citekey>
-    <bcf:citekey order="105">pintelasInvestigatingProblemCryptocurrency2020</bcf:citekey>
+    <bcf:citekey order="102">chenMachineLearningModel2021</bcf:citekey>
+    <bcf:citekey order="103">saadCharacterizingBlockchainbasedCryptocurrencies2018</bcf:citekey>
+    <bcf:citekey order="104">jiBestFeatureSelection2019</bcf:citekey>
+    <bcf:citekey order="105">mcnallyPredictingPriceBitcoin2018</bcf:citekey>
     <bcf:citekey order="106">ibrahimPredictingMarketMovement2021</bcf:citekey>
     <bcf:citekey order="106">jaquartShorttermBitcoinMarket2021</bcf:citekey>
     <bcf:citekey order="106">chenBitcoinPricePrediction2020</bcf:citekey>
+    <bcf:citekey order="106">akyildirimPredictionCryptocurrencyReturns2021</bcf:citekey>
     <bcf:citekey order="106">pintelasInvestigatingProblemCryptocurrency2020</bcf:citekey>
-    <bcf:citekey order="107">akyildirimPredictionCryptocurrencyReturns2021</bcf:citekey>
-    <bcf:citekey order="108">chenBitcoinPricePrediction2020</bcf:citekey>
+    <bcf:citekey order="107">ibrahimPredictingMarketMovement2021</bcf:citekey>
+    <bcf:citekey order="107">jaquartShorttermBitcoinMarket2021</bcf:citekey>
+    <bcf:citekey order="107">chenBitcoinPricePrediction2020</bcf:citekey>
+    <bcf:citekey order="107">pintelasInvestigatingProblemCryptocurrency2020</bcf:citekey>
+    <bcf:citekey order="108">akyildirimPredictionCryptocurrencyReturns2021</bcf:citekey>
+    <bcf:citekey order="109">chenBitcoinPricePrediction2020</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">

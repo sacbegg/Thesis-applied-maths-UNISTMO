@@ -1,4 +1,7 @@
 \chapter[Fundamento teórico]{Fundamento teórico}{Fundamento teórico}\label{Fundamento}
+\crefname{section}{sección}{}
+\crefname{table}{tabla}{}
+\crefformat{equation}{#2ecuación #1#3}
 
 \noindent
 \rule{0.49\textwidth}{0.75pt} $_{\bigcirc}$ \rule{0.49\textwidth}{0.75pt}\\
@@ -15,55 +18,47 @@
 Los datos obtenidos de observaciones del precio del bitcoin son recolectados de forma secuencial y cronológica a lo largo del tiempo. Como ejemplo de lo anterior se puede observar diariamente el precio de apertura y cierre de este activo modelando así lo que comúnmente conocemos como serie de tiempo. En este apartado se hará una revisión breve de los modelos de predicción más utilizados en la literatura como también de análisis multivariante y análisis topológico de datos ya que son fundamentales para el estudio de series temporales, modelar los altibajos del precio y clasificar tendencias.
 
 \section{Medidas de error}
-Podemos definir al error del pronostico como la diferencia entre el valor real y el valor pronosticado de un periodo correspondiente. Algunas de las medidas de error más populares son las siguientes.
+Podemos definir al error del pronóstico como la diferencia entre el valor real y el valor pronosticado de un periodo correspondiente. Algunas de las medidas de error más populares son las siguientes.
 
 \subsection{RMSE}
 
-\textbf{Root Mean Square Error} (RMSE) o raíz del error cuadrático medio representa la raíz cuadrada del segundo momento muestral de las diferencias entre valores predichos y los valores observados. Esta medida agrega las magnitudes del error en predicciones de varios puntos de datos dentro de una sola medida de predicción.
+El \textbf{Root Mean Square Error} (RMSE) o raíz del error cuadrático medio representa la raíz cuadrada del segundo momento muestral de las diferencias entre los valores predichos y los valores observados. Esta medida agrega las magnitudes del error en predicciones de varios puntos de datos dentro de una sola medida de predicción.
 Es una medida de exactitud, para comparar errores de predicción de diferentes modelos para un conjunto de datos particular y no entre conjunto de datos ya que depende de la escala.
 
-El RMSE por definición es siempre positivo, y un valor de cero podría indicar una predicción excelente. En general, un valor pequeño siempre es mejor que uno grande. Se define por
-
+El RMSE por definición es siempre positivo, y un valor de cero podría indicar una predicción excelente. En general, un valor pequeño (cercano a cero) siempre es mejor que uno grande (en términos de las unidades del valor predicho). Se define por
 \[
-\operatorname{RMSE}=\sqrt{\frac{\sum_{t=1}^{T}\left(\hat{y}_{t}-y_{t}\right)^{2}}{T}}
+\operatorname{RMSE}=\sqrt{\frac{\sum_{t=1}^{T}\left(\hat{y}_{t}-y_{t}\right)^{2}}{T}},
 \] 
-
 donde $\hat{y}_t$ son las predicciones y $y_t$ los valores verdaderos al tiempo $t$, $T$ es la cantidad total de datos.
-Para valores predichos $\hat{y}_t$ de una regresión sobre una variable dependiente $y_t$ al tiempo $t$ con variables observadas $T$ veces, el RMSE es calculado $T$ veces como la raíz cuadrada de las medias de los cuadrados de las desviaciones
+Para valores predichos $\hat{y}_t$ de una regresión sobre una variable dependiente $y_t$ al tiempo $t$ con variables observadas $T$ veces, el RMSE es calculado $T$ veces como la raíz cuadrada de las medias de los cuadrados de las desviaciones.
 
 \subsection{MSE}
 
-\textbf{Mean Square Error} (MSE) o error cuadrático medio mide la media de los cuadrados de los errores, esto es, el promedio cuadrado de las diferencias entre los valores estimados y los valores reales. MSE es una función de riesgo correspondiente al valor esperado de la perdida cuadrática.
+El \textbf{Mean Square Error} (MSE) o error cuadrático medio mide la media de los cuadrados de los errores, esto es, el promedio cuadrado de las diferencias entre los valores estimados y los valores reales. MSE es una función de riesgo correspondiente al valor esperado de la pérdida cuadrática.
 
 Es una medida de la calidad del estimador y es derivado del cuadrado de la distancia Euclidiana, tomando siempre un valor positivo que se decrementa conforme el error se aproxima a cero.
 
-Si un vector de $n$ predicciones es generado de una muestra de $n$ puntos de datos sobre todas las variables, y $Y$ es el vector de variables observadas de la variable a ser predicha, con $\hat{Y}$ siendo los valores predichos, entonces el MSE muestral del predictor es calculado como sigue 
-
+Si un vector de $n$ predicciones es generado de una muestra de $n$ puntos de datos sobre todas las variables, y $Y$ es el vector de variables observadas de la variable a ser predicha, con $\hat{Y}$ siendo los valores predichos, entonces el MSE muestral del predictor es calculado como
 \[
-\mathrm{MSE}=\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\hat{Y}_{i}\right)^{2}
+\mathrm{MSE}=\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\hat{Y}_{i}\right)^{2},
 \]
-
-En otras palabras, el MSE es la media de los cuadrados de los errores. 
+en otras palabras, el MSE es la media de los cuadrados de los errores. 
 
 \subsection{MAE}
-\textbf{Mean Absolute Error} (MAE) o error medio absoluto es una medida de error entre observaciones emparejadas de un mismo fenómeno. Ejemplos de Y contra X incluyen la comparación de valores predichos contra observados o una técnica de medida contra otra técnica de medida. MAE se calcula como sigue
-
+El \textbf{Mean Absolute Error} (MAE) o error medio absoluto es una medida de error entre observaciones emparejadas de un mismo fenómeno. Ejemplos de Y contra X incluyen la comparación de valores predichos contra observados o una técnica de medida contra otra técnica de medida. El MAE se calcula como sigue
 \[
-\mathrm{MAE}=\frac{\sum_{i=1}^{n}\left|y_{i}-x_{i}\right|}{n}=\frac{\sum_{i=1}^{n}\left|e_{i}\right|}{n}
+\mathrm{MAE}=\frac{\sum_{i=1}^{n}\left|y_{i}-x_{i}\right|}{n}=\frac{\sum_{i=1}^{n}\left|e_{i}\right|}{n},
 \] 
-
-Esto es por tanto una media aritmética de errores absolutos $\left|e_{i}\right| = \left|y_{i}-x_{i}\right|$, donde $y_i$ es la predicción y $x_i$ el valor verdadero.
+esto es por tanto una media aritmética de errores absolutos $\left|e_{i}\right| = \left|y_{i}-x_{i}\right|$, donde $y_i$ es la predicción y $x_i$ el valor verdadero.
 
 \subsection{Theil's U}
 
 El estadístico U de Theil es una medida de exactitud relativa que compara los resultados predichos con los resultados de predecir con datos históricos mínimos. Eleva al cuadrado las predicciones para dar más peso a errores grandes y exagerados, el cual puede ayudar a eliminar métodos con errores grandes \parencite{OracleCrystalBall}.
 
-La formula para calcular el estadístico U de Theil es la siguiente
-
+La formula para calcular el estadístico U de Theil es
 \[
-U=\sqrt{\frac{\sum_{t=1}^{n-1}\left(\frac{\hat{Y}_{t+1}-Y_{t+1}}{Y_{t}}\right)^{2}}{\sum_{t=1}^{n-1}\left(\frac{Y_{t+1}-Y_{t}}{Y_{t}}\right)^{2}}}
+U=\sqrt{\frac{\sum_{t=1}^{n-1}\left(\frac{\hat{Y}_{t+1}-Y_{t+1}}{Y_{t}}\right)^{2}}{\sum_{t=1}^{n-1}\left(\frac{Y_{t+1}-Y_{t}}{Y_{t}}\right)^{2}}},
 \]
-
 donde $Y_t$ es el valor actual de un punto para un periodo de tiempo $t$, $n$ es el numero de puntos de datos y $\hat{Y_t}$ es el valor predicho.
 
 El estadístico se interpreta de la siguiente forma
@@ -76,30 +71,25 @@ El estadístico se interpreta de la siguiente forma
 
 \section{Modelos estadísticos}
 \label{modelosestadisticos}
-Los modelos estadísticos utilizan ecuaciones matemáticas para codificar información extraída de los datos. En algunas ocasiones las técnicas de modelado estadístico pueden proporcionar modelos adecuados de forma rápida e incluso pueden ofrecer mejores resultados que algunas técnicas más flexibles de aprendizaje maquina, es posible usar algunos modelos estadísticos como modelos predictivos de línea base para juzgar el rendimiento de técnicas más avanzadas \parencite{IBMDocs2021}. 
+Los modelos estadísticos utilizan ecuaciones matemáticas para codificar información extraída de los datos. En algunas ocasiones las técnicas de modelado estadístico pueden proporcionar modelos adecuados de forma rápida e incluso pueden ofrecer mejores resultados que algunas técnicas más flexibles de aprendizaje máquina, es posible usar algunos modelos estadísticos como modelos predictivos de línea base para juzgar el rendimiento de técnicas más avanzadas \parencite{IBMDocs2021}. 
 
 \subsection{Naive}
 
 Para el método de predicción Naive, simplemente hacemos que el valor predicho sea igual a la última observación, esto es,
+\[ \hat{y}_{T+h \mid T}=y_{T}. \]
 
-\[ \hat{y}_{T+h \mid T}=y_{T} \]
-
-Aquí, la notación $\hat{y}_{T+h \mid T}$ es una manera corta de estimar $y_{T+h \mid T}$ basado en el los datos $y_{1}, \ldots, y_{T}$. Este método funciona bastante bien para series de tiempo económicas y financieras \parencite{hyndmanForecastingPrinciplesPractice2018}.
+Aquí, la notación $\hat{y}_{T+h \mid T}$ es una manera corta de estimar $y_{T+h \mid T}$ basado en los datos $y_{1}, \ldots, y_{T}$. Este método funciona bastante bien para series de tiempo económicas y financieras \parencite{hyndmanForecastingPrinciplesPractice2018}.
 Se asume que las observaciones más recientes son las más importantes y que las observaciones previas no proveen de información para el futuro.
 
 \subsection{SES}
-El método Simple Exponential Smothing (SES) es apropiado para la predicción de datos sin una tendencia clara o sin un patrón estacional \parencite{hyndmanForecastingPrinciplesPractice2018}. Su concepto principal es dar mayor peso a las observaciones más recientes que a las del pasado lejano, por tanto las predicciones se realizan mediante medias ponderadas, donde los pesos disminuyen de forma exponencial a medida que las observaciones son más antiguas como se observan en la \autoref{eq:1}
-
+El método Simple Exponential Smothing (SES) es apropiado para la predicción de datos sin una tendencia clara o sin un patrón estacional \parencite{hyndmanForecastingPrinciplesPractice2018}. Su concepto principal es dar mayor peso a las observaciones más recientes que a las del pasado lejano, por tanto las predicciones se realizan mediante medias ponderadas, donde los pesos disminuyen de forma exponencial a medida que las observaciones son más antiguas como se observan en la \cref{eq:1}
 \begin{equation}
-	\hat{y}_{T+1 \mid T}=\alpha y_{T}+\alpha(1-\alpha) y_{T-1}+\alpha(1-\alpha)^{2} y_{T-2}+\cdots
+	\hat{y}_{T+1 \mid T}=\alpha y_{T}+\alpha(1-\alpha) y_{T-1}+\alpha(1-\alpha)^{2} y_{T-2}+\cdots,
 	\label{eq:1}
 \end{equation}
-
 donde $0 \leq \alpha \leq 1$ es el parámetro de suavizado y la notación $T+1|T$ es la predicción al tiempo siguiente dado el tiempo actual. La forma de media ponderada es la siguiente:
-
-\[\hat{y}_{T+1 \mid T}=\sum_{j=0}^{T-1} \alpha(1-\alpha)^{j} y_{T-j}+(1-\alpha)^{T} \ell_{0}\]
-
-dónde $\ell_{0}$ es el primer valor ajustado al tiempo $t=1$, el cual tenemos que estimar y se obtiene dependiendo del tipo de error a maximizar. El valor $(1-\alpha)^{T} \ell_{0}$ tiende a $0$ si $T$ es muy grande, así que esta forma es similar a la \autoref{eq:1}. 
+\[\hat{y}_{T+1 \mid T}=\sum_{j=0}^{T-1} \alpha(1-\alpha)^{j} y_{T-j}+(1-\alpha)^{T} \ell_{0},\]
+dónde $\ell_{0}$ es el primer valor ajustado al tiempo $t=1$, el cual tenemos que estimar y se obtiene dependiendo del tipo de error a maximizar. El valor $(1-\alpha)^{T} \ell_{0}$ tiende a $0$ si $T$ es muy grande, así que esta forma es similar a la \cref{eq:1}. 
 
 Una representación alternativa es la forma en componentes que está dada por:
 
@@ -109,13 +99,11 @@ Una representación alternativa es la forma en componentes que está dada por:
 		\textrm{Ecuación de nivel}\hspace{1cm} \ell_{t}=\alpha y_{t}+(1-\alpha) \ell_{t-1},
 	\end{array} 
 \end{equation*}
-
 donde $\ell_{t}$ es el nivel o valor de suavizado de la serie al tiempo $t$.  
 
 \subsection{Holt}
 
 En 1957 Holt creó el método que lleva su nombre extendiendo el método SES para permitir la predicción de datos con una tendencia. Este método involucra una ecuación de predicción y dos de suavizado (una para el nivel y otra para la tendencia).
-
 \begin{equation*}
 	\begin{array}{lcl} 
 		 \text {Ecuación de predicción} & \hat{y}_{t+h \mid t}=\ell_{t}+h b_{t} \\
@@ -123,12 +111,11 @@ En 1957 Holt creó el método que lleva su nombre extendiendo el método SES par
 		\text { Ecuación de tendencia } & b_{t} =\beta^{*}\left(\ell_{t}-\ell_{t-1}\right)+\left(1-\beta^{*}\right) b_{t-1},
 	\end{array} 
 \end{equation*}
-
 donde $\ell_{t}$ denota un estimador de nivel de la serie al tiempo $t$,  $b_{t}$ denota un estimador de la tendencia (pendiente) de la serie al tiempo $t$, $\alpha$ es el parámetro de suavizado para el nivel, $0 \leq \alpha \leq 1$ y $\beta^*$ es el parámetro de suavizado para la tendencia., $0 \leq \beta^* \leq 1$.
 
 Como en el método SES, $\ell_{t}$ es una media ponderada de las observaciones $y_t$, en este caso $b_t$, la ecuación de tendencia es también una media ponderada sobre $\ell_{t}-\ell_{t-1}$ y $b_t$ el estimado previo de la tendencia. 
 
-El método de Holt muestra una tendencia constante indefinida hacia el futuro tendiendo a sobre pronosticar para horizontes grandes de predicción. Dada la observación anterior Gardner y McKenzie introdujeron un parámetro de amortización que hace plana la tendencia después de un tiempo en el futuro. Se ha probado que los métodos que incluyen una tendencia amortiguada han sido más exitosos y más populares cuando las predicciones son automatizadas \parencite{hyndmanForecastingPrinciplesPractice2018}. 
+El método de Holt muestra una tendencia constante indefinida hacia el futuro tendiendo a sobreajustar para horizontes grandes de predicción. Dada la observación anterior Gardner y McKenzie introdujeron un parámetro de amortización que hace plana la tendencia después de un tiempo en el futuro. Se ha probado que los métodos que incluyen una tendencia amortiguada han sido más exitosos y más populares cuando las predicciones son automatizadas \parencite{hyndmanForecastingPrinciplesPractice2018}. 
 
 El método de Holt amortizado tiene la siguiente forma
 
@@ -136,18 +123,18 @@ El método de Holt amortizado tiene la siguiente forma
 	\begin{array}{cl} 
 	\hat{y}_{t+h \mid t} =\ell_{t}+\left(\phi+\phi^{2}+\cdots+\phi^{h}\right) b_{t} \\
 	\ell_{t} =\alpha y_{t}+(1-\alpha)\left(\ell_{t-1}+\phi b_{t-1}\right) \\
-	b_{t}=\beta^{*}\left(\ell_{t}-\ell_{t-1}\right)+\left(1-\beta^{*}\right) \phi b_{t-1} .
+	b_{t}=\beta^{*}\left(\ell_{t}-\ell_{t-1}\right)+\left(1-\beta^{*}\right) \phi b_{t-1},
 	\end{array} 
 \end{equation*}
-
 donde $\alpha$ y $\beta$ son como el método Holt y $\phi$ es el parámetro de amortización $0 \leq \phi \leq 1$.
+
 Notemos que la ecuación de predicción converge a $\ell_{T}+\phi b_{T} /(1-\phi)$ conforme $h \rightarrow \infty$. Esto significa que las predicciones a corto plazo tienen tendencia mientras que las predicciones a largo plazo son constantes.
 
 \subsection{ETS}
 
 Los modelos ETS son una familia de modelos para series de tiempo que consisten en un término de error (E), un componente de tendencia (T), y un componente estacional (S) \parencite{ETSModelsStatsmodels}.
 
-La predicción con esta familia de modelos implementa todas las combinaciones de error aditivo y multiplicativo; tendencia aditiva, multiplicativa y posiblemente amortiguado; estacionalidad aditivo multiplicativo, tratado de optimizar la verosimilitud a diferencia del modelo SES o Holt.
+La predicción con esta familia de modelos implementa todas las combinaciones de error aditivo y multiplicativo; tendencia aditiva, multiplicativa y posiblemente amortiguado; estacionalidad aditivo multiplicativo, tratando de optimizar la verosimilitud a diferencia del modelo SES o Holt.
 
 %explicar que se uso ETS con todos los parametros en automatico para ver la mejor predicción que mejora la verosimilitud.
 
@@ -155,20 +142,16 @@ La predicción con esta familia de modelos implementa todas las combinaciones de
 
 \subsubsection{Modelos autorregresivos}
 
-Un modelo autorregresivo es aquel en el que se predice la variable de interés usando una combinación lineal de valores pasados de la variable, es decir, se realiza la predicción entrenando el modelos sobre valores anteriores para predecir el valor en tiempos futuros. El termino autorregresión indica que es una regresión de la variable contra sí misma \parencite{hyndmanForecastingPrinciplesPractice2018}.
+Un modelo autorregresivo es aquel en el que se predice la variable de interés usando una combinación lineal de valores pasados de la variable, es decir, se realiza la predicción entrenando el modelos sobre valores anteriores para predecir el valor en tiempos futuros. El término autorregresión indica que es una regresión de la variable contra sí misma \parencite{hyndmanForecastingPrinciplesPractice2018}.
 
 Por tanto, un modelo autorregresivo de orden $p$ puede ser escrito como 
-
-\[ y_{t}=c+\phi_{1} y_{t-1}+\phi_{2} y_{t-2}+\cdots+\phi_{p} y_{t-p}+\varepsilon_{t} \]
-
+\[ y_{t}=c+\phi_{1} y_{t-1}+\phi_{2} y_{t-2}+\cdots+\phi_{p} y_{t-p}+\varepsilon_{t},\]
 donde $\varepsilon_{t}$ es ruido blanco y $y_{t-p}$ son valores retardados de $y_t$ como predictores. Esto es comúnmente conocido como \textbf{AR($p$)}.
 
 \subsubsection{Modelo de medias móviles}
 
 Un modelo de medias móviles usa errores de predicción pasados en una regresión, a diferencia de un modelo autorregresivo que usa valores retardados del valor a predecir \parencite{hyndmanForecastingPrinciplesPractice2018}. Esto se puede expresar como
-
-\[ y_{t}=c+\varepsilon_{t}+\theta_{1} \varepsilon_{t-1}+\theta_{2} \varepsilon_{t-2}+\cdots+\theta_{q} \varepsilon_{t-q} \]
-
+\[ y_{t}=c+\varepsilon_{t}+\theta_{1} \varepsilon_{t-1}+\theta_{2} \varepsilon_{t-2}+\cdots+\theta_{q} \varepsilon_{t-q}, \]
 donde $\varepsilon_{t}$ es ruido blanco. Esto es comúnmente conocido como \textbf{MA($q$)}, un modelo de medias móviles de orden $q$.
 
 \subsubsection{Modelos ARIMA}
@@ -176,10 +159,8 @@ donde $\varepsilon_{t}$ es ruido blanco. Esto es comúnmente conocido como \text
 ARIMA es el acrónimo para modelo autorregresivo integrado de promedio móvil (del inglés AutoRegressive Integrated Moving Average), que es un modelo que combina la diferenciación con autorregresión y medias móviles \parencite{hyndmanForecastingPrinciplesPractice2018}. En este caso la parte integrada del modelo hace referencia al converso de la diferenciación. 
 
 El modelo puede ser escrito 
-
 \[ y_{t}^{\prime}=c+\phi_{1} y_{t-1}^{\prime}+\cdots+\phi_{p} y_{t-p}^{\prime}+\theta_{1} \varepsilon_{t-1}+\cdots+\theta_{q} \varepsilon_{t-q}+\varepsilon_{t}, \]
-
-donde $y_{t}^{\prime}$ es la serie diferenciada y los predictores de la parte izquierda de la ecuación son son valores retardados de $y_t$ y $\varepsilon_t$. Llamamos a esto un modelo \textbf{ARIMA($p,d,q$)} donde
+donde $y_{t}^{\prime}$ es la serie diferenciada y los predictores de la parte izquierda de la ecuación son valores retardados de $y_t$ y $\varepsilon_t$. Llamamos a esto un modelo \textbf{ARIMA($p,d,q$)} donde
 
 \begin{itemize}
 \item $p$ = orden de la parte autorregresiva.
@@ -188,24 +169,18 @@ donde $y_{t}^{\prime}$ es la serie diferenciada y los predictores de la parte iz
 \end{itemize}
 
 El operador $B$ (backward shift) es una notación usada para trabajar con series de tiempo retardadas
-
 \[ B y_{t}=y_{t-1}. \]
-
 Si aplicamos dos veces $B$ a $y_t$ entonces desplaza los datos hacia atrás dos períodos: 
-
 \[B\left(B y_{t}\right)=B^{2} y_{t}=y_{t-2}.\]
-
 En general este operador es particularmente útil ya que puede ser tratado usando reglas algebraicas ordinarias. También tiene la propiedad de que una diferencia de orden $d$ puede ser escrita como
-
 \[
 (1-B)^{d} y_{t}.
 \]
-
 Usando el operador $B$ podemos escribir la ecuación del modelo ARIMA de la siguiente forma
 
 \begin{equation*}
 	\begin{array}{ccc}
-		\left(1-\phi_{1} B-\cdots-\phi_{p} B^{p}\right) & (1-B)^{d} y_{t}=c+\left(1+\theta_{1} B+\cdots+\theta_{q} B^{q}\right) \varepsilon_{t}\\
+		\left(1-\phi_{1} B-\cdots-\phi_{p} B^{p}\right) & (1-B)^{d} y_{t}=c+\left(1+\theta_{1} B+\cdots+\theta_{q} B^{q}\right) \varepsilon_{t}.\\
 		\hspace{0.5cm}\uparrow & \hspace{-5cm}\uparrow & \hspace{-7cm}\uparrow \\
 		\operatorname{AR}(p) & \hspace{-5cm}d\hspace{0.1cm}\text{diferencias} & \hspace{-7cm}\operatorname{MA}(q)
 	\end{array}
@@ -222,9 +197,8 @@ Otra propiedad útil es que restringe la predicción a permanecer positiva en la
 
 \subsection{Transformación Box-Cox}
 La familia de transformaciones Box-Cox que dependen del parámetro $\lambda$ se define como sigue
-
 \[
-w_{t}= \begin{cases}\log \left(y_{t}\right) & \text { if } \lambda=0 \\ \left(y_{t}^{\lambda}-1\right) / \lambda & \text { otro caso }\end{cases}
+w_{t}= \begin{cases}\log \left(y_{t}\right) & \text { si } \lambda=0 \\ \left(y_{t}^{\lambda}-1\right) / \lambda & \text { otro caso.}\end{cases}
 \]
 
 Esta transformación abarca la transformación logarítmica y de potencias, si $\lambda = 0$ entonces el logaritmo natural es usado si no se usa una trasformación de potencias con un escalamiento.
@@ -236,7 +210,7 @@ La ventaja de esta transformación es que tomando un buen valor de $\lambda$ pod
 La diferencia en series es el cambio entre observaciones consecutivas en la serie original y puede ser escrita de la siguiente manera
 
 \[
-y_{t}^{\prime}=y_{t}-y_{t-1}
+y_{t}^{\prime}=y_{t}-y_{t-1}.
 \]
 
 Una de las ventajas de esta transformación es que puede ayudar a estabilizar la media de una serie de tiempo al eliminar los cambios de nivel de la misma y, por tanto, eliminar (o reducir) la tendencia y la estacionalidad \parencite{hyndmanForecastingPrinciplesPractice2018}.
@@ -246,7 +220,7 @@ Una de las ventajas de esta transformación es que puede ayudar a estabilizar la
 La transformación diff($\log$) calcula cambios relativos, esto es, la diferencia fraccional entre dos números que, multiplicado por cien es la diferencia porcentual entre los mismos. Estos cambios son simétricos y útiles para explorar las relaciones con datos continuos y de valor positivo \parencite{coleStatisticsNotesPercentage2017}.
 
 \[
-y_{t}^{\prime}=\log{y_{t}}-\log{y_{t-1}}
+y_{t}^{\prime}=\log{y_{t}}-\log{y_{t-1}}.
 \]
 
 En finanzas esta transformación puede ser usada para analizar el cambio porcentual de la tendencia.
@@ -263,11 +237,9 @@ Por otro lado, un modelo de aprendizaje máquina es una representación matemát
 El modelo de regresión sobre series de tiempo (RTS) es una variación de los modelos de regresión lineal que permite agregar variables para la tendencia y temporada \parencite{TslmFitLinear}. 
 
 La forma general de un modelo de regresión lineal multiple es la siguiente:
-
 \[
-y_{t}=\beta_{0}+\beta_{1} x_{1, t}+\beta_{2} x_{2, t}+\cdots+\beta_{k} x_{k, t}+\varepsilon_{t}
+y_{t}=\beta_{0}+\beta_{1} x_{1, t}+\beta_{2} x_{2, t}+\cdots+\beta_{k} x_{k, t}+\varepsilon_{t},
 \]
-
 donde $y$ es la variable a predecir y $x_{1}, \ldots, x_{k}$ son las $k$ variables predictoras.
 Los coeficientes $\beta_{1}, \ldots, \beta_{k}$ miden el efecto de cada predictor después de tener en cuenta los efectos de todos los demás predictores del modelo.
 
@@ -282,25 +254,23 @@ Las suposiciones implícitas que se hacen al aplicar un modelo de regresión lin
 
 Otra suposición importante es que cada predictor no sea una variable aleatoria ya que deben ser datos reproducibles. Con datos observacionales (como la mayoría de datos financieros) no es posible controlar el comportamiento de los datos ya que simplemente son observados, por tanto se hace la suposición de que no son una variable aleatoria y pueden ser controlados para hacer regresión sobre ellos \parencite{hyndmanForecastingPrinciplesPractice2018}.
 
-La variable tendencia del modelo RTS puede ser modelada usando $x_{1, t}=t$ como predictor.
-
+La variable tendencia del modelo RTS puede ser modelada usando $x_{1, t}=t$ como predictor,
 \[
-y_{t}=\beta_{0}+\beta_{1} t+\varepsilon_{t}
+y_{t}=\beta_{0}+\beta_{1} t+\varepsilon_{t},
 \]
-
 donde $t=1,...,T$. Por otra parte la temporada se modela agregando variables ficticias para codificar categorías. Cada categoría corresponde a una ventana de tiempo. Estas variables ficticias miden el efecto de la categoría relativa a la categoría omitida \parencite{hyndmanForecastingPrinciplesPractice2018}. 
 
-\subsection{Maquinas de vectores de soporte (SVM)}
+\subsection{Máquinas de vectores de soporte (SVM)}
 
 Del inglés Support Vector Machines (SVM) es un algoritmo de aprendizaje máquina supervisado que se basa en separar los puntos de los datos usando hiperplanos tal que la distancia de separación es máxima. Los vectores de soporte son los puntos más cercanos al hiperplano para calcular su posición \parencite{mudassirTimeseriesForecastingBitcoin2020}.
 Para el cálculo de los SVM se minimiza la función objetivo \ref{svm} sujeta a la condición \ref{svm_restric}.
 
 \begin{equation}
-	\|\mathbf{w}\|^{2}+C \sum_{i=1}^{n} \zeta_{i}
+	\|\mathbf{w}\|^{2}+C \sum_{i=1}^{n} \zeta_{i}.
 	\label{svm}
 \end{equation}
 
-En la \autoref{svm} la variable de holgura es $\zeta_{i}$, la penalización es $C$ y $\mathbf{w}$ es la normal al hiperplano.
+En la condición \ref{svm} la variable de holgura es $\zeta_{i}$, la penalización es $C$ y $\mathbf{w}$ es la normal al hiperplano.
 
 \begin{equation}
 	y_{i}\left(\mathbf{w} \cdot \phi\left(x_{i}\right)+b \right) \geq 1-\zeta_{i}, \quad \text { con } \zeta_{i} \geq 0.
@@ -309,23 +279,21 @@ En la \autoref{svm} la variable de holgura es $\zeta_{i}$, la penalización es $
 
 En la restricción \ref{svm_restric} $x_i$ y $y_i$ son puntos en los datos y $\phi(x_i)$ son los datos transformados. 
 
-En datos no lineales generalmente no es posible encontrar un hiperplano de separación lineal, para solucionar este problema usamos el truco del kernel. La idea básica detrás de esto es que cuando el conjunto de datos no es separable en la dimensión actual, entonces agregamos otra dimensión y probar si los datos son separables.
+En datos no lineales generalmente no es posible encontrar un hiperplano de separación lineal, para solucionar este problema se usa el truco del kernel. La idea básica detrás de esto es que cuando el conjunto de datos no es separable por un hiperplano lineal en la dimensión actual, entonces se agrega una dimensión extra a los datos y se prueba si los datos son separables.
 Estas transformaciones que nos ayudan a agregar niveles de diferencia a los datos son llamadas kernels. Los más populares son los siguientes: kernel polinomial, kernel gaussiano, función base radial (RBF), kernel Laplace RBF, kernel sigmoide, anove RBF, etc.  
 
 Análogamente existe una versión de regresión del algoritmo SVM que consiste en resolver el siguiente problema
-
 \[
 \begin{array}{r@{}r@{}r@{}l}
 	\text{Minimizar} \quad \frac{1}{2}\|w\|^{2} \\[\jot]
-	\text{sujeto a}\qquad \left|y_{i}-\left\langle w, x_{i}\right\rangle-b\right| \leq \varepsilon \\
+	\text{sujeto a}\qquad \left|y_{i}-\left\langle w, x_{i}\right\rangle-b\right| \leq \varepsilon, \\
 	
 \end{array}
 \]
-
 donde $x_i$ es una muestra de entrenamiento con valor objetivo $y_i$. Aquí $\left\langle w, x_{i}\right\rangle+b$ es la predicción y $\epsilon$ es un parámetro libre que sirve como umbral. Todas las predicciones tienen que estar dentro de un rango $\epsilon$ de predicciones verdaderas. 
 
 \subsection{Bosques Aleatorios}
-El algoritmo de bosque aleatorio o random forest combina la salida de múltiples arboles de decisión tal que cada árbol depende de los valores de un vector aleatorio probado independientemente y con la misma distribución para cada uno de estos y así alcanzar un solo resultado. Es usado para problemas de regresión y clasificación \parencite{WhatRandomForest2021}.
+El algoritmo de bosque aleatorio o random forest combina la salida de múltiples árboles de decisión tal que cada árbol depende de los valores de un vector aleatorio probado independientemente y con la misma distribución para cada uno de estos y así alcanzar un solo resultado. Este algoritmo es usualmente usado para problemas de regresión y clasificación \parencite{WhatRandomForest2021}.
 
 \subsubsection{Árboles de decisión}
 Un árbol de decisión divide una pregunta inicial en subpreguntas para llegar a una decisión final. Observaciones que se ajusten a un criterio seguirán una rama "sí", y aquellas que no, seguirán un camino distinto.
@@ -340,81 +308,67 @@ En el método bagging, que es la base del algoritmo random forest, se selecciona
 
 \subsubsection{Algoritmo de bosques aleatorios}
 
-El algoritmo random forest es una exención del método baggin ya que utiliza tanto el baggig como la selección aleatoria de características para crear un bosque no correlacionado de arboles de decisión.
-La aleatoriedad de características, también conocida como bagging de características o ''el método del subespacio aleatorio'' es la diferencia clave entre los bosques aleatorios y los arboles de decisión ya que mientras los arboles de decisión consideran todas las posibles divisiones de características, los bosques aleatorios solo seleccionan un subconjunto de ellas.
+El algoritmo random forest es una exención del método baggin ya que utiliza tanto el baggig como la selección aleatoria de características para crear un bosque no correlacionado de árboles de decisión.
+La aleatoriedad de características, también conocida como bagging de características o ``el método del subespacio aleatorio'' es la diferencia clave entre los bosques aleatorios y los árboles de decisión ya que mientras los árboles de decisión consideran todas las posibles divisiones de características, los bosques aleatorios solo seleccionan un subconjunto de ellas.
 
 
 \subsection{Long Short-term memory}
 
 Long Short-term memory (LSTM) constituye un caso especial de una red neuronal convolucional, la cual fue propuesta para modelar dependencias a corto y largo plazo. Este modelo de deep learnig es especialmente útil para modelado y predicción de datos de series de tiempo \parencite{mudassirTimeseriesForecastingBitcoin2020}.
 Una unidad LSTM consiste en una memoria de celda que almacena información y es actualizada por tres puertas principales: la puerta de entrada, la puerta de olvido y la puerta de salida \parencite{chenBitcoinPricePrediction2020}.
-En cada paso $t$ la puerta de entrada $i_t$ determina que información es agregada a la celda de estado $S_t$ (memoria), la puerta de olvido $f_t$ determina que información es desechada de la celda de estado mediante la decisión de una función de transformación en la capa de la puerta de olvido, mientras que la puerta de salida $o_t$ determina qué información del estado de la celda se utilizará como salida \parencite{livierisEnsembleDeepLearning2020}.
+En cada paso $t$ la puerta de entrada $i_t$ determina que información es agregada a la celda de estado $S_t$ (memoria), la puerta de olvido $f_t$ determina que información es desechada de la celda de estado mediante la decisión de una función de transformación en la capa de la puerta de olvido, mientras que la puerta de salida $o_t$ determina que información del estado de la celda se utilizará como salida \parencite{livierisEnsembleDeepLearning2020}.
 En un bloque LSTM, $C_{t-1}$ es la memoria o celda de estado del bloque anterior, $h_{t-1}$ es la salida del bloque anterior, $X_t$ es el vector de entrada, $C_t$  es la memoria o celda de estado del bloque presente y  $h_{t}$ es la salida del bloque actual.
 Las puertas y celdas de estado LSTM están dadas por las ecuaciones \ref{LSTM1} a \ref{LSTM2}.
 
 La función del vector de activación de la puerta de olvido se define como sigue
-
 \begin{equation}
-	f_{t}=\sigma_{g}\left(W_{f} x_{t}+U_{f} h_{t-1}+b_{f}\right)
+	f_{t}=\sigma_{g}\left(W_{f} x_{t}+U_{f} h_{t-1}+b_{f}\right),
 	\label{LSTM1}
 \end{equation}
-
 donde $W$ y $U$ son matrices ponderadas, $b$ es el vector de sesgo y $\sigma_{g}$ es la función sigmoide. 
 
 La función del vector de activación de la puerta de entrada o activación es la siguiente
-
 \begin{equation}
 	i_{t}=\sigma_{g}\left(W_{i} x_{t}+U_{i} h_{t-1}+b_{i}\right).
 \end{equation}
-
 También se tiene el vector de activación $o_t$ de la puerta de salida, que se muestra en la siguiente ecuación
-
 \begin{equation}
 	o_{t}=\sigma_{g}\left(W_{o} x_{t}+U_{o} h_{t-1}+b_{o}\right),
 \end{equation}
-
-aquí el vector de activación de la celda de entrada está dada por $c_t$ y $\sigma_{h}$ que es la función tangente hiperbólica como se muestra a continuación.
-
+aquí el vector de activación de la celda de entrada está dada por $c_t$ y $\sigma_{h}$ que es la función tangente hiperbólica como se muestra a continuación
 \begin{equation}
-	\tilde{c}_{t}=\sigma_{h}\left(W_{c} x_{t}+U_{c} h_{t-1}+b_{c}\right)
+	\tilde{c}_{t}=\sigma_{h}\left(W_{c} x_{t}+U_{c} h_{t-1}+b_{c}\right).
 \end{equation}
-
 Por otro lado $c_t$ es el estado de la celda o vector memoria
-
 \begin{equation}
-	c_{t}=f_{t} \otimes c_{t-1}+i_{t} \otimes \tilde{c}_{t},
+	c_{t}=f_{t} \otimes c_{t-1}+i_{t} \otimes \tilde{c}_{t}.
 \end{equation}
-
-por último $h_t$ es el vector de salida del bloque LSTM o el vector de estado oculto. 
-
+Por último $h_t$ es el vector de salida del bloque LSTM o el vector de estado oculto 
 \begin{equation}
-	h_{t}=o_{t} \otimes \sigma_{h}\left(c_{t}\right)
+	h_{t}=o_{t} \otimes \sigma_{h}\left(c_{t}\right).
 	\label{LSTM2}
 \end{equation}
-
 
 
 \subsection{Red Neuronal Convolucional}
 Una red neuronal convolucional o convolutional neural network (CNN) es una red neuronal de aprendizaje profundo diseñada para procesar arreglos estructurados de datos, tales como imágenes. Las redes neuronales convolucionales son actualmente el estado del arte de varias aplicaciones visuales como clasificación de imágenes \parencite{ConvolutionalNeuralNetwork2019}.
 
-Las redes neuronales convolucionales son muy buenas captando patrones de la imagen de entrada, tales como líneas, gradientes, círculos, incluso ojos y caras. A diferencia de los primeros algoritmos de visión por computadora, las redes neuronales convolucionales pueden operar directamente sobre una imagen pura, sin modificar. El poder de estas redes viene de una especia de capa especial llamada la capa de convolución \parencite{ConvolutionalNeuralNetwork2019}.
+Las redes neuronales convolucionales son muy buenas captando patrones de la imagen de entrada, tales como líneas, gradientes, círculos, incluso ojos y caras. A diferencia de los primeros algoritmos de visión por computadora, las redes neuronales convolucionales pueden operar directamente sobre una imagen pura, sin modificar. El poder de estas redes viene de una especie de capa especial llamada la capa de convolución \parencite{ConvolutionalNeuralNetwork2019}.
 
-Podemos visualizar una capa de convolución como varias pequeñas plantillas cuadradas llamadas kernels convolucionales, las cuales se deslizan sobre la imagen y buscan por patrones. Donde esa parte de la imagen coincide con el patrón del kernel, el kernel retorna un valor grande positivo, y cuando no coincide retorna cero o un valor muy pequeño.
+Podemos visualizar una capa de convolución como varias plantillas pequeñas cuadradas llamadas kernels convolucionales, las cuales se deslizan sobre la imagen y buscan patrones. Donde esa parte de la imagen coincide con el patrón del kernel, el kernel retorna un valor grande positivo, y cuando no coincide retorna cero o un valor muy pequeño.
 
 Para llevar a cabo la convolución, deslizamos el kernel de convolución sobre la imagen. En cada posición, multiplicamos cada elemento del kernel de convolución por el elemento de la imagen que cubre y sumamos los resultados. Supongamos que el kernel es de $3\times3$ y la imagen es de $9\times 9$ entonces la imagen resultante es de $7\times 7$, ya que el kernel solo puede ser deslizado sobre la imagen siete veces.
 
-En práctica, un kernel de convolución contiene pesos y sesgos, similar a la fórmula de regresión lineal. Así, un pixel de entrada es multiplicado por un peso y entonces un sesgo es agregado.
+En la práctica, un kernel de convolución contiene pesos y sesgos, similar a la fórmula de regresión lineal. Así, un pixel de entrada es multiplicado por un peso y entonces un sesgo es agregado.
 
 Después de que una imagen pase a través de una capa de convolución, la salida normalmente pasa a través de una función de activación. Funciones de activación comunes incluyen la función sigmoide
 
 \[
-S(x)=\frac{1}{1+e^{-x}}
+S(x)=\frac{1}{1+e^{-x}},
 \]
-
 y la función ReLu, también conocida como la unidad lineal rectificadora
-
 \[
-f(x)=\max (0, x)
+f(x)=\max (0, x).
 \]
  
 La función de activación tiene el efecto de agregar no linealidad a la red neuronal convolucional. Si la función de activación no estuviera presente, todas las capas de la red neuronal podrían condensarse en una sola matriz de multiplicación. En el kernel anterior, aplicar una función de activación ReLu podría significar un mayor contraste.
@@ -424,59 +378,51 @@ Una red neuronal convolucional básica puede ser vista como una serie de capas c
 
 \subsection{K-Means}
 
-El algoritmo K-means es un algoritmo de partición con la meta de asignar a cada punto de dato un único agrupamiento. Divide un conjunto de $n$ muestras $X$ dentro de $k$ agrupamientos disjuntos $c_i$, $i=1,...,k$, cada uno descrito por la media $\mu_i$ de las muestras en el agrupamiento. Las medias son comúnmente llamados centroides del agrupamiento. El algoritmo K-means asume que todos los $k$ grupos tienen la misma varianza \parencite{igualIntroductionDataScience2017}.
+El algoritmo K-means es un algoritmo de partición con la meta de asignar a cada punto de dato un único agrupamiento. Divide un conjunto de $n$ muestras $X$ dentro de $k$ agrupamientos disjuntos $c_i$, $i=1,...,k$. Cada uno descrito por la media $\mu_i$ de las muestras en el agrupamiento. Las medias son comúnmente llamados centroides del agrupamiento. El algoritmo K-means asume que todos los $k$ grupos tienen la misma varianza \parencite{igualIntroductionDataScience2017}.
 
-El agrupamiento K-means resuelve el siguiente problema de minimización. 
-
+El agrupamiento K-means resuelve el siguiente problema de minimización 
 \begin{equation}
-	\arg \min _{c} \sum_{j=1}^{k} \sum_{x \in c_{j}} d\left(x, \mu_{j}\right)=\arg \min _{c} \sum_{j=1}^{k} \sum_{x \in c_{j}}\left\|x-\mu_{j}\right\|_{2}^{2}
+	\arg \min _{c} \sum_{j=1}^{k} \sum_{x \in c_{j}} d\left(x, \mu_{j}\right)=\arg \min _{c} \sum_{j=1}^{k} \sum_{x \in c_{j}}\left\|x-\mu_{j}\right\|_{2}^{2},
 \end{equation}
-
 donde $c_i$ es el conjunto de puntos que pertenecen al agrupamiento $i$ y $\mu_i$ es el centro de la clase $c_i$. La función objetivo del agrupamiento K-means usa el cuadrado de la distancia Euclidiana $d\left(x, \mu_{j}\right)=\left\|x-\mu_{j}\right\|^{2}$ que también es conocida como inercia.
 
 
 \section{Análisis de regresión}
-La regresión esta relacionada a como hacemos predicciones de cantidades del mundo real, las predicciones hacen referencia a preguntas que tienen una estructura en común: se preguntan por una respuesta que puede ser expresada como una combinación de una o más variables (independientes) que también son llamadas covariables o predictores. El papel de la predicción es construir un modelo para predecir la respuesta de las variables y que puede ser útil en diferentes tareas, (1) analizar el comportamiento de los datos, (2) predecir los valores de los datos y (3) encontrar variables importantes para el modelo \parencite{igualIntroductionDataScience2017}.
+La regresión está relacionada a como hacemos predicciones de cantidades del mundo real, las predicciones hacen referencia a preguntas que tienen una estructura en común: se preguntan por una respuesta que puede ser expresada como una combinación de una o más variables (independientes) que también son llamadas covariables o predictores. El papel de la predicción es construir un modelo para predecir la respuesta de las variables y que puede ser útil en las diferentes tareas listadas \parencite{igualIntroductionDataScience2017}, 
+\begin{enumerate}
+	\item Analizar el comportamiento de los datos.
+	\item Predecir los valores de los datos.
+	\item Encontrar variables importantes para el modelo.
+\end{enumerate}
 
 \subsection{Factor de inflación de varianza}
 
 En mínimos cuadrados ordinarios la multicolinealidad existe cuando dos o más variables independientes demuestran tener relación lineal entre ellas. El mayor problema de la multicolinealidad es que los estimadores de los coeficientes de las variable de los mínimos cuadrados tienen varianzas muy grandes \parencite{mansfieldDetectingMulticollinearity1982}. Ya que las varianzas están infladas los coeficientes de la regresión no son confiables, por tanto
-estos pueden no ser estadisticamente significantes.  El VIF es un indicador que proporciona al usuario una medida de cuántas veces mayor será la Var($\beta_j$) para los datos multicolineales que para los datos ortogonales (donde cada VIF es igual a 1) \parencite{mansfieldDetectingMulticollinearity1982}. Entonces consideremos el siguiente modelo lineal con $k$ variables independientes 
-
+estos pueden no ser estadísticamente significantes.  El VIF es un indicador que proporciona al usuario una medida de cuántas veces mayor será la Var($\beta_j$) para los datos multicolineales que para los datos ortogonales (donde cada VIF es igual a 1) \parencite{mansfieldDetectingMulticollinearity1982}. Entonces consideremos el siguiente modelo lineal con $k$ variables independientes 
 \[
-Y=\beta_{0}+\beta_{1} X_{1}+\beta_{2} X_{2}+\ldots+\beta_{k} X_{k}+\varepsilon
+Y=\beta_{0}+\beta_{1} X_{1}+\beta_{2} X_{2}+\ldots+\beta_{k} X_{k}+\varepsilon,
 \]
-
 entonces,
-
 \[
-\text{VIF}(\beta_j) = \text{Var}(\beta_j) = \frac{1}{1-R_{j}^{2}}
+\text{VIF}(\beta_j) = \text{Var}(\beta_j) = \frac{1}{1-R_{j}^{2}},
 \]
-
-donde $R^2$ es el coeficiente de determinación de la regresión de $X_j$ sobre las otras covariables. Si el VIF no es mayor que uno, entonces la multicolinealidad no es un problema.
+donde $R^2_j$ es el coeficiente de determinación de la regresión de $X_j$ sobre las otras covariables. Si el VIF no es mayor que uno, entonces la multicolinealidad no es un problema.
 
 \subsection{Mínimos cuadrados ordinarios}
 
-Mínimos cuadrados ordinarios es un método estadístico para estimar parámetros desconocidos en un modelo de regresión lineal \parencite{juarez4toColoquioDepartamento2010}. Entonces sea $x$ una variable independiente y sea $y(x)$ una función desconocida de $x$ la cual queremos aproximar. Suponiendo que tenemos $m$ observaciones
-
+Mínimos cuadrados ordinarios es un método estadístico para estimar parámetros desconocidos en un modelo de regresión lineal \parencite{juarez4toColoquioDepartamento2010}. Entonces, sea $x$ una variable independiente y sea $y(x)$ una función desconocida de $x$ la cual queremos aproximar. Suponiendo que tenemos $m$ observaciones
 \[
-\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \ldots,\left(x_{m}, y_{m}\right)
+\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \ldots,\left(x_{m}, y_{m}\right),
 \]
-
 donde $y_i \sim y(x_i)$, $i=1,...,m$, la idea es modelar $y(x)$ por medio de una combinación de $n$ funciones base $\phi_1(x),\phi_2(x),...\phi_n(x)$. En el caso lineal suponemos que la función se ajusta a los datos en una combinación lineal de la forma 
-
 \[
-y(x)=c_{1} \phi_{1}(x)+c_{2} \phi_{2}(x)+\ldots+c_{n} \phi_{n}(x)
+y(x)=c_{1} \phi_{1}(x)+c_{2} \phi_{2}(x)+\ldots+c_{n} \phi_{n}(x).
 \]
-
 Entonces, los datos deben satisfacer de manera aproximada
-
 \[
-y_{i}=c_{1} \phi_{1}\left(x_{i}\right)+c_{2} \phi_{2}\left(x_{i}\right)+\ldots+c_{n} \phi_{n}\left(x_{i}\right), \quad i=1,2, \ldots, m
+y_{i}=c_{1} \phi_{1}\left(x_{i}\right)+c_{2} \phi_{2}\left(x_{i}\right)+\ldots+c_{n} \phi_{n}\left(x_{i}\right), \quad i=1,2, \ldots, m.
 \]
-
 La ecuación anterior puede expresarse de forma matricial como sigue
-
 \[
 \left[\begin{array}{cccc}
 	\phi_{1}\left(x_{1}\right) & \phi_{2}\left(x_{1}\right) & \ldots & \phi_{n}\left(x_{1}\right) \\
@@ -494,58 +440,45 @@ La ecuación anterior puede expresarse de forma matricial como sigue
 	\vdots \\
 	y_{m}
 \end{array}\right]
-\]
-
+.\]
 El enfoque de mínimos cuadrados consiste en buscar aquel vector de coeficientes $c$ que minimice el residual $r=y-Ac$. Entonces, el problema consiste en resolver 
-
 \[
-\min _{c \in \mathbb{R}^{n}}\|A c-y\|^{2}
+\min _{c \in \mathbb{R}^{n}}\|A c-y\|^{2}.
 \]
-
 Es decir, para encontrar el ajuste de mínimos cuadrados debemos encontrar el vector de coeficientes $c=(c_1,...,c_n)^T$ que minimiza la suma de los cuadrados:
-
 \[
 \min _{c \in \mathbb{R}^{n}} \sum_{i=1}^{m}\left(c_{1} \phi_{1}\left(x_{i}\right)+c_{2} \phi_{2}\left(x_{i}\right)+\cdots+c_{n} \phi_{n}\left(x_{i}\right)-y_{i}\right)^{2}.
 \]
-
-%zotero://select/library/items/I2TMXUMY
-%zotero://select/library/items/PQ8TC77F
 \section{Análisis de componentes principales}
 
 La idea principal del análisis de componentes principales (PCA) es reducir la dimensionalidad de un conjunto de datos con variables que están interrelacionados entre sí, mientras retienen la mayor variación posible. Esto se logra transformándolas a un nuevo conjunto de variables, los componentes principales (PCs), las cuales no están relacionadas y están ordenadas de tal forma que las primeras tienen la mayor variación presente de todas las variables originales \parencite{jolliffePrincipalComponentAnalysis2002}.
 
 Supongamos que $x$ es un vector de $p$ variables aleatorias y que la varianza de las $p$ variables aleatorias y la estructura de la covarianza o correlación entre las $p$ variables es de interés. El primer paso del PCA es buscar una función lineal $\boldsymbol{\alpha}_1^\prime \boldsymbol{x}$ de los elementos de $\boldsymbol{x}$ que tenga máxima varianza, donde $\boldsymbol{\alpha}_{1}$ es un vector de $p$ constantes $\alpha_{11},\alpha_{12},...,\alpha_{1p}$ y $\prime$ denota la traspuesta, así que
-
 \[
-\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{x}=\alpha_{11} x_{1}+\alpha_{12} x_{2}+\cdots+\alpha_{1 p} x_{p}=\sum_{j=1}^{p} \alpha_{1 j} x_{j}
+\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{x}=\alpha_{11} x_{1}+\alpha_{12} x_{2}+\cdots+\alpha_{1 p} x_{p}=\sum_{j=1}^{p} \alpha_{1 j} x_{j}.
 \] 
 
-Consideremos de momento que el vector de variables aleatorias $\boldsymbol{x}$ tiene una matriz de covarianza conocida $\boldsymbol{\Sigma}$, esta es la matriz cuya $(i,j)$-ésimos elementos es la covarianza conocida entre el $i$-ésimo y $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i \neq j$ y la varianza del $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i = j$. Resulta que para $k=1,2,..,p$ el $k$-ésimo PC está dado por $z_k = \boldsymbol{\alpha_k^\prime} \boldsymbol{x}$ donde $\boldsymbol{\alpha_k}$ es un eigenvector de $\boldsymbol{\Sigma}$ correspondiente al $k$-ésimo eigenvalor más grande $\lambda_k$. Aún más, si $\boldsymbol{\alpha_k^\prime}$ es escogido de tal forma que tiene longitud unidad $(\boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1)$, entonces la var$(z_k)=\lambda_k$, donde var$(z_k)$ denota la varianza de $z_k$.
+Consideremos de momento que el vector de variables aleatorias $\boldsymbol{x}$ tiene una matriz de covarianza conocida $\boldsymbol{\Sigma}$, esta es la matriz cuyos $(i,j)$-ésimos elementos es la covarianza conocida entre el $i$-ésimo y $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i \neq j$ y la varianza del $j$-ésimo elemento de $\boldsymbol{x}$ cuando $i = j$. Resulta que para $k=1,2,..,p$ el $k$-ésimo PC está dado por $z_k = \boldsymbol{\alpha_k^\prime} \boldsymbol{x}$ donde $\boldsymbol{\alpha_k}$ es un eigenvector de $\boldsymbol{\Sigma}$ correspondiente al $k$-ésimo eigenvalor más grande $\lambda_k$. Aún más, si $\boldsymbol{\alpha_k^\prime}$ es escogido de tal forma que tiene longitud unidad $(\boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1)$, entonces la var$(z_k)=\lambda_k$, donde var$(z_k)$ denota la varianza de $z_k$.
 
-Para derivar la forma de los PC, consideremos primero $\boldsymbol{\alpha_k^\prime}$ donde $\boldsymbol{\alpha_k}$ maximiza var$(\boldsymbol{\alpha_k^\prime})= \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}$. Entonces el problema a resolver es el siguiente:
+Para derivar la forma de los componentes principales, consideremos primero $\boldsymbol{\alpha_k^\prime}$ donde $\boldsymbol{\alpha_k}$ maximiza $\mbox{var$(\boldsymbol{\alpha_k^\prime})= \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}$}$. Entonces el problema a resolver es el siguiente:
 \[
 \begin{array}{r@{}r@{}r@{}l}
 	\text{Maximizar} \quad \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1} \\[\jot]
-	\text{sujeto a}\qquad \boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1 \\
+	\text{sujeto a}\qquad \boldsymbol{\alpha_k^\prime}\boldsymbol{\alpha_k}=1. \\
 	
 \end{array}
 \]
-
 Usando la técnica de los multiplicadores de Lagrange obtenemos que el eigenvalor $\lambda$ de $\boldsymbol{\Sigma}$ con $\boldsymbol{\alpha}_{1}$ su correspondiente eigenvector. Para decidir cual de los $p$ eigenvectores da $\boldsymbol{\alpha}_{1}^{\prime}\boldsymbol{x}$ con máxima varianza, notemos que la cantidad a ser maximizada es la siguiente
-
 \[
 \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}=\boldsymbol{\alpha}_{1}^{\prime} \lambda \boldsymbol{\alpha}_{1}=\lambda \boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\alpha}_{1}=\lambda,
 \]
-
 así $\lambda$ debe ser tan grande como sea posible. Por tanto, $\boldsymbol{\alpha}_{1}$ es el eigenvector correspondiente al eigenvalor más grande de $\boldsymbol{\Sigma}$ y $\operatorname{var}\left(\boldsymbol{\alpha}_{1}^{\prime} \mathbf{x}\right)=\boldsymbol{\alpha}_{1}^{\prime} \boldsymbol{\Sigma} \boldsymbol{\alpha}_{1}=\lambda_{1}$, es el eigenvalor más grande.
 En general el $k$-ésimo PC de $\boldsymbol{x}$ es $ \boldsymbol{\alpha_k^\prime} \boldsymbol{x}$ y var$(\boldsymbol{\alpha_k^\prime}\boldsymbol{x})=\lambda_k$ donde $\lambda_k$ es el $k$-ésimo eigenvalor más grande de $\boldsymbol{\Sigma}$, y $\boldsymbol{\alpha_k}$ es el correspondiente eigenvector.
 
-Los vectores de los coeficientes $\boldsymbol{\alpha}_{3}, \boldsymbol{\alpha}_{4}, \ldots, \boldsymbol{\alpha}_{p}$, son los eigenvectores de $\boldsymbol{\Sigma}$ correspondiente a $\lambda_{1},\lambda_{2},...,\lambda_{p}$.
-
+Los vectores de los coeficientes $\boldsymbol{\alpha}_{3}, \boldsymbol{\alpha}_{4}, \ldots, \boldsymbol{\alpha}_{p}$, son los eigenvectores de $\boldsymbol{\Sigma}$ correspondiente a $\lambda_{1},\lambda_{2},...,\lambda_{p}$,
 \[
-\operatorname{var}\left[\boldsymbol{\alpha}_{k}^{\prime} \mathbf{x}\right]=\lambda_{k} \quad \text { para } k=1,2, \ldots, p
+\operatorname{var}\left[\boldsymbol{\alpha}_{k}^{\prime} \mathbf{x}\right]=\lambda_{k} \quad \text { para } k=1,2, \ldots, p.
 \]
-
 La derivación de los coeficientes PC y varianzas como eigenvectores y eigenvalores de una matriz de covarianza es estándar. 
 
 \section{Agrupamiento jerárquico}
@@ -560,7 +493,7 @@ Los resultados de un agrupamiento jerárquico son usualmente presentados en un d
 
 En orden de decidir qué grupos deberían ser combinados, o cuando un grupo debería ser dividido, una medida de disimilitud entre conjuntos de observaciones es requerida y un criterio de enlace el cual especifica la disimilitud de conjuntos como una función de las distancias dos a dos entre observaciones en los conjuntos.
 
-Algunas métricas usualmente usadas para el agrupamiento jerárquico son las mostradas en la \autoref{tab:metricsDendrograma}.
+Algunas métricas usualmente usadas para el agrupamiento jerárquico son las mostradas en la \cref{tab:metricsDendrograma}.
 
 \begin{table}[h]
 	\centering
@@ -578,18 +511,14 @@ Algunas métricas usualmente usadas para el agrupamiento jerárquico son las mos
 		\hline 
 		Distancia de Mahalanobis & $\sqrt{(a-b)^{\top} S^{-1}(a-b)}$ donde $S$ es la matriz de covarianza \\
 		\hline 
-		Similitud coseno & $\frac{a \cdot b}{\|a\| b \|}$ \\
+		Similitud coseno & $\frac{a \cdot b}{\|a\| \|b\|}$ \\
 		\bottomrule
 		\hline
 	\end{tabular}
 	\caption{Distancias usuales entre conjuntos de observaciones.}
 	\label{tab:metricsDendrograma}
 \end{table}
-
-
-
-El criterio de enlace determina la distancia entre conjuntos de observaciones como una función de las distancias entre observaciones dos a dos. Algunos criterios de enlace entre dos conjuntos de observaciones A y B frecuentemente usados son las mostradas en \autoref{tab:critEnlance}
-
+El criterio de enlace determina la distancia entre conjuntos de observaciones como una función de las distancias entre observaciones dos a dos. Algunos criterios de enlace entre dos conjuntos de observaciones A y B frecuentemente usados son las mostradas en \cref{tab:critEnlance}
 \begin{table}[h]
 	\centering
 	\begin{tabular}{m{8cm} m{8cm}  }
@@ -610,72 +539,62 @@ El criterio de enlace determina la distancia entre conjuntos de observaciones co
 		\bottomrule
 		\hline
 	\end{tabular}
-	\caption{Distancias usuales entre conjuntos de observaciones.}
+	\caption{Criterios de enlace usuales entre conjuntos de observaciones.}
 	\label{tab:critEnlance}
 \end{table}
-
-donde $d$ es la métrica escogida. Otros criterios de enlace incluyen pueden ser: la suma de todas las varianzas del intragrupo, el decrecimiento en la varianza para los grupos que están siendo mezclados (criterio de Ward) o la probabilidad de que grupos candidatos se produzcan desde la misma función de distribución (V-enlace).
+donde $d$ es la métrica escogida. Otros criterios de enlace pueden ser: la suma de todas las varianzas del intragrupo, el decrecimiento en la varianza para los grupos que están siendo mezclados (criterio de Ward) o la probabilidad de que grupos candidatos se produzcan desde la misma función de distribución (V-enlace).
 
 \section{Análisis topológico de datos}
 
-El análisis topológico de datos es una herramienta matemática para estudiar la estructura y forma de los datos, esta involucra elementos de topología algebraica, cómputo, y probabilidad y estadística. 
-La entrada de este método es un conjunto de datos de nube de puntos, al cual, una forma geométrica representada por un complejo simplicial (que explicado en la \autoref{funda_mental_complejoSim}) es asociada. La información topológica de esa forma es extraída en términos de homología de grupos. La salida del método es una diagrama de persistencia o panorama de persistencia, el cual representa un resumen de todas las características topológicas mostradas por los datos clasificados por un parámetro escalar. Los panoramas de persistencia son elementos de cierto espacio de Banach de funciones lineales a trozos, por tanto tienen normas asociadas \parencite{gideaTopologicalRecognitionCritical2020}.
+El análisis topológico de datos es una herramienta matemática para estudiar la estructura y forma de los datos, esta involucra elementos de topología algebraica, cómputo, probabilidad y estadística. 
+La entrada de este método es un conjunto de datos de nube de puntos, al cual, una forma geométrica representada por un complejo simplicial es asociada, como se explica en la  \cref{funda_mental_complejoSim}. La información topológica de esa forma es extraída en términos de homología de grupos. La salida del método es un diagrama de persistencia o panorama de persistencia, el cual representa un resumen de todas las características topológicas mostradas por los datos clasificados por un parámetro escalar. Los panoramas de persistencia son elementos de cierto espacio de Banach de funciones lineales a trozos, por tanto tienen normas asociadas \parencite{gideaTopologicalRecognitionCritical2020}.
 
 El foco en criptomonedas es motivado por las propiedades de sus correspondientes series de tiempo, ya sea la falta de estacionalidad, que tengan memoria a largo plazo, o alta volatilidad. Tales características hacen a las criptomonedas un caso ideal de aplicación de TDA, el cual es libre de suposiciones estadísticas \parencite{gideaTopologicalRecognitionCritical2020}.
 
 \subsection{Teorema de Takens}
 
-La incrustación de coordenadas con retardo de tiempo es un procedimiento estándar para reconstruir el espacio fase de un sistema dinámico no lineal de una serie de tiempo. Entonces, dado un sistema dinámico discreto definido por un diffeomorfismo $f:M \to M$ en una variedad $M$ $D$-dimensional, la evolución del estado $p\in M$ es dado por su órbita $\mbox{\{$f^{\prime}(p):t\in \mathbb{Z}\}$}$. Para un observable $\phi:M \to \mathbb{R}$ del sistema, uno define un conjunto reconstruido $\mathcal{A}^d$ consistiendo de vectores $d$-dimensionales de la forma  
-
+La incrustación de coordenadas con retardo de tiempo es un procedimiento estándar para reconstruir el espacio fase de un sistema dinámico no lineal de una serie de tiempo. Entonces, dado un sistema dinámico discreto definido por un difeomorfismo $f:M \to M$ en una variedad $M$ $D$-dimensional, la evolución del estado $p\in M$ es dado por su órbita $\mbox{\{$f^{\prime}(p):t\in \mathbb{Z}\}$}$. Para un observable $\phi:M \to \mathbb{R}$ del sistema, uno define un conjunto reconstruido $\mathcal{A}^d$ consistiendo de vectores $d$-dimensionales de la forma  
 \[
-\left(\phi(p), \phi(f(p)), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right)
+\left(\phi(p), \phi(f(p)), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right),
 \]
-
 los cuales son obtenidos de evaluaciones sucesivas de $\phi$ a lo largo de segmentos de órbita
-
 \[
 \left\{p, f(p), \ldots, f^{d-2}(p), f^{d-1}(p)\right\}.
 \]
 
 Sean $f$ y $\phi$ $C^r$-diferenciable con $r\geq 2$. El teorema clásico de Takens dice que, si $d\geq 2D$ entonces para conjuntos genéricos ($C^1$-abierto y denso) de $f$ y $\phi$, el mapeo $\Phi$ dado por
-
 \[
-p \in M \stackrel{\Phi}{\mapsto}\left(\phi(p), \phi(f(p)), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right) \in \mathbb{R}^{d}
+p \in M \stackrel{\Phi}{\mapsto}\left(\phi(p), \phi(f(p)), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right) \in \mathbb{R}^{d},
 \]
-
 es un inscrustamiento. Además el mapeo $f$ sobre $M$ es topológicamente conjugado con el mapeo left-shift $\sigma$ sobre el conjunto reconstruido $\mathcal{A}^d$, el cual es definido por
-
 \[
-\left(\phi(p), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right) \stackrel{\sigma}{\mapsto}\left(\phi(f(p)), \ldots, \phi\left(f^{d-1}(p)\right), \phi\left(f^{d}(p)\right)\right)
+\left(\phi(p), \ldots, \phi\left(f^{d-2}(p)\right), \phi\left(f^{d-1}(p)\right)\right) \stackrel{\sigma}{\mapsto}\left(\phi(f(p)), \ldots, \phi\left(f^{d-1}(p)\right), \phi\left(f^{d}(p)\right)\right),
 \]
-
 donde la conjugación topológica significa que $\Phi$ hace coincidir órbitas de $f$ con órbitas de $\sigma$, es decir $\sigma \circ \Phi = \Phi \circ f$.
    
 \subsection{Complejo simplicial}
 \label{funda_mental_complejoSim}
 
-La entrada del método es una nube de puntos, es decir, una colección finita de puntos de datos incrustados en algun espacio Euclidiano. Consideremos una nube de puntos ${Z^t} \subseteq  \mathbb{R}^{d}$, para simplificar la notación fijemos tal nube de puntos y denotemosla por $Z=\{z_0,z_1,...,z_{w-1}\}$. Asociamos $Z$ a un espacio topológico como sigue. Se introduce un parámetro escalar $\epsilon > 0$ y definimos lo que llamaremos como complejo simplicial Vietoris-Rips $R(Z,\epsilon)$ como sigue
-
+La entrada del método es una nube de puntos, es decir, una colección finita de puntos de datos incrustados en algun espacio Euclidiano. Consideremos una nube de puntos ${Z^t} \subseteq  \mathbb{R}^{d}$. Para simplificar la notación fijemos tal nube de puntos y denotémosla por $Z=\{z_0,z_1,...,z_{w-1}\}$. Asociamos $Z$ a un espacio topológico, entonces, se introduce un parámetro escalar $\epsilon > 0$ y definimos lo que llamaremos como complejo simplicial Vietoris-Rips $R(Z,\epsilon)$ de la siguiente manera.
 Para cada $k=0,1,...,$ un $k$-simplex de vertices $\{ z_{i_0},z_{i_1},...,z_{i_k} \}$ es parte de $R(Z,\epsilon)$ si y sólo si la distancia mutua entre cualquier par de vertices es menor que $\epsilon$, esto es
-
 \[
-d\left(z_{i_{j}}, z_{i_{l}}\right)<\varepsilon, \forall z_{i_{j}}, z_{i_{l}} \in\left\{z_{i_{0}}, \ldots, z_{i_{k}}\right\}
+d\left(z_{i_{j}}, z_{i_{l}}\right)<\varepsilon, \forall z_{i_{j}}, z_{i_{l}} \in\left\{z_{i_{0}}, \ldots, z_{i_{k}}\right\}.
 \]
 
-En otras palabras, un $k$-simplex es incluido en $R(Z,\epsilon)$ siempre que los vertices de ese simplex sean indistinguibles uno del otro en el nivel $\epsilon$ del parametro de escala.
+En otras palabras, un $k$-simplex es incluido en $R(Z,\epsilon)$ siempre que los vértices de ese simplex sean indistinguibles uno del otro en el nivel $\epsilon$ del parámetro de escala.
 
 \subsection{Filtración de Rips y nacimiento y muerte de características topológicas}
 
-Los complejos simpliciales de Rips $R(Z,\epsilon)$ forman una filtración, esto es, $R(Z,\epsilon) \subseteq R(Z,\epsilon^{\prime})$ siempre que $\epsilon < \epsilon^{\prime} $. Para cada tal complejo podemos calcular su homología $n$-dimensional $H_n(R(Z,\epsilon))$ con coeficientes en algún campo. Los generadores del grupo de homología $0$-dimensional $H_0(R(Z,\epsilon))$ corresponden a los componentes conectados de $R(Z,\epsilon)$, los generadores del grupo de homología $1$-dimensional $H_1(R(Z,\epsilon))$ corresponden a los ''agujeros'' de $R(Z,\epsilon)$, los generadores del grupo de homología $2$-dimensional $H_2(R(Z,\epsilon))$ corresponden a los ''vacíos'' de $R(Z,\epsilon)$, etc.
+Los complejos simpliciales de Rips $R(Z,\epsilon)$ forman una filtración, esto es, $R(Z,\epsilon) \subseteq R(Z,\epsilon^{\prime})$ siempre que $\epsilon < \epsilon^{\prime} $. Para cada tal complejo podemos calcular su homología $n$-dimensional $H_n(R(Z,\epsilon))$ con coeficientes en algún campo. Los generadores del grupo de homología $0$-dimensional $H_0(R(Z,\epsilon))$ corresponden a los componentes conectados de $R(Z,\epsilon)$, los generadores del grupo de homología $1$-dimensional $H_1(R(Z,\epsilon))$ corresponden a los ``agujeros'' de $R(Z,\epsilon)$, los generadores del grupo de homología $2$-dimensional $H_2(R(Z,\epsilon))$ corresponden a los ``vacíos'' de $R(Z,\epsilon)$, etc.
 
-Cada mapeo de inclusión $R(Z,\epsilon) \xhookrightarrow{} R(Z,\epsilon^{\prime})$ para $\epsilon < \epsilon^{\prime}$, en la filtración del complejo simplicial de Rips, que induce un grupo canonico de homeomorfismo dado por la función $F_n^{\epsilon,\epsilon^{\prime}}:H_n(R(Z,\epsilon)) \to H_n(R(Z,\epsilon^{\prime}))$ entre los correspondientes grupos de homología. La imagen Im$F_n^{\epsilon,\epsilon^{\prime}}(H_n(R(Z,\epsilon))) \subseteq  H_n(R(Z,\epsilon^{\prime})) $ consiste de generadores de homología que están presentes en el parámetro $\epsilon$ y permanecen presentes en $\epsilon^{\prime}$ y se denominan grupos de homología persistente. Para cada clase de homología $\alpha$ no cero $n$-dimensional existe un par de valores $\epsilon_1 < \epsilon_2$ tal que:
+Cada mapeo de inclusión $R(Z,\epsilon) \xhookrightarrow{} R(Z,\epsilon^{\prime})$ para $\epsilon < \epsilon^{\prime}$, en la filtración del complejo simplicial de Rips, que induce un grupo canónico de homeomorfismo dado por la función $F_n^{\epsilon,\epsilon^{\prime}}:H_n(R(Z,\epsilon)) \to H_n(R(Z,\epsilon^{\prime}))$ entre los correspondientes grupos de homología. La imagen Im$F_n^{\epsilon,\epsilon^{\prime}}(H_n(R(Z,\epsilon))) \subseteq  H_n(R(Z,\epsilon^{\prime})) $ consiste de generadores de homología que están presentes en el parámetro $\epsilon$ y permanecen presentes en $\epsilon^{\prime}$ y se denominan grupos de homología persistente. Para cada clase de homología $\alpha$ no cero $n$-dimensional existe un par de valores $\epsilon_1 < \epsilon_2$ tal que:
 
 \begin{itemize}
-	\item $\alpha \in H_n(R(Z,\epsilon_1))$ pero no es la imagen de cualquier $H_n(R(Z,\epsilon_1-\delta))$ bajo es correspondiente homeomorfismo para $\delta > 0$.
+	\item $\alpha \in H_n(R(Z,\epsilon_1))$ pero no es la imagen de cualquier $H_n(R(Z,\epsilon_1-\delta))$ bajo el correspondiente homeomorfismo con cualquier $\delta > 0$.
 	\item La imagen de $\alpha$ en $H_n(R(Z,\epsilon))$ es no cero para todo $\epsilon_1 < \epsilon < \epsilon_2$, pero la imagen de $\alpha$ en $H_n(R(Z,\epsilon_2))$ es cero.
 \end{itemize}
 
-En este caso, decimos que la clase $\alpha$ es "nacimiento'' en el valor del parámetro $b_\alpha = \epsilon_1$, y "muerte'' en el valor del parámetro $d_\alpha = \epsilon_2$; la pareja $(b_\alpha,d_\alpha)$ representa los indices de  nacimiento y muerte de $\alpha$. La multiplicidad $\mu_\alpha(b_\alpha,d_\alpha)$ del punto $(b_\alpha,d_\alpha)$ es igual al número de clases $\alpha$ que nacen en $b_\alpha$ y mueren en $d_\alpha$.
+En este caso, decimos que la clase $\alpha$ es ``nacimiento'' en el valor del parámetro $b_\alpha = \epsilon_1$, y ``muerte'' en el valor del parámetro $d_\alpha = \epsilon_2$; la pareja $(b_\alpha,d_\alpha)$ representa los índices de  nacimiento y muerte de $\alpha$. La multiplicidad $\mu_\alpha(b_\alpha,d_\alpha)$ del punto $(b_\alpha,d_\alpha)$ es igual al número de clases $\alpha$ que nacen en $b_\alpha$ y mueren en $d_\alpha$.
 
 
 \subsection{Panorama de persistencia}
@@ -688,20 +607,17 @@ La información de los generadores de homología $n$-dimensional en todas las es
 	\item El diagrama de persistencia $P_n$ también contiene todos los puntos en la diagonal positiva de $\mathbb{R}^{2}$, es decir, la linea $y=x$. Dado que estos puntos en la diagonal representan todas las parejas $p_\alpha(b_\alpha,d_\alpha)$ de homología triviales que nacen y mueren instantáneamente en cada nivel, siendo de esta forma $b_\alpha \sim d_\alpha$. Cada punto en la diagonal tiene multiplicidad infinita.
 \end{itemize}
 
-Los ejes en un diagrama de persistencia son el indice de nacimientos en el eje horizontal e indice de muertes en el eje vertical.
+Los ejes en un diagrama de persistencia son el índice de nacimientos en el eje horizontal e índice de muertes en el eje vertical.
 
 El espacio del diagrama de persistencia puede ser incrustrado dentro de un espacio de Banach, cuya normal puede ser usada para derivar una métrica. Una de estas incrustaciones es basada en el panorama de persistencia, consistiendo de secuencia de funciones en el espacio de Banach $L^p\left(\mathbb{N}\times  \mathbb{R}\right)$. Para cada punto nacimiento-muerte $(b_\alpha,d_\alpha) \in P_n$ podemos definir una función lineal a trozos
-
 \[
-f_{\left(b_{\alpha}, d_{\alpha}\right)}(x)= \begin{cases}x-b_{\alpha}, & \text { si } x \in\left(b_{\alpha}, \frac{b_{\alpha}+d_{\alpha}}{2}\right] \\ -x+d_{\alpha}, & \text { si } x \in\left(\frac{b_{\alpha}+d_{\alpha}}{2}, d_{\alpha}\right) \\ 0, & \text { si } x \notin\left(b_{\alpha}, d_{\alpha}\right)\end{cases}
+f_{\left(b_{\alpha}, d_{\alpha}\right)}(x)= \begin{cases}x-b_{\alpha}, & \text { si } x \in\left(b_{\alpha}, \frac{b_{\alpha}+d_{\alpha}}{2}\right] \\ -x+d_{\alpha}, & \text { si } x \in\left(\frac{b_{\alpha}+d_{\alpha}}{2}, d_{\alpha}\right) \\ 0, & \text { si } x \notin\left(b_{\alpha}, d_{\alpha}\right)\end{cases}.
 \] 
 
 Para un diagrama de persistencia $P_n$ que consiste de un número finito de puntos fuera de la diagonal, asociamos una secuencia de funciones $\lambda = (\lambda_i)_{i\in \mathbb{N}}$, donde $\lambda_i : \mathbb{R} \to [0,+\infty]$ que está dada por 
-
 \[
-\lambda_{i}(x)=i-\max \left\{f_{\left(b_{\alpha}, d_{\alpha}\right)}(x) \mid\left(b_{\alpha}, d_{\alpha}\right) \in P_{n}\right\}
+\lambda_{i}(x)=i-\max \left\{f_{\left(b_{\alpha}, d_{\alpha}\right)}(x) \mid\left(b_{\alpha}, d_{\alpha}\right) \in P_{n}\right\},
 \]
-
 donde $i$-max denota el $i$-ésimo valor más grande de la función. Ponemos $\lambda_i (x) = 0$ si el $i$-ésimo valor más grande no existe. Por supuesto $\lambda$ también depende de la dimensión $n$ correspondiente al diagrama de persistencia $P_n$. 
 
 
@@ -709,16 +625,13 @@ donde $i$-max denota el $i$-ésimo valor más grande de la función. Ponemos $\l
 \label{normastopologicas}
 Las series de tiempo de las normas $L^1$ de los panoramas de persistencia de series caóticas (como la del atractor de Lorenz) cuando se aproximan a una transición crítica  exhiben oscilaciones de amplitud creciente, por tanto las normas $L^1$ adquieren valores cada vez más altos y/o el valor absoluto de las primeras diferencias de las normas $L^1$ adquieren valores cada vez más altos \parencite{gideaTopologicalRecognitionCritical2020}.
 La norma $L^1$ es definida como sigue, si $X = (x_1,x_2,..,x_n)$ entonces
-
 \[ \|X\|_{1} = \sum_{i=1}^{n} \|x_{i}\|. \]
 
 
-Dado una función $f \in C^1(\mathbb{R})$, la $C^1$ norma de $f$ es, por definición $\|f\|_{C^{1}}=\|f\|_{C^{0}}+\left\|f^{\prime}\right\|_{C^{0}}$, donde $\|g\|_{C^0} :=$ sup $\|g\|$. Intuitivamente $\|f\|_{C^{1}}$ es grande siempre que $|f|$ tome valores grandes o $f^{\prime}$ tome valores grandes. Por analogía en el caso de series de tiempo $\{\lambda^t \}$ de panoramas de persistencia, definimos las norma $C^1$ por 
-
+Dada una función $f \in C^1(\mathbb{R})$, la $C^1$ norma de $f$ es, por definición $\|f\|_{C^{1}}=\|f\|_{C^{0}}+\left\|f^{\prime}\right\|_{C^{0}}$, donde $\|g\|_{C^0} :=$ sup $\|g\|$. Intuitivamente $\|f\|_{C^{1}}$ es grande siempre que $|f|$ tome valores grandes o $f^{\prime}$ tome valores grandes. Por analogía en el caso de series de tiempo $\{\lambda^t \}$ de panoramas de persistencia, definimos las norma $C^1$ por 
 \[
 \left\|\lambda^{t}\right\|_{C^{1}}=\left\|\lambda^{t}\right\|_{1}+\left|\left\|\lambda^{t}\right\|_{1}-\left\|\lambda^{t-1}\right\|_{1}\right|.
 \]
-
 Por tanto $\|\lambda^t\|_{C^1}$ es grande cuando la norma del panorama de persistencia es grande.
 
 
